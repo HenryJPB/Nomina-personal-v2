@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" ?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="center"> <!-- chequear also atributo pack="center" -->   
+        <label id="" value="" style="font-size:22px;"/>
+        <zscript>
+            <![CDATA[
+                // List<Empresa> e = new bean.servicio.ServicioAdmonEmpresa().getListaEmpresa(); // esta estructura 'List<Empresa>' genera errores,...
+                List listaEmpresa = new bean.servicio.ServicioAdmonEmpresa().getListaEmpresa();
+            ]]>
+        </zscript>
+        <listbox id="lbxEmpresa" height="50%" width="100%" emptyMessage="LISTA SIN REGISTROS" model="@{listaEmpresa}" checkmark="true" multiple="false"  onSelect="selectEmpresa()" style="font-weight:bold; font-size:16px;" >
+            <listhead>
+                <listheader label="RIF" style="font-weight:bold; font-size:16px;"  />
+                <listheader label="NOMBRE" style="font-weight:bold; font-size:16px;"  />
+                <listheader label="RAZON SOCIAL" style="font-weight:bold; font-size:16px;"  />
+            </listhead>
+            <listitem self="@{each=empresa}" > 
+                <listcell label="@{empresa.rif}" style="font-weight:bold; font-size:16px;" />
+                <listcell label="@{empresa.nombre}" style="font-weight:bold; font-size:16px;" />
+                <listcell label="@{empresa.razonSocial}" style="font-weight:bold; font-size:16px;" />
+            </listitem>
+        </listbox>
+        <zscript>
+            <![CDATA[
+                void selectEmpresa() {
+                    import org.zkoss.zk.ui.Sessions;
+                    //
+                    Listitem listitem = lbxEmpresa.getSelectedItem(); // REMENBER : lo que c selecciona es un Listitem
+                    List celdas = listitem.getChildren();
+                    Listcell listcell= (Listcell) celdas.get(0);  
+                    String rif = listcell.getLabel();
+                    //
+                    //System.out.println("Rif empresa="+rif+"**");
+                    Sessions.getCurrent().setAttribute("rifEmpresa",rif);  // lo que fue seleccionado es un Listitem
+                    //
+                    listcell = (Listcell) celdas.get(1);  
+                    String nombreEmpresa = listcell.getLabel();  
+                    Sessions.getCurrent().setAttribute("nombreEmpresa",nombreEmpresa);
+                    //System.out.println("***nombre Empresa="+nombreEmpresa+"***");
+                    //
+                    listcell = (Listcell) celdas.get(2); 
+                    String razonSocial = listcell.getLabel(); 
+                    Sessions.getCurrent().setAttribute("razonSocial",razonSocial);
+                    //System.out.println("***razonSocial="+razonSocial+"***");
+                    //    
+                    Executions.sendRedirect("VISTA_PRINCIPAL/pagPrincipal.zul");
+                }
+            ]]>
+        </zscript>    
+    </div>
+</zk>

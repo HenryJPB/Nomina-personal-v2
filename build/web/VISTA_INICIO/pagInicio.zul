@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <hbox align="center" pack="center" >
+    </hbox>
+    <image id="" src="../IMAGENES/payroll.jpg" width="100%" height="100%"/>
+</zk>

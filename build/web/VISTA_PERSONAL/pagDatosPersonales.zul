@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sujeto a revision!!!
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?> 
+La directiva ..AnnotateDataBinder genera Salidas indeseables:: Sujeto a Revision!! -->
+<zk xmlns="http://www.zkoss.org/2005/zul">   
+    <style src="/css/estiloHP.css"/>
+    <vlayout apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewEditDatosPersonales')" width="100%" height="477px" style="overflow:auto;" >
+        <!-- 
+        <hlayout>
+            <button id="btnEdit" height="30px" label="ACTUALIZAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:13px;font-weight:bold;" onClick="@command('btnEditClicked',nomTrabajador00Dat=fx)" />    
+            <button id="btnRfr" height="30px" label="REFRESCAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:13px;font-weight:bold;" />                 Bqto, 28/08/2020. No entiendo xq no se activa ssclass="T2A" ???? puede que sea los jar's ...canvas.. / ...iceblue_c ..?? Revisar  
+            <button id="btnReg" height="30px" label="REGRESAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:13px;font-weight:bold;" />
+            <button id="btnIni" height="30px" label="INICIO" disabled="false" sclass="T2A" style="color:#4682B4;font-size:13px;font-weight:bold;"/>
+        </hlayout>
+        -->
+        <hlayout style="background-color:white;" >
+            <space/>
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/Information32px.png" width=""  height="" tooltiptext="Ayuda / información!" />
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/Undo32px.png" width=""  height="" tooltiptext="Deshacer!" />
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/Redo32px.png" width=""  height="" tooltiptext="Rehacer!" />
+            <separator bar="true" orient="vertical" />
+            <image id="imgAdd" src="../IMAGENES/AddRegistro32px.png" width=""  height="" tooltiptext="Nuevo registro!" onClick="@command('btnAddClicked',nomConceptoHistDat=fx)" />
+            <separator bar="true" orient="vertical" /> 
+            <image id="imgEdit" src="../IMAGENES/Save32px.png" onClick="@command('btnEditClicked',nomTrabajador00Dat=fx)" />   
+            <separator bar="true" orient="vertical" /> 
+            <image id="" src="../IMAGENES/Refresh32px.png" width=""  height="" tooltiptext="Refrescar!" />
+            <separator bar="true" orient="vertical" />       
+            <image id="" src="../IMAGENES/Previous-icon32px.png" width=""  height="" tooltiptext="Ventana previa" >
+                <!--
+                <attribute name="onClick">
+                    String pagActiva = "../VISTA_PERSONAL/pagPersonal.zul";
+                    Sessions.getCurrent().setAttribute("pagInclude", pagActiva);
+                    Executions.sendRedirect("../VISTA_PRINCIPAL/pagPrincipal.zul");
+                </attribute> 
+                -->
+                <attribute name="onClick">
+                    //alert("*** Let go ***"); 
+                    org.zkoss.zul.Include ssnIncPag = (Include) Sessions.getCurrent().getAttribute("ssnIncPag");
+                    ssnIncPag.setSrc("../VISTA_PERSONAL/pagPersonal.zul");  
+                </attribute> 
+            </image>
+            <separator bar="true" orient="vertical" />
+        </hlayout>
+        <hbox apply="bean.controlador.personal.ControladorDatosPersonales" align="start" form="@id('fx') @load(vm.nomTrabajador00Dat) @save(vm.nomTrabajador00Dat, before='update')" >  
+            <!--         
+            <panel height="100px" width="200px" style="margin-bottom:10px"
+                   title="Panel1" border="normal" maximizable="true"
+                   collapsible="true">
+                <panelchildren>PanelContent1</panelchildren>
+            </panel>
+            <panel height="100px" width="200px" framable="true" title="Panel2"
+                   border="normal" maximizable="true" style="margin-bottom:10px">
+                <panelchildren>PanelContent2</panelchildren>
+            </panel>
+            -->
+            <panel height="" width="" border="" >
+                <panelchildren>
+                    <hlayout>
+                        <vlayout>
+                            <image id="imgFoto" src="" width="260px"  height="250px" style="border:1px outset black;" />
+                            <!-- *********************///bandbox///********************** -->
+                            <zscript>
+                            <![CDATA[
+                                String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                                bean.modelo.entidad.NomConfigDat nomConfigDat = ( new bean.controlador.configGeneral.NomConfigDatJpaController() ).findNomConfigDat(ssnRifEmpresa); 
+                                //String carpeta = nomConfigDat.getRutaAbsFoto(); 
+                                String carpeta = nomConfigDat.getRuta1(); 
+                                String[] ficheros=( new bean.utilitario.libreria.LibreriaHP().leerFicheros(carpeta) );
+                                //System.out.println("Carpeta="+carpeta+"******");
+                                //String ficheroSeleccionado = ficheros[0]; 
+                            ]]>
+                            </zscript>
+                            <bandbox id="bbxFicheros" width="260px" mold="rounded" autodrop="true" style="font-weight:bold; font-size:12px;" readonly="true" >
+                                <bandpopup>
+                                    <listbox id="lbxFicheros" width="260px" height="250px" rows="6" model="@{ficheros}" onSelect="bbxFicheros.value=self.selectedItem.label;bbxFicheros.close();" style="" >
+                                        <listhead>
+                                            <listheader label="Fichero" style="font-weight:bold; font-size:14px;" />
+                                        </listhead>
+                                        <listitem label="${each}" forEach="${ficheros}" style="font-weight:bold; font-size:14px;" />
+                                    </listbox>
+                                </bandpopup>
+                            </bandbox>
+                            <!-- ********************///bandbox///********************** -->  
+                            <!-- <button id="btnActFoto" width="250px" upload="true,maxsize=10240" label="Actualizar foto" onUpload="loadUpArchivo()" sclass="T2A"/>  Correcto: OJO: atributo=upload="true"  para activar evento onUpload -->  
+                            <!-- <button id="btnUpload" width="250px" upload="true,maxsize=10240" label="Actualizar foto" sclass="T2A"/>  OJO: atributo=upload="true"  para activar evento onUpload --> 
+                            <hlayout>
+                                <button id="btnPreViewFoto" width="225px" upload="false" label="Preview foto" onUpload="" sclass="T2A" >  <!-- onClick="@command('setSelSexo',valorParametro=self.selectedItem.label,content=rdgSexo.selectedItem)" ||  OJO: atributo=upload="true"  para activar evento onUpload -->  
+                                    <attribute name="tooltiptext">   <!-- Correctamente ejecutado en Bqto: 07/08/18 14:14--> 
+                                        Actualizar foto del Sistema de archivos!
+                                    </attribute>
+                                </button>
+                                <button id="btnInformar" sclass="T2A" label="!">
+                                    <attribute name="onClick">
+                                    <![CDATA[
+                                      Messagebox.show("La ruta de imagenes solo aplica al ambito del Sistema de Archivos del lado del Servidor.", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
+                                    ]]>
+                                    </attribute>
+                                </button>
+                            </hlayout>
+                            <zscript>
+                            <![CDATA[
+                            //----------------------------------------------------------
+                            // Copiar un archivo origen -> destino
+                            // https://axiacore.com/blog/copiar-un-archivo-a-otro-en-java/
+                            //----------------------------------------------------------
+                            void loadUpArchivo() {
+                                import java.io.*;
+                                org.zkoss.util.media.Media media = event.getMedia();   
+                                java.io.File foto = new java.io.File(media.getName());
+                                System.out.println("**Nombre del file seleccionado=" + media.getName() + "*****");
+                                System.out.println("full path: "+foto.getAbsolutePath());
+                                //java.io.File origen = new java.io.File( foto.getAbsolutePath() );  // ???
+                                java.io.File origen = new java.io.File("/home/henrypb/Temp/l.lst");  // probando...!!!
+                                java.io.File destino = new java.io.File("/home/henrypb/Temp/kk.sql");
+                                try {
+                                    InputStream in = new FileInputStream(origen);
+                                    OutputStream out = new FileOutputStream(destino);
+                                    byte[] buf = new byte[1024];
+                                    int len;
+                                    while ((len = in.read(buf)) > 0) {
+                                    out.write(buf, 0, len);
+                                }
+                                in.close();
+                                out.close();
+                                } catch (IOException ioe){
+                                    ioe.printStackTrace();
+                                }
+                                }  // loadUpFile()
+                            ]]>
+                            </zscript>
+                        </vlayout>
+                        <vlayout>
+                            <zscript>
+                            <![CDATA[
+                                //java.util.List<String> estados = new bean.servicio.ServicioAdmonGeopolitica().getEstados();     //  Error en la declaracion List<String> ? por que? ??
+                                List estados = new bean.servicio.ServicioAdmonGeopolitica().getEstados(); 
+                                Collections.sort(estados, String.CASE_INSENSITIVE_ORDER); 
+                                //java.util.List<String> paises = ( new bean.servicio.ServicioAdmonGeopolitica() ).getPaises();   //  Error en la declaracion List<String> ? por que? ??               
+                                List paises = new bean.servicio.ServicioAdmonGeopolitica().getPaises();                        
+                                // Ordenar:
+                                // 
+                                //Collections.sort(paises, new Comparator<String>() {      
+                                //     public int compare(String o1, String o2) {
+                                //         return o1.getC6Tipo().compareTo(o2.getC6Tipo());  
+                                //     }
+                                //} );
+                                //
+                                // A common way to do it is to use comparator:  https://stackoverflow.com/questions/11176227/simple-way-to-sort-strings-in-the-case-sensitive-alphabetical-order
+                                Collections.sort(paises, String.CASE_INSENSITIVE_ORDER); 
+                            ]]>
+                            </zscript>
+                            <!-- Nro. Ficha -->
+                            <zscript> <!-- Ejemplo extraido de (GNU/Linux/Mis documentos ) ZK_509_Component_Reference.pdf. Pag. No. 14 -->
+                                <![CDATA[
+                                    class MyConst implements Constraint, CustomConstraint {
+                                        //Constraint//
+                                        public void validate(Component comp, Object value) {
+                                        if (value == null || ((Integer)value).intValue() < 100)
+                                            throw new WrongValueException(comp, "Valor debe ser superior a 100 / no nulo ");
+                                        }
+                                        //CustomConstraint//
+                                        public void showCustomError(Component comp,WrongValueException ex) {
+                                            errmsg.setValue(ex != null ? ex.getMessage(): "" );
+                                        }
+                                    }
+                                    //
+                                    Constraint validarFicha = new MyConst();
+                                ]]>
+                            </zscript>
+                            <hlayout>  <!-- Nro. Ficha -->
+                                <label id="" value="Nro. trabajador (ficha):" sclass="T1B"  />  
+                                <vlayout>
+                                    <intbox id="txtNroTrab" value="@bind(vm.nomTrabajador00Dat.nomTrabajador00DatPK.nroTrabajador)" tabindex="1" sclass="T1A" constraint="${validarFicha}" readonly="false" />   <!-- revisar: Mis documentos: ZHTML-reference.pdf   -->
+                                    <!-- <intbox id="txtNroTrab" value="@bind(vm.nomTrabajador00Dat.nroTrabajador)" tabindex="1" sclass="T1" constraint="no negative,no zero" readonly="true" />  revisar: Mis documentos: ZHTML-reference.pdf   -->
+                                    <!-- <textbox id="txtNroTrab" value="@bind(vm.nomTrabajador00Dat.nroTrabajador)" tabindex="1" sclass="T1" />  -->  
+                                    <label id="errmsg" style="font-weight: bold; color: red;"/>
+                                </vlayout>
+                            </hlayout>
+                            <hlayout>
+                                <zscript>
+                                  <![CDATA[
+                                    String rifEmpresa = (String) Sessions.getCurrent().getAttribute("rifEmpresa"); 
+                                    List trabajadores = new bean.servicio.ServicioAdmonTrabajador().getListaTrab(rifEmpresa);  
+                                    List trabajadoresS = new bean.servicio.ServicioAdmonTrabajador().getListaTrabS(rifEmpresa);  
+                                    // * revisar contenido: *
+                                    /*
+                                    for ( bean.modelo.entidad.Trabajador trab : trabajadores ) {
+                                       System.out.println(trab.nombre); 
+                                    }
+                                    */
+                                    // doc: https://www.techiedelight.com/convert-list-to-array-java/
+                                    String[] aTrabajadores = trabajadoresS.toArray(new String[trabajadoresS.size()]);   // 
+                                  ]]>
+                                </zscript>
+                                <!-- <toolbarbutton id="tbbHereda" label="Heredar datos de:" href="http://www.zkoss.org" style="font-size:16px;text-decoration:underline;"/>
+                                <toolbarbutton id="tbbHereda" label="Heredar datos de:" href="" sclass="" style="font-size:16px;text-decoration:underline;">
+                                    <attribute name="onClick">
+                                        //alert("Aquica");  // Correcto  :=)
+                                        //txtNombre1.setText("PROBANDO"); 
+                                    </attribute>
+                                </toolbarbutton> -->  
+                                <!-- <toolbarbutton id="tbbHereda" label="Heredar datos de ficha: " href="" sclass="" style="font-size:16px;text-decoration:underline;" onClick="@command('heredaClicked',nomTrabajador00Dat=vm.nomTrabajador00Dat, codTrab=100 )" />  -->  
+                                <toolbarbutton id="tbbHereda" label="Heredar datos de ficha: " href="" sclass="" style="font-size:16px;text-decoration:underline;" onClick="bbxTrabajadores.setDisabled( !bbxTrabajadores.isDisabled() ); tbbGo.setDisabled( !tbbGo.isDisabled() );" />
+                                <bandbox id="bbxTrabajadores" value="" mold="rounded" width="160px" autodrop="true" style="font-weight:bold; font-size:12px;" readonly="false" disabled="true" >
+                                    <attribute name="onChange">
+                                        //alert("Aquica"); 
+                                    </attribute>
+                                    <bandpopup>
+                                        <!--  1er intento: Ejecutado correctamente con la directiva ..AnnotateDataBinder..
+                                        <listbox id="lbxTrabajadores" height="180px" width="300px" rows="5" model="@{trabajadores}" onSelect="bbxTrabajadores.value=self.selectedItem.label; bbxTrabajadores.close()" style="font-weight:bold; font-size:12px;" >
+                                            <listhead>
+                                                <listheader label="FICHA" style="font-weight:bold; font-size:14px;"  />
+                                                <listheader label="NOMBRE" style="font-weight:bold; font-size:14px;"  />
+                                                <listheader label="APELLIDO" style="font-weight:bold; font-size:14px;"  />
+                                            </listhead>
+                                            <listitem self="@{each=trabajador}" > 
+                                                <listcell label="@{trabajador.nroTrabajador}" sclass="T1" />
+                                                <listcell label="@{trabajador.nombre}" sclass="T1" />
+                                                <listcell label="@{trabajador.apellido}" sclass="T1" />
+                                            </listitem>
+                                        </listbox>
+                                        -->
+                                        <!-- 2do intento -->
+                                        <listbox id="lbxTrabajadoresS" width="260px" height="250px" rows="6" model="@{aTrabajadores}" onSelect="bbxTrabajadores.value=self.selectedItem.label.substring(0,self.selectedItem.label.indexOf(' '));bbxTrabajadores.close();" style="font-weight:bold; font-size:12px;" >
+                                            <listhead>
+                                                <listheader label="TRABAJADORES REGISTRADOS" style="font-weight:bold; font-size:14px;" />
+                                            </listhead>
+                                            <listitem label="${each}" forEach="${aTrabajadores}" style="font-weight:bold; font-size:14px;" />
+                                        </listbox>
+                                    </bandpopup>
+                                </bandbox>
+                                <toolbarbutton id="tbbGo" label="Go" sclass="" style="font-size:16px;text-decoration:underline;" disabled="true" onClick="@command('heredaClicked',nomTrabajador00Dat=vm.nomTrabajador00Dat, codTrab= ( bbxTrabajadores.getValue()=='' ? -1 : bbxTrabajadores.getValue() ) )" />
+                            </hlayout>
+                            <!-- Nacionalidad+Cedula  -->
+                            <hlayout>
+                                <label id="" value="Cedula identidad:" sclass="T1B" />  
+                                <combobox id="cbbNacionalidad" value="@bind(vm.nomTrabajador00Dat.nacionalidad)" tabindex="2" width="50px" readonly="true" sclass="T1B" >
+                                    <comboitem label="V" sclass="T1" />
+                                    <comboitem label="E" sclass="T1" />
+                                </combobox>
+                                <textbox id="txtCedula" value="@bind(vm.nomTrabajador00Dat.cedulaID)" tabindex="3" sclass="T1" />
+                            </hlayout>
+                            <!-- Nombres  -->
+                            <hlayout>
+                                <label id="" value="Nombre(s)," sclass="T1B" />
+                                <label id="" value="1er Nombre:" sclass="T1B"  /> 
+                                <textbox id="txtNombre1" value="@bind(vm.nomTrabajador00Dat.nombre1)" tabindex="4" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" />
+                            </hlayout>
+                            <hlayout>
+                                <space spacing="73px"/>
+                                <label id="" value="2do Nombre:" sclass="T1B"  />
+                                <textbox id="txtNombre2" value="@bind(vm.nomTrabajador00Dat.nombre2)" tabindex="5" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" />
+                            </hlayout>
+                            <!-- Apellidos -->
+                            <hlayout>
+                                <label id="" value="Apellido(s)," sclass="T1B"  />
+                                <label id="" value="1er Apellido" sclass="T1B"  />
+                                <textbox id="txtApellido1" value="@bind(vm.nomTrabajador00Dat.apellido1)" tabindex="6" onChange="self.setValue(self.getValue().toUpperCase())"  sclass="T1" />
+                            </hlayout>
+                            <hlayout>
+                                <space spacing="73px"/>
+                                <label id="" value="2do Apellido:" sclass="T1B"  />
+                                <textbox id="txtApellido2" value="@bind(vm.nomTrabajador00Dat.apellido2)" tabindex="7"  onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" />
+                            </hlayout>
+                            <!-- Alias del nombre -->
+                            <hlayout>
+                                <label id="" value="Alias:" sclass="T1B" />
+                                <textbox id="txtAlias" width="360px" value="@bind(vm.nomTrabajador00Dat.alias)" tabindex="8" onChange="self.setValue(self.getValue().toUpperCase())"  sclass="T1" />
+                            </hlayout>
+                            <hlayout>
+                                <!-- Sexo -->
+                                <label id="" value="Sexo:" sclass="T1B" />
+                                <!-- https://www.zkoss.org/zkdemo/input/radio_button -->
+                                <!-- <radiogroup id="rdgSexo" onCheck="selSexo.value = self.selectedItem.label">  -->  
+                                <!-- <radiogroup id="rdgSexo" onCheck="rdgSexo.selectedItem=@bind(vm.nomTrabajador00Dat.sexo)" > -->
+                                <radiogroup id="rdgSexo" onCheck="" selectedItem="@bind(vm.nomTrabajador00Dat.sexo)" >
+                                    <radio id="rd1" label="F" tabindex="8" value="F" />
+                                    <radio id="rd2" label="M" tabindex="9" value="M" />
+                                </radiogroup>
+                                <label id="selSexo" visible="false" />  <!-- Ensayando -->
+                                <space/>  
+                                <!-- Edo. Civil -->
+                                <label id="" value="Edo. Civil:" sclass="T1B" />
+                                <combobox id="cbbEdoCivil" tabindex="10" sclass="T1B" width="50px" readonly="true" value="@bind(vm.nomTrabajador00Dat.edoCivil)" >
+                                    <comboitem label="C" sclass="T1" /> <!-- Casado -->
+                                    <comboitem label="S" sclass="T1" /> <!-- Soltero -->
+                                    <comboitem label="V" sclass="T1" /> <!-- Viudo -->
+                                    <comboitem label="U" sclass="T1" /> <!-- Union Estable -->
+                                </combobox>
+                            </hlayout>
+                            <!-- Telefonos hab -->
+                            <hlayout>
+                                <label id="" value="Telefono(s) hab.:" sclass="T1B" />
+                                <textbox id="txtTlfHab1" tabindex="11" sclass="T1" value="@bind(vm.nomTrabajador00Dat.telefonoHab1)" />
+                            </hlayout>
+                            <hlayout>    
+                                <space spacing="110px"/>                      
+                                <textbox id="txtTlfHab2" tabindex="12" sclass="T1" value="@bind(vm.nomTrabajador00Dat.telefonoHab2)" />
+                            </hlayout>
+                        </vlayout>
+                    </hlayout> 
+                    <!-- Telefonos moviles -->
+                    <hlayout>
+                        <label id="" value="Telefono(s) movile(s):" sclass="T1B" />
+                        <textbox id="txtTlfMovil1" tabindex="13" sclass="T1" value="@bind(vm.nomTrabajador00Dat.telefonoMovil1)" />
+                        <textbox id="txtTlfNovil2" tabindex="14" sclass="T1" value="@bind(vm.nomTrabajador00Dat.telefonoMovil2)" />
+                    </hlayout>   
+                    <!-- Correos electronicos -->
+                    <hlayout>        
+                        <label id="" value="Correo(s) electonico(s):" sclass="T1B" />
+                        <textbox id="txtEmail1" width="400px" tabindex="15" sclass="T1" constraint="/.+@.+\.[a-z]+/: solo e-mail address" value="@bind(vm.nomTrabajador00Dat.email1)" />
+                    </hlayout>    
+                    <hlayout> 
+                        <space spacing="157px"/>   
+                        <textbox id="txtEmail2" width="400px" tabindex="16" sclass="T1" constraint="/.+@.+\.[a-z]+/: solo e-mail address" value="@bind(vm.nomTrabajador00Dat.email2)" />
+                    </hlayout>  
+                </panelchildren>
+            </panel>
+            <!--  ////////////////////////////////////////////////////////////////////////  -->  
+            <panel height="" width="" border="" >  <!-- framable="true" border="normal" >  -->
+                <panelchildren>
+                    <space/>  
+                    <div style="border:normal" >  <!-- style="border:1px outset black;background:#B9D0D7;"  -->
+                        <!-- Fecha nacimiento -->
+                        <hlayout>
+                            <space/>
+                            <label id="" value="Fecha Nacimiento:" sclass="T1B" />
+                            <!-- <datebox id="dbxFechaNac" tabindex="15" constraint="no empty,no future: Campo requerido" format="dd/MM/yyyy"  sclass="T1" value="@bind(vm.nomTrabajador00Dat.fechaNac)"  />  -->
+                            <datebox id="dbxFechaNac" tabindex="17" format="dd/MM/yyyy"  sclass="T1" value="@bind(vm.nomTrabajador00Dat.fechaNac)">
+                                <attribute name="onChange">
+                                    if ( self.getValue()!=null ) {
+                                    java.time.LocalDate hoy = java.time.LocalDate.now();  
+                                    java.time.LocalDate fechaNac = self.getValue().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();  
+                                    long edad = java.time.temporal.ChronoUnit.YEARS.between(fechaNac, hoy); 
+                                    //System.out.println("Edad de este mandinga="+edad+"****");  
+                                    lblEdad.setValue(Long.toString(edad));
+                                    }
+                                </attribute>
+                            </datebox>
+                            <!--
+                            <button label="set MM-dd-yyyy">
+                                <attribute name="onClick">
+                                    dbFechaNac.setFormat("dd/MM/yyyy");
+                                </attribute>
+                            </button>
+                            -->  
+                            <space/>
+                            <label id="" value="Edad: " sclass="T1B" />
+                            <label id="lblEdad" value="" sclass="T1B" >
+                                <attribute name="onCreate">
+                                    if ( dbxFechaNac.getValue()!=null ) {
+                                    java.time.LocalDate hoy = java.time.LocalDate.now();  
+                                    java.time.LocalDate fechaNac = dbxFechaNac.getValue().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();  
+                                    long edad = java.time.temporal.ChronoUnit.YEARS.between(fechaNac, hoy); 
+                                    //System.out.println("Edad de este mandinga="+edad+"****");  
+                                    lblEdad.setValue(Long.toString(edad));
+                                    }
+                                </attribute>
+                            </label>    
+                            <space/>
+                        </hlayout>    
+                        <!-- Sector/parroquia nacimiento -->
+                        <hlayout>
+                            <space/>
+                            <label id="" value="Parroquia/Sector:" sclass="T1B" />
+                            <textbox id="txtParroquiaNac" tabindex="18" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.parroquiaNac)" />
+                        </hlayout>
+                        <!-- Municipio / Codigo postal nacimiento -->
+                        <hlayout>
+                            <space/>
+                            <label id="" value="Municipio:" sclass="T1B" />
+                            <textbox id="txtMunicipioNac" tabindex="19" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.municipioNac)" />
+                            <label id="" value="Codigo postal:" sclass="T1B"/>
+                            <textbox id="txtCodigoPostalNac" tabindex="20" width="100px" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.codigoPostalNac)" />
+                        </hlayout>                        
+                        <!-- Ciudad nacimiento -->
+                        <hlayout>
+                            <!-- Estado nacimiento -->
+                            <space/>
+                            <label id="" value="Estado:" sclass="T1B" />
+                            <!-- <textbox id="txtEstadodNac" tabindex="18" sclass="T1" />  -->
+                            <bandbox id="bbxEstadoNac" mold="" width="300px" autodrop="true" sclass="T1B" style="font-weight:bold; font-size:12px;" tabindex="19" readonly="true" value="@bind(vm.nomTrabajador00Dat.estadoNac)" >
+                                <bandpopup>
+                                    <listbox height="250px" width="300px" onSelect="bbxEstadoNac.value=self.selectedItem.label; bbxEstadoNac.close()" style="font-weight:bold; font-size:12px;"  >                        
+                                        <listhead>
+                                            <listheader label="ESTADO" style="font-weight:bold; font-size:14px;"  />
+                                        </listhead>
+                                        <listitem label="${each}" forEach="${estados}" style="font-weight:bold; font-size:14px;"  />
+                                    </listbox>
+                                </bandpopup>
+                            </bandbox>
+                            <!-- Ciudad nacimiento -->
+                            <label id="" value="Ciudad:" sclass="T1B" />
+                            <textbox id="txtCiudadNac" tabindex="21" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.ciudadNac)" />
+                        </hlayout>
+                        <!-- Pais nacimiento -->
+                        <hlayout>
+                            <space/>
+                            <label id="" value="Pais:" sclass="T1B" />
+                            <!-- <textbox id="txtPaisNac" tabindex="19" sclass="T1" />  -->
+                            <!-- <listbox height="250px" width="300px" mold="paging" autopaging="true"
+                            onSelect="bd.value=self.selectedItem.label; bd.close();">  --> 
+                            <bandbox id="bbxPaisNac" tabindex="22" mold="" width="300px" autodrop="true" style="font-weight:bold; font-size:12px;" readonly="true" value="@bind(vm.nomTrabajador00Dat.paisNac)" >
+                                <bandpopup>
+                                    <listbox height="250px" width="300px" onSelect="bbxPaisNac.value=self.selectedItem.label; bbxPaisNac.close()" style="font-weight:bold; font-size:12px;"  >                        
+                                        <listhead>
+                                            <listheader label="PAIS" style="font-weight:bold; font-size:14px;"  />
+                                        </listhead>
+                                        <listitem label="${each}" forEach="${paises}" style="font-weight:bold; font-size:14px;"  />
+                                    </listbox>
+                                </bandpopup>
+                            </bandbox>
+                        </hlayout>
+                    </div>
+                    <space/>
+                    <!-- Direccion habitacion -->
+                    <hlayout>
+                        <space/>
+                        <label id="" value="Direccion hab:" sclass="T1B" />
+                        <space/>
+                        <textbox id="txtDireccionHab1" width="490px" tabindex="23" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.direccionHab1)" />
+                    </hlayout>
+                    <hlayout>
+                        <space spacing="127px"/>
+                        <textbox id="txtDireccionHab2" width="490px" tabindex="24" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.direccionHab2)" />
+                    </hlayout>
+                    <div align="left" >
+                        <hlayout>
+                            <space spacing="127px"/>
+                            <textbox id="txtDireccionHab3" width="490px" tabindex="25" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.direccionHab3)" />
+                        </hlayout>
+                        <!-- Sector habitacion -->
+                        <hlayout>
+                            <space/>
+                            <label id="" value="Parroquia/Sector:" sclass="T1B" />
+                            <textbox id="txtParroquiaHab" width="300px" tabindex="26" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.parroquiaHab)" />
+                        </hlayout>
+                        <hlayout>
+                            <space/>
+                            <label id="" value="Municipio:" sclass="T1B" />
+                            <textbox id="txtMunicipioHab" tabindex="27" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.municipioHab)" />
+                            <label id="" value="Codigo postal:" sclass="T1B" />
+                            <textbox id="txtCodigoPostalHab" tabindex="28" width="100px" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.codigoPostalHab)" />
+                        </hlayout>        
+                        <!-- Estado habitacion -->
+                        <hlayout>
+                            <space/>
+                            <label id="" value="Estado:" sclass="T1B" />
+                            <!-- <textbox id="txtEstadoHab" tabindex="25" sclass="T1" /> -->
+                            <bandbox id="bbxEstadoHab" tabindex="29" mold="" width="300px" autodrop="true" style="font-weight:bold; font-size:12px;" readonly="true" value="@bind(vm.nomTrabajador00Dat.estadoHab)" >
+                                <bandpopup>
+                                    <listbox height="250px" width="300px" onSelect="bbxEstadoHab.value=self.selectedItem.label; bbxEstadoHab.close()" style="font-weight:bold; font-size:12px;"  >                        
+                                        <listhead>
+                                            <listheader label="ESTADO" style="font-weight:bold; font-size:14px;"  />
+                                        </listhead>
+                                        <listitem label="${each}" forEach="${estados}" style="font-weight:bold; font-size:14px;"  />
+                                    </listbox>
+                                </bandpopup>
+                            </bandbox>
+                        </hlayout>
+                        <!-- Ciudad habitacion -->
+                        <hlayout>
+                            <space/>
+                            <label id="" value="Ciudad:" sclass="T1B" />
+                            <textbox id="txtCiudadHab" width="300px" tabindex="30" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" value="@bind(vm.nomTrabajador00Dat.ciudadHab)" />
+                        </hlayout>
+                        <!-- Pais habitacion -->
+                        <hlayout>
+                            <space/>
+                            <label id="" value="Pais:" sclass="T1B" />
+                            <!-- <textbox id="txtPaisHab" tabindex="26" sclass="T1" />  -->
+                            <bandbox id="bbxPaisHab" tabindex="31" mold="" width="300px" autodrop="true" style="font-weight:bold; font-size:12px;" readonly="true" value="@bind(vm.nomTrabajador00Dat.paisHab)" >
+                                <bandpopup>
+                                    <listbox height="250px" width="300px" onSelect="bbxPaisHab.value=self.selectedItem.label; bbxPaisHab.close()" style="font-weight:bold; font-size:12px;"  >                        
+                                        <listhead>
+                                            <listheader label="PAIS" style="font-weight:bold; font-size:12px;"  />
+                                        </listhead>
+                                        <listitem label="${each}" forEach="${paises}" style="font-weight:bold; font-size:14px;"  />
+                                    </listbox>
+                                </bandpopup>
+                            </bandbox>
+                        </hlayout>
+                    </div>
+                </panelchildren>
+            </panel>  
+        </hbox>
+        <space/>
+    </vlayout>
+</zk>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <!-- ********************************************************************** -->
+    <!-- *******************************(ENCABEZADO.Begin)********************* -->
+    <!-- ********************************************************************** -->
+    <separator bar="true" />
+    <hlayout style="background:lightgray;" >
+        <space />
+    </hlayout>
+    <hlayout style="background:lightgray;">
+        <label id="" value=" * PAG DE INFORMES " sclass="TBREADCRUMB" />
+    </hlayout>
+    <hlayout style="background:lightgray;" >
+        <button id="btnRfr" height="40px" label="REFRESCAR" disabled="false" sclass="T2A"/>
+        <button id="btnIni" height="40px" label="INICIO" disabled="false" sclass="T2A"/>
+    </hlayout>
+    <hlayout style="background:lightgray;" >
+        <space />
+    </hlayout>
+    <separator bar="true" />
+    <!-- ******************************************************************* -->
+    <!-- *******************************(ENCABEZADO.End)******************** -->
+    <!-- ******************************************************************* -->
+    <space/>
+    <hbox align="center" style="border: 0px solid white; border-style: groove;" >
+        <space/> 
+        <label id="" value="Formato:" sclass="T2B" />
+        <space/> 
+        <radiogroup id="rdgFormato" onCheck="html" >
+            <radio id="" label="html" checked="true" radiogroup="rdgFormato"  style=" color: black; font-size: 16px; font-weight:bold;" sclass="T1B"  />
+            <space/>
+            <radio id="" label="pdf" checked=""  radiogroup="rdgFormato"  style=" color: black; font-size: 16px; font-weight:bold;" sclass="T1B" />
+            <space/>
+            <radio id="" label="excel" checked="" radiogroup="rdgFormato" style=" color: black; font-size: 16px; font-weight:bold;"  sclass="T1B"  />
+        </radiogroup>
+    </hbox>
+    <space/>  
+    <hlayout apply="bean.controlador.reportes.ControladorInformes"  >
+        <!-- Costo de Almacen -->  
+        <space/>  
+        <vbox align="center" style="border: 1px solid black; border-style: outset;" width="150px"  >
+            <space/> 
+            <label id="" value="Costo de Almacen" sclass="T1A" />
+            <image id="imgRptCostoAlmacen" src="../IMAGENES/Document-icon96px.png" />
+            <space/>  
+        </vbox>
+        <!-- Existencia de Almacen de Sup y Rptos -->  
+        <space/>
+        <vbox align="center" style="border: 1px solid black; border-style: outset;" width="150px"  >
+            <space/> 
+            <label id="" value="Existencia Items" sclass="T1A" />
+            <image id="imgRptExistencia" src="../IMAGENES/Document-icon96px.png" />
+            <space/>  
+        </vbox>
+        <!-- Maestro de Items -->  
+        <space/>
+        <vbox align="center" style="border: 1px solid black; border-style: outset;" width="150px"  >
+            <space/> 
+            <label id="" value="Maestro de Items" sclass="T1A" />
+            <image id="imgRptMaestroItems" src="../IMAGENES/Document-icon96px.png" />
+            <space/>  
+        </vbox>
+       <!-- Movimientos de Inventario -->  
+        <space/>
+        <vbox align="center" style="border: 1px solid black; border-style: outset;" width="190px"  >
+            <space/> 
+            <label id="" value="Movimientos de Inventario" sclass="T1A" />
+            <image id="imgRptMovInv" src="../IMAGENES/Document-icon96px.png" />
+            <space/>  
+        </vbox>
+    </hlayout>
+</zk>

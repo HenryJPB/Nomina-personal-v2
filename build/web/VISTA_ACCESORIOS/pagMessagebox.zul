@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winMsgBox" title="" width="500px" height="175px" mode="modal" border="normal" apply="bean.utilitario.controlador.ControladorMsgBox" >
+        <caption style="color: black; background: smoke; font-weight:bold; font-size: 16px;" />
+        <vbox height="100%" width="100%" align="center" pack="center" >
+            <label id="lblMsgBox" value="" style="color: black; background: smoke; font-weight:bold; font-size: 14px;" />
+            <space/>
+            <button id="btnMsgBox" label="OK" style="color: black; background: smoke; font-weight:bold; font-size: 16px;" onClick="winMsgBox.detach();" />
+            <space/>
+        </vbox>
+    </window>
+</zk>

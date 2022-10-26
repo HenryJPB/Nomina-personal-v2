@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <!-- ****************************(ENCABEZADO.Begin)*************************** -->
+    <separator bar="true" width="100%" style="color:black;"/>
+    <hlayout style="background:lightgray;" >
+        <space/>
+        <label id="" value=" / NOMINA / " sclass="TBREADCRUMB" />
+        <!-- <label id="" value="+....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!...!METRICA!...!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!.+" sclass="subTitulo3" />  -->  
+        <space/>
+        <hlayout style="background:lightgray;"  >
+            <style dynamic="true">      <!--  -->
+                .tmenu .z-menu-text {   
+                color: #4682B4;
+                font-size: 15px; 
+                color: black; 
+                font-weight:bold;
+                }
+                .tmenuitem .z-menuitem-text {
+                color: black;
+                font-size: 15px;
+                font-weight:bold; 
+                }
+                .tmenuitem2 .z-menuitem-text {
+                color: black;
+                font-size: 15px;
+                font-weight:bold; 
+                background: lightgoldenrodyellow; 
+                }
+                .titleBlue .z-panel-header {
+                color: blue;
+                font-size: 18px;  
+                font-weight:bold;
+                }
+            </style>
+            <menubar id="mnuInformes" draggable="false" scrollable="false" visible="true" height="30px" >
+                <menu label="INFORMES" sclass="tmenu" >
+                    <menupopup>
+                        <menuitem id="mnnPrint1" label="CONCEPTOS" sclass="tmenuitem" onClick="Executions.sendRedirect(&quot;../JSP/jspParamConceptos.jsp&quot;)" />
+                        <menuitem id="mnnPrint2" label="TRABAJADORES" sclass="tmenuitem" onClick="Executions.sendRedirect(&quot;../JSP/jspParamTrabajadores.jsp&quot;)" />
+                        <menuitem id="mnnPrint3" label="ACUM CONCEPTOS" sclass="tmenuitem" onClick="Executions.sendRedirect(&quot;../JSP/jspParamAcumConceptos.jsp&quot;)" />
+                        <menuitem id="mnnPrint4" label="NOMINA" sclass="tmenuitem" onClick="Executions.sendRedirect(&quot;../JSP/jspParamNomina.jsp&quot;)" />
+                        <menuitem id="mnnPrint5" label="NOMINA EN FONDO" sclass="tmenuitem" onClick="Executions.sendRedirect(&quot;../JSP/jspParamNominaEnFondo.jsp&quot;)" />                      
+                        <menuitem id="mnnPrint6" label="ACUM CONCEPTOS (Nomina cerrada)" sclass="tmenuitem2" onClick="Executions.sendRedirect(&quot;../JSP/jspParamAcumConceptosHist.jsp&quot;)" />
+                        <menuitem id="mnnPrint7" label="RECIBOS (Nomina cerrada)" sclass="tmenuitem2" onClick="Executions.sendRedirect(&quot;../JSP/jspParamRecibosNom.jsp&quot;)" />
+                        <menuitem id="mnnPrint8" label="RLACION DE PAGO" sclass="tmenuitem2" onClick="Executions.sendRedirect(&quot;../JSP/jsp.jsp&quot;)" />
+                        <menuitem id="mnnPrint9" label="ENVIAR RECIBOS A DESTINATARIOS" sclass="tmenuitem2" onClick="Executions.sendRedirect(&quot;../JSP/jspParamRecibosNomFiletoEmail.jsp&quot;)" />
+                    </menupopup>
+                </menu>
+            </menubar> 
+        </hlayout>
+    </hlayout>
+    <separator bar="true" width="100%" style="color:black;"/>
+    <!-- ****************************(ENCABEZADO.Begin)*************************** -->
+    <vbox width="100%" height="100%" align="center" pack="center" apply="bean.controlador.concepto.ControladorAsigConcepto" >
+        <panel height="155px" width="400px" title="CALCULAR NOMINA" sclass="titleBlue"  border="rounded" collapsible="false" closable="false" maximizable="false"
+               style="margin-bottom:10px">
+            <panelchildren style="overflow: auto" >
+                <zscript>
+                  <![CDATA[
+                    String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                    java.util.List lista = new bean.controlador.nomina.NomTiposNominaDatJpaController().getTiposNomina(ssnRifEmpresa); 
+                    org.zkoss.zul.ListModelList modelo1 = new org.zkoss.zul.ListModelList(lista); 
+                    //
+                    //Integer ssnCodNomina = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina"); 
+                    //String nombreNomina = new bean.controlador.nomina.NomTiposNominaDatJpaController().getNombreNomina(ssnRifEmpresa,ssnCodNomina); 
+                    //modelo.addToSelection(ssnCodNomina+"-"+nombreNomina); 
+                    //modelo.addToSelection(lista.get(0)); 
+                    //System.out.println("Select="+ssnCodNomina+"-"+nombreNomina);
+                  ]]>
+                </zscript>
+                <space/>
+                <hlayout>
+                    <label id="" value="Nomina: " style="font-size: 14px; font-weight: bold;" />
+                    <combobox id="cbbTipoNomina" fulfill="onOpen" width="230px" readonly="true" model="${modelo1}" style="font-size: 14px; font-weight: bold; background-color: lightskyblue;" sclass="T1G" />
+                </hlayout>
+                <!--
+                <combobox value="S"  fulfill="onOpen" width="50px" readonly="true" model="${}" sclass="T1G" >
+                    <comboitem label="S" description="S)emanal" sclass="T1G" />
+                    <comboitem label="Q" description="Q)uincenal" sclass="T1G" />
+                </combobox> 
+                --> 
+                <hlayout>
+                    <label id="" value="Fecha de calculo: " style="font-size: 14px; font-weight: bold;" />
+                    <datebox id="dtbFechaCalculo" format="dd/MM/yyyy" width="110px" constraint="no empty: Fecha no puede ser nula!" buttonVisible="false" tabindex="1" readonly="true" sclass="T1G" style="color:black; font-weight:bold; background-color: bisque;" >
+                        <attribute name="onCreate" >
+                        <![CDATA[
+                            //Sessions.getCurrent().setAttribute(self.getValue()); 
+                            //self.setValue( new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date()) ); 
+                            self.setValue( new java.util.Date() ); 
+                        ]]>
+                        </attribute>
+                    </datebox>
+                </hlayout>
+                <space/>
+                <!--
+                <separator bar="true" width="100%"/>
+                -->
+                <image id="imgNomOpcion1" src="../IMAGENES/target32px.png" tooltiptext="Ejecutar" >
+                    <!--
+                    <attribute name="onClick" >
+                    <![CDATA[
+                        //incPag.setSrc("../VISTA_CONCEPTO/pagAjuste_xTrab.zul"); 
+                        String rifEmpresa = (String) Sessions.getCurrent().getAttribute("rifEmpresa"); 
+                        java.util.List lista = new bean.controlador.concepto.NomAsigConceptoDatJpaController().getListaAsigConceptos(rifEmpresa); 
+                    ]]>
+                    </attribute>
+                    -->
+                </image>
+            </panelchildren>
+        </panel>
+        <space/>
+        <panel height="223px" width="400px" title="CIERRE DE NOMINA" sclass="titleBlue" border="rounded" collapsible="false" closable="false" maximizable="false" style="margin-bottom:10px" draggable="false">
+            <panelchildren style="overflow: auto" >
+                <zscript>
+                  <![CDATA[
+                    //String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                    //java.util.List lista = new bean.controlador.nomina.NomTiposNominaDatJpaController().getTiposNomina(ssnRifEmpresa); 
+                    org.zkoss.zul.ListModelList modelo2 = new org.zkoss.zul.ListModelList(lista); 
+                    //modelo.addToSelection(lista.get(0)); 
+                    //System.out.println("Select="+ssnCodNomina+"-"+nombreNomina);
+                  ]]>
+                </zscript>
+                <separator bar="true" width="100%"/>
+                <vlayout>   
+                    <label id="" value="APRECIADO USUARIO: RESPALDA TUS DATOS ANTES DE REALIZAR EL CIERRE DE NOMINA." sclass="T1A" />
+                    <label id="" value="PARA MAYOR INFORMACION, CONSULTA TU DBA." sclass="T1A" />
+                </vlayout>
+                <separator bar="true" width="100%"/>
+                <space/>
+                <hlayout>
+                    <label id="" value="Nomina: " style="font-size: 14px; font-weight: bold;" />
+                    <combobox id="cbbTipoNominaCierre" fulfill="onOpen" width="230px" readonly="true" model="${modelo2}" style="font-size: 14px; font-weight: bold; background-color: lightskyblue;" sclass="T1G" />
+                </hlayout>
+                <hlayout>
+                    <label id="" value="Fecha de cierre: " style="font-size: 14px; font-weight: bold;" />
+                    <datebox id="dtbFechaCierre" format="dd/MM/yyyy" width="110px" constraint="no empty: Fecha no puede ser nula!" buttonVisible="false" tabindex="1" readonly="true" sclass="T1G" style="color:black; font-weight:bold; background-color: bisque;" >
+                        <attribute name="onCreate" >
+                        <![CDATA[
+                            //Sessions.getCurrent().setAttribute(self.getValue()); 
+                            //self.setValue( new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date()) ); 
+                            self.setValue( new java.util.Date() ); 
+                        ]]>
+                        </attribute>
+                    </datebox>
+                </hlayout>
+                <image id="imgNomOpcion2" src="../IMAGENES/target32px.png" tooltiptext="Ejecutar" />
+            </panelchildren>
+        </panel>
+    </vbox>
+</zk>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AcumConceptos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c99c642b-bcee-40c0-85d5-aac9867c125d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="4"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="p_rif_empresa" class="java.lang.String"/>
+	<parameter name="p_tipo_nomina" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT NomEmpresa_Dat.rif as rifEmpresa,
+       razonSocial,
+       NomTrabajador01_Dat.tipoNomina as codNomina,
+       NomTiposNomina_Dat.nombreNomina as nombreNomina,
+       DATE_ADD(NomTiposNomina_Dat.ultimaRotacion, INTERVAL 1 DAY ) as ultimaRotacion,
+       NomTiposNomina_Dat.proxRotacion,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "S" THEN NomConcepto_Dat.codConcepto
+       END as codConceptoAsig,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "S" THEN NomConcepto_Dat.descripcion
+       END as descripcionAsig,
+       Sum(
+       CASE NomConcepto_Dat.asignacion
+            WHEN "S" THEN NomCalculo_Dat.total
+       END ) as sumAsig,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "N" THEN NomConcepto_Dat.codConcepto
+       END as codConceptoDeduc,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "N" THEN NomConcepto_Dat.descripcion
+       END as descripcionDeduc,
+       Sum(
+       CASE NomConcepto_Dat.asignacion
+            WHEN "N" THEN NomCalculo_Dat.total
+       END ) as sumDeduc
+FROM   NomEmpresa_Dat, NomTiposNomina_Dat, NomTrabajador01_Dat, NomCalculo_Dat, NomConcepto_Dat
+WHERE  NomEmpresa_Dat.rif = $P{p_rif_empresa}
+AND    NomTiposNomina_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomTrabajador01_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomCalculo_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomConcepto_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomTrabajador01_Dat.tipoNomina = NomTiposNomina_Dat.codNomina
+AND    NomCalculo_Dat.codNomina = $P{p_tipo_nomina}
+AND    NomConcepto_Dat.codNomina = $P{p_tipo_nomina}
+AND    NomCalculo_Dat.nroTrabajador = NomTrabajador01_Dat.nroTrabajador
+AND    NomCalculo_Dat.codConcepto = NomConcepto_Dat.codConcepto
+AND    $P{p_tipo_nomina} = any (  SELECT codNomina
+                                  FROM   NomTrabajador02_Dat
+                                  WHERE  rifEmpresa = NomTrabajador01_Dat.rifEmpresa
+                                  AND    nroTrabajador = NomTrabajador01_Dat.nroTrabajador
+                                 )
+AND    NomConcepto_Dat.codConcepto >= 100
+AND    NomCalculo_Dat.total > 0.00
+GROUP  BY NomTrabajador01_Dat.tipoNomina, NomCalculo_Dat.codConcepto, NomConcepto_Dat.asignacion
+ORDER  BY NomTrabajador01_Dat.tipoNomina, NomCalculo_Dat.codConcepto, NomConcepto_Dat.asignacion]]>
+	</queryString>
+	<field name="rifEmpresa" class="java.lang.String"/>
+	<field name="razonSocial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codNomina" class="java.lang.Integer"/>
+	<field name="nombreNomina" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ultimaRotacion" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proxRotacion" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codConceptoAsig" class="java.lang.Integer"/>
+	<field name="descripcionAsig" class="java.lang.String"/>
+	<field name="sumAsig" class="java.lang.Double"/>
+	<field name="codConceptoDeduc" class="java.lang.Integer"/>
+	<field name="descripcionDeduc" class="java.lang.String"/>
+	<field name="sumDeduc" class="java.lang.Double"/>
+	<variable name="totalAsig" class="java.lang.Double" resetType="Group" resetGroup="rifEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumAsig}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{sumAsig}]]></initialValueExpression>
+	</variable>
+	<variable name="totalDeduc" class="java.lang.Double" resetType="Group" resetGroup="rifEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumDeduc}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{sumDeduc}]]></initialValueExpression>
+	</variable>
+	<group name="rifEmpresa">
+		<groupExpression><![CDATA[$F{rifEmpresa}]]></groupExpression>
+		<groupFooter>
+			<band height="21">
+				<textField pattern="#,##0.00">
+					<reportElement uuid="d0776644-1a4a-497b-b720-c53a3afb4628" style="SubTitle" x="174" y="4" width="107" height="17" forecolor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalAsig}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="a40b1930-7c13-4b29-bc9c-ec3836d996d2" style="SubTitle" x="445" y="4" width="107" height="17" forecolor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalDeduc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="codNomina">
+		<groupExpression><![CDATA[$F{codNomina}]]></groupExpression>
+		<groupHeader>
+			<band height="61">
+				<textField>
+					<reportElement uuid="2a7e6420-42eb-4101-8b73-a5fc231e5643" style="SubTitle" x="81" y="4" width="29" height="20"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codNomina}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="552740e5-e998-49a9-9d49-9364d27d3cd0" style="SubTitle" x="110" y="4" width="271" height="20"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombreNomina}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="75c69401-743d-4afa-934e-ab4ab27a40d9" style="Column header" x="11" y="34" width="33" height="15"/>
+					<textElement/>
+					<text><![CDATA[COD ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="137ddbed-2ca9-48f1-9fbb-1f796ec744b4" style="Column header" x="49" y="34" width="163" height="15"/>
+					<textElement/>
+					<text><![CDATA[DESCRIPCION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="05178e54-1764-4dae-96e7-432836e5d2dd" style="Column header" x="212" y="34" width="69" height="15"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[MONTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="dffad7b4-1f97-48e5-9270-fc8ec44efb66" style="Column header" x="302" y="34" width="31" height="15"/>
+					<textElement/>
+					<text><![CDATA[COD]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="2854793e-a365-451f-bd18-fe9309973f36" style="Column header" x="344" y="34" width="139" height="15"/>
+					<textElement/>
+					<text><![CDATA[DESCRIPCION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="f21d9326-aa8a-4a2a-82ee-fb74334574d1" style="Column header" x="483" y="34" width="69" height="15"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[MONTO]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="d2fc7693-990f-4020-8f48-a4c46a630d56" x="0" y="52" width="552" height="1"/>
+				</line>
+				<line>
+					<reportElement uuid="ab41866a-4062-41f9-b1b2-7724771e44ca" x="0" y="29" width="555" height="1"/>
+				</line>
+				<staticText>
+					<reportElement uuid="89dac526-6068-4a66-a7c1-d1014b3b3da8" style="SubTitle" x="8" y="4" width="70" height="20"/>
+					<textElement>
+						<font fontName="Arial" size="15" isBold="true"/>
+					</textElement>
+					<text><![CDATA[NOMINA]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="93" splitType="Stretch">
+			<image hAlign="Center">
+				<reportElement uuid="f51f30b3-49b6-4823-9095-5bf9ef3d98de" x="0" y="12" width="265" height="52"/>
+				<imageExpression><![CDATA["./IMAGENES/"+$P{p_rif_empresa}+"/logo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="115ec631-ecc0-4fc9-996f-e07140549922" style="SubTitle" x="311" y="24" width="232" height="22"/>
+				<textElement textAlignment="Left">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACUMULADO   CONCEPTOS]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="ceff9ae0-87fc-4793-ab83-e59db7003e8c" style="SubTitle" x="99" y="67" width="111" height="24" forecolor="#CC0000"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rifEmpresa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="137c4e0a-0ab1-4dd3-bbff-73e273de6d8d" style="Column header" x="311" y="52" width="43" height="15"/>
+				<textElement textAlignment="Left">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[DESDE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c6168a4e-3fb4-4e0a-a58b-4f855fe136fa" style="Column header" x="438" y="52" width="23" height="15"/>
+				<textElement textAlignment="Left">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[AL]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="a293cdf0-5702-419d-a5ae-14bf4512a8e8" x="364" y="52" width="72" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ultimaRotacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="82804823-6591-4fe9-a374-99c8ccc3d715" x="461" y="52" width="94" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proxRotacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<line>
+				<reportElement uuid="6cc4b03e-e509-4a82-86bd-6a3dd198549d" positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="84540009-3dee-4aec-9513-4fb6e8bf3a39" style="Detail" x="9" y="1" width="33" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{codConceptoAsig}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0c211531-74ce-4979-a66c-98634ee2407f" style="Detail" x="49" y="1" width="163" height="15"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcionAsig}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="f97712d8-2492-4dc8-91d4-a8737f834fb1" style="Detail" x="201" y="1" width="80" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{sumAsig}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="1cb33b47-6c4a-44a9-ad1d-61bdfcd35572" style="Detail" x="302" y="0" width="31" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{codConceptoDeduc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="91457d50-93c8-4a42-8965-65c73fc9b259" style="Detail" x="344" y="0" width="139" height="15"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcionDeduc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="1bd89fa8-cb8a-4dc8-9906-96721e8837eb" style="Detail" x="478" y="0" width="74" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{sumDeduc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement uuid="9e95f7e6-b19d-47b9-84df-0e2747f71ebc" positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6842b614-2c4d-47e4-8dd2-951c87d3bea0" style="Column header" x="433" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="e4b01d70-adde-4fa3-bbef-2640b52287ef" style="Column header" x="513" y="0" width="40" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="a2fc3cca-b9ec-477b-90d1-289763cf8736" style="Column header" x="0" y="0" width="197" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

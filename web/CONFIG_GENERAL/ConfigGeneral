@@ -1,0 +1,54 @@
+------------------------------------------------
+CONFIGURACION GENERAL:
+------------------------------------------------
+    Source/binary format: JDK 8. 
+    Encoding : UTF-8.  
+    Librerias: 
+        - ZK7.0.0.0CE
+        - EclipseLink ( JPA 2.1 )
+        - taglibs-standard-compat-1.2.5.jar
+        - taglibs-standard-impl-1.2.5.jar
+        - taglibs-standard-jstlel-1.2.5.jar
+        - taglibs-standard-spec-1.2.5.jar
+        - javax.mail-1.6.1.jar
+    	- mysql-connector-java-5.1.44.jar   
+        - MyLibraryJasperReport-5.1.0     /*
+                                            -----------------
+                                            *NOTA IMPORTANTE*
+                                            -----------------
+                                            Esta libreria ( JasperReport v5.1.0 ) se debe crear incluyendo todos 
+                                            los jar's del aplicativo iReport v5.1.0. en la ruta de mi instalacion:
+                                            /opt/iReport5.1.0/modlules/ext/{*.jar}, considerando que se 
+                                            deben excluir ( mandatory ) los jar's: 
+                                                       	- e*-persistence*
+							- *jpa*
+							- *hibernate*                                              
+                                          */    
+   -----------------------        
+   java platform: JDK 1.8.
+   ----------------------- 
+   
+   Run:
+      Server: Apache Tomcat 8.0.15.0
+      Java EE version: JAVA EE 6 WEB
+
+----------------------------------------------------------------------------------------------------------
+USO DE CORREO REMITENTE PARA LOS RECIBOS DE NOMINA
+ NOTA: para una Cuenta de correo Gmail, considera
+       ["Activar acceso a aplicaciones poco seguras"](1), 
+       recordando que Gmail desactivara esta opcion 
+       automaticamente sino se usa!.
+        
+       (1). Acceder a tu  cuenta Gmail -> [Configuracion] -> [Cuentas e importacion] ->
+            [Cambiar configuracion de la cuenta] -> [Otras configuracion de la cuenta de Google] ->
+            [Seguridad] -> [Acceso de aplicaciones poco seguras] -> [ACTIVAR].  
+       (2). Para efectos practicos se ha configurado de manera explicita las coordenadas del correo 
+            remitente "nomina.desica@gmail.com" en el metodo "bean.servicio.EmailSenderService.senMail"
+            de esta aplicacion; como gestor de correo el archivo "/JSP/jspReporteRecibosNomFileToEmail.jsp"
+            programado para seleccionar el correo registrado de cada trabajador e enviarlo de forma 
+            automatico como destinatario; sin embargo, para la puesta en marcha todos los correos seran enviados
+            al correo electronico registrado en nuestra BD "NomConfig_Dat".ruta2.   
+            
+----------------------------------------------------------------------------------------------------------
+
+<eof:ConfigGeneral.txt>

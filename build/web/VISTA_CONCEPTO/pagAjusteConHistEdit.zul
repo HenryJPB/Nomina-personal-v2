@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vmEdit') @init('bean.modelo.vista.ModelViewConceptoHistEdit')" >
+        <!-- // Encabezado - Init //////////////////////////////////////// -->
+        <separator bar="true" width="100%"/>
+        <hlayout>       
+            <hlayout style="background-color:lightgray;" >
+                <label id="" value="/ AJUSTES / CONCEPTO /" sclass="TBREADCRUMB" height="50px" />
+            </hlayout> 
+            <space/>
+            <hlayout style="background-color:white;" >
+                <space/>
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/Information32px.png" width=""  height="" tooltiptext="Ayuda / información!" />
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/Undo32px.png" width=""  height="" tooltiptext="Deshacer!" />
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/Redo32px.png" width=""  height="" tooltiptext="Rehacer!" />
+                <separator bar="true" orient="vertical" />
+                <image id="imgAdd" src="../IMAGENES/AddRegistro32px.png" width=""  height="" tooltiptext="Nuevo registro!" onClick="@command('btnAddClicked',nomConceptoHistDat=fx, slbNomina=slbNomina, slbTrabajador=slbTrabajador, slbConcepto=slbConcepto )" />
+                <separator bar="true" orient="vertical" /> 
+                <image id="imgEdit" src="../IMAGENES/Save32px.png" onClick="@command( 'btnEditClicked',slbNomina=slbNomina, slbTrabajador=slbTrabajador, slbConcepto=slbConcepto )" />   
+                <separator bar="true" orient="vertical" /> 
+                <image id="" src="../IMAGENES/Refresh32px.png" width=""  height="" tooltiptext="Refrescar!" />
+                <separator bar="true" orient="vertical" />       
+                <image id="" src="../IMAGENES/Previous-icon32px.png" width=""  height="" tooltiptext="Ventana previa" >
+                    <attribute name="onClick">
+                        //alert("*** Let go ***"); 
+                        //Executions.sendRedirect(&quot;../VISTA_PRINCIPAL/pagPrincipal.zul&quot;); 
+                        org.zkoss.zul.Include ssnIncPag = (Include) Sessions.getCurrent().getAttribute("ssnIncPag");
+                        ssnIncPag.setSrc("../VISTA_CONCEPTO/pagAjusteConHist.zul");  
+                    </attribute> 
+                </image>
+                <separator bar="true" orient="vertical" />
+            </hlayout>
+        </hlayout>
+        <separator bar="true" width="100%"/>
+        <!-- // Encabezado - End ////////////////////////////////////// -->
+        <div align="center" apply="bean.controlador.concepto.ControladorConceptoHistEdit" >
+            <space/>
+            <space/>
+            <space/>
+            <!-- ///////////////////// atributo:  Tipo de Nomina-descripcion ////////////-->
+            <hlayout>
+                <zscript>
+                <![CDATA[
+                    String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                    java.util.List lista = new bean.controlador.nomina.NomTiposNominaDatJpaController().getTiposNomina(ssnRifEmpresa); 
+                    //String[] modeloA = new String[lista.size()]; 
+                    //modeloA = lista.toArray(modeloA);
+                    //alert("QUE PASA****lista.size()*="+lista.size()); 
+                    //for ( String s : lista ) {
+                    //    alert(s); 
+                    //}
+                    //org.zkoss.zul.ListModelList modelo = new org.zkoss.zul.ListModelList(modeloA);   // funcionó correctamente. 
+                    org.zkoss.zul.ListModelList modelo1 = new org.zkoss.zul.ListModelList(lista); 
+                    Integer ssnCodNomina = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina"); 
+                    String nombreNomina = new bean.controlador.nomina.NomTiposNominaDatJpaController().getNombreNomina(ssnRifEmpresa,ssnCodNomina); 
+                    modelo1.addToSelection(ssnCodNomina+"-"+nombreNomina); 
+                 ]]>
+                </zscript>
+                <label id="" value="*" sclass="T1R" />
+                <label id="" value="Cod Nomina:" sclass="T1B" />
+                <selectbox id="slbNomina" model="${modelo1}" sclass="T1G" onSelect="" disabled="false" tabindex="1" >
+                    <template name="modelo1">
+                        ${each}
+                    </template>     
+                </selectbox>
+            </hlayout>
+            <space/>
+            <!--    
+            <hlayout>
+                <label id="" value="Cod Item:" sclass="T1B" /> 
+                <space/> 
+                <textbox id="lblCodItem" value="@load(vm.sup05View.getCoditem())" readonly="true" style="color: black; font-size: 14px; font-weight:bold; background-color: lightgreen;" sclass="T1G" /> 
+            </hlayout>
+            -->
+            <!-- ///////////// atributo: nroTrabajdor-nombre /////////////////-->
+            <hlayout>
+                <zscript>
+                <![CDATA[
+                    String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                    java.util.List lista = new bean.controlador.personal.NomTrabajador00DatJpaController().getTrabajadores(ssnRifEmpresa); 
+                    org.zkoss.zul.ListModelList modelo2 = new org.zkoss.zul.ListModelList(lista); 
+                    Integer ssnCodNomina = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina"); 
+                    Integer ssnNroTrabajador = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnNroTrabajador"); 
+                    String nombreTrabajador = new bean.controlador.personal.NomTrabajador00DatJpaController().getNombreTrabajador(ssnRifEmpresa,ssnCodNomina,ssnNroTrabajador); 
+                    //System.out.println("Nombre="+ssnNroTrabajador+"-"+nombreTrabajador);
+                    modelo2.addToSelection(ssnNroTrabajador+"-"+nombreTrabajador); 
+                 ]]>
+                </zscript>
+                <label id="" value="*" sclass="T1R" />
+                <label id="" value="Trabajador:" sclass="T1B" />
+                <selectbox id="slbTrabajador" model="${modelo2}" sclass="T1G" onSelect="" disabled="false" tabindex="2" >
+                    <template name="modelo2">
+                        ${each}
+                    </template>     
+                </selectbox>
+            </hlayout>
+            <space/>
+            <!-- /////////////// atributo: cod concepto - descripcion  /////////////////-->
+            <hlayout>
+                <zscript>
+                <![CDATA[
+                    //String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                    java.util.List lista = new bean.controlador.concepto.NomConceptoDatJpaController().getConceptos(ssnRifEmpresa); 
+                    org.zkoss.zul.ListModelList modelo3 = new org.zkoss.zul.ListModelList(lista); 
+                    Integer ssnCodConcepto = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodConcepto"); 
+                    String descripConcepto = new bean.controlador.concepto.NomConceptoDatJpaController().getDescripConcepto(ssnRifEmpresa,ssnCodNomina,ssnCodConcepto); 
+                    //System.out.println("Concepto="+ssnCodConcepto+"-"+descripConcepto);
+                    modelo3.addToSelection(ssnCodConcepto+"-"+descripConcepto); 
+                 ]]>
+                </zscript>
+                <label id="" value="*" sclass="T1R" />
+                <label id="" value="Cod Concepto:" sclass="T1B" />
+                <selectbox id="slbConcepto" model="${modelo3}" sclass="T1G" onSelect="" disabled="false" tabindex="3" >
+                    <template name="modelo3">
+                        ${each}
+                    </template>     
+                </selectbox>
+            </hlayout>
+            <space/>
+            <space/>
+            <vbox width="50%" height="" style="border: 1px solid lightgrey;" form="@id('fx') @load(vmEdit.nomConceptoHistDat) @save(vmEdit.nomConceptoHistDat,before='update')" >
+                <!-- ///////// -->
+                <space/>
+                <hlayout>
+                    <space/>
+                    <label id="" value="*" sclass="T1R" />
+                    <label id="" value="Fecha................:" sclass="T1B"/>
+                    <space/>
+                    <!--
+                    <datebox id="dtbFecha" value="@bind( vmEdit.nomConceptoHistDat.nomConceptoHistDatPK.fechaNomina )" format="dd/MM/yyyy" constraint="no empty,no future: Campo requerido" tabindex="1" readonly="false" sclass="T1B" style="color:black; font-weight:bold;" />
+                    -->
+                    <datebox id="dtbFecha" value="@bind( vmEdit.nomConceptoHistDat.nomConceptoHistDatPK.fechaNomina )" format="dd/MM/yyyy" constraint="no empty: Campo requerido" tabindex="4" readonly="true" sclass="T1G" style="color:black; font-weight:bold;" />
+                </hlayout>
+                <space/>
+                <hlayout>
+                    <space/>
+                    <label id="" value="Cantidad.............:" sclass="T1B"/>
+                    <space/>
+                    <decimalbox id="dcbCantidad" value="@bind( vmEdit.nomConceptoHistDat.cantidad )" format="#,##0.00" constraint="no negative: no negativo" tabindex="5" sclass="T1B" />
+                </hlayout>
+                <!-- ///////// -->
+                <space/>
+                <hlayout>
+                    <space/>
+                    <label id="" value="Monto..................:" sclass="T1B"/>
+                    <space/>
+                    <decimalbox id="dcbMonto" value="@bind( vmEdit.nomConceptoHistDat.monto )" format="#,##0.00" constraint="no negative: no negativo" tabindex="6" sclass="T1B" />
+                </hlayout>
+                <!-- ///////// -->   
+                <space/>   
+                <hlayout>
+                    <space/>
+                    <label id="" value="Porcentaje...........:" sclass="T1B"/>
+                    <space/>
+                    <decimalbox id="dcbPorcentaje" value="@bind( vmEdit.nomConceptoHistDat.porcentaje )" format="#,##0.00" constraint="no negative: no negativo" tabindex="7" sclass="T1B" />
+                </hlayout>
+                <!-- ///////// -->  
+                <space/>  
+                <hlayout>
+                    <space/>
+                    <label id="" value="Formula (codigo):" sclass="T1B"/>
+                    <space/>
+                    <intbox id="dcbFormula" value="@bind( vmEdit.nomConceptoHistDat.codFormula )" format="##0" constraint="no negative: no negativo" tabindex="8" sclass="T1B" />
+                </hlayout>
+                <!-- /////////    
+                <space/>  
+                <hlayout>
+                    <space/>
+                    <label id="" value="Observacion:" sclass="T1B"/>
+                    <space/>
+                    <textbox id="txtObservacion" value="@bind(vmEdit.nomConceptoHistDat.getObservacion())" width="400px" tabindex="7" sclass="T1B" />
+                </hlayout>
+                --> 
+                <space/>
+            </vbox>
+        </div>
+    </div>
+</zk>

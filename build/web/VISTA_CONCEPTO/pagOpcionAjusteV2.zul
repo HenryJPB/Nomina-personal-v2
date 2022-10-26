@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css" /> 
+    <!--
+    <iframe src="http://www.google.com" width="95%" style="border: 1px solid gray"/>
+    -->
+    <separator bar="true" width="100%" style="color:black;"/>
+    <hlayout style="background:lightgray;">
+        <label id="" value=" AJUSTES / " sclass="TBREADCRUMB" />
+    </hlayout>
+    <separator bar="true" width="100%" style="color:black;"/>
+    <vbox width="100%" height="100%" align="center" pack="center" >
+        <style dynamic="true">      <!--  -->
+            .tmenu .z-menu-text {   
+            color: #4682B4;
+            font-size: 15px; 
+            color: black; 
+            font-weight:bold;
+            }
+            .tmenuitem .z-menuitem-text {
+            color: black;
+            font-size: 15px;
+            font-weight:bold; 
+            }
+            .tmenuitem2 .z-menuitem-text {
+            color: black;
+            font-size: 15px;
+            font-weight:bold; 
+            background: lightgoldenrodyellow; 
+            }
+            .titleBlue .z-panel-header {
+            color: blue;
+            font-size: 18px;  
+            font-weight:bold;
+            }
+        </style>
+        <!-- ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+        <!--
+       <vbox align="center" style="border: 1px solid black; border-style: outset;" width="300px" >
+           <space/> 
+           <label id="" value="CONCEPTOS / TRABAJADOR" sclass="T3" style="color:#4682B4; font-size: 13px; font-weight:bold;" />
+           <image id="imgAjusteOpcion1" src="../IMAGENES/Cursor-Click-icon32px.png" >
+               <attribute name="onClick" >
+                   <![CDATA[
+                       org.zkoss.zul.Include ssIncPag = ( org.zkoss.zul.Include ) Sessions.getCurrent().getAttribute("ssnIncPag"); 
+                       ssnIncPag.setSrc("../VISTA_CONCEPTO/pagAjuste_xConcep.zul"); 
+                   ]]>
+               </attribute>
+           </image>
+           <space/>  
+       </vbox>	
+       <space/>
+       <vbox align="center" style="border: 1px solid black; border-style: outset;" width="300px"  >
+           <space/> 
+           <label id="" value="TRABAJADOR / CONCEPTOS" sclass="T3" style="color:#4682B4; font-size: 13px; font-weight:bold;" />
+           <image id="imgAjusteOpcion2" src="../IMAGENES/Cursor-Click-icon32px.png" >
+               <attribute name="onClick" >
+                   <![CDATA[
+                       incPag.setSrc("../VISTA_CONCEPTO/pagAjuste_xTrab.zul"); 
+                   ]]>
+               </attribute>
+           </image>
+           <space/>  
+       </vbox>	
+       <space spacing="50%" />
+       <vbox align="center" style="border: 1px solid black; border-style: outset;" width="300px"  >
+           <space/> 
+           <label id="" value=" CONCEPTOS TODOS " sclass="T3" style="color:#4682B4; font-size: 13px; font-weight:bold;" />
+           <image id="imgAjusteOpcion3" src="../IMAGENES/Cursor-Click-icon32px.png" >
+               <attribute name="onClick" >
+                   <![CDATA[
+                       incPag.setSrc("../VISTA_CONCEPTO/pagAjusteConHist.zul"); 
+                   ]]>
+               </attribute>
+           </image>
+           <space/>  
+       </vbox>	
+        -->
+        <!-- 
+        <panel height="163px" width="600px" title="CONCEPTO / TRABAJADORES" border="rounded" collapsible="false" closable="false" maximizable="false"
+               style="margin-bottom:10px">
+            <panelchildren>
+                <space/>
+                <hlayout>
+                    <label id="" value="*" sclass="T1R" />
+                    <label id="" value="Nomina: " style="font-size: 14px; font-weight: bold;" />
+                    <space/>
+                    <zscript>
+                        <![CDATA[
+                            String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                            java.util.List lista = new bean.controlador.nomina.NomTiposNominaDatJpaController().getTiposNomina(ssnRifEmpresa); 
+                            //String[] modeloA = new String[lista.size()]; 
+                            //modeloA = lista.toArray(modeloA);
+                            //alert("QUE PASA****lista.size()*="+lista.size()); 
+                            //for ( String s : lista ) {
+                            //    alert(s); 
+                            //}
+                            //org.zkoss.zul.ListModelList modelo = new org.zkoss.zul.ListModelList(modeloA);   // funcionó correctamente. 
+                            org.zkoss.zul.ListModelList modelo1 = new org.zkoss.zul.ListModelList(lista); 
+                            //
+                            //Integer ssnCodNomina = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina"); 
+                            //String nombreNomina = new bean.controlador.nomina.NomTiposNominaDatJpaController().getNombreNomina(ssnRifEmpresa,ssnCodNomina); 
+                            //modelo1.addToSelection(ssnCodNomina+"-"+nombreNomina); 
+                        ]]>
+                    </zscript>
+                    <selectbox id="slbNomina1" model="${modelo1}" sclass="T1G" onSelect="" disabled="false" tabindex="1" >
+                        <template name="modelo1">
+                            ${each}
+                        </template>     
+                    </selectbox>
+                </hlayout>
+                <space/>
+                <hlayout>
+                    <label id="" value="*" sclass="T1R" />
+                    <label id="" value="Concepto : " style="font-size: 14px; font-weight: bold;" />
+                    <zscript>
+                    <![CDATA[
+                        String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                        //Integer ssnCodNomina = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina"); 
+                        //System.out.println("ssnCodNomina = " + ssnCodNomina+" rifEmpresa="+rifEmpresa+"***");
+                        //
+                        java.util.List lista = new bean.controlador.concepto.NomConceptoDatJpaController().getConceptos(ssnRifEmpresa); 
+                        org.zkoss.zul.ListModelList modelo3 = new org.zkoss.zul.ListModelList(lista); 
+                        //
+                        //Integer ssnCodConcepto = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodConcepto"); 
+                        //String descripConcepto = new bean.controlador.concepto.NomConceptoDatJpaController().getDescripConcepto(ssnRifEmpresa,ssnCodNomina,ssnCodConcepto); 
+                        //System.out.println("Concepto="+ssnCodConcepto+"-"+descripConcepto);
+                        //modelo3.addToSelection(ssnCodConcepto+"-"+descripConcepto); 
+                    ]]>
+                    </zscript>
+                    <selectbox id="slbConcepto" model="${modelo3}" width="350px" sclass="T1G" onSelect="" disabled="false" tabindex="3" >
+                        <template name="modelo3">
+                            ${each}
+                        </template>     
+                    </selectbox>
+                </hlayout>
+                <image id="imgAjusteOpcion1" src="../IMAGENES/target32px.png" tooltiptext="Ejecutar" >
+                    <attribute name="onClick" >
+                    <![CDATA[
+                        String cadena = slbNomina1.getModel().getElementAt( slbNomina1.getSelectedIndex() ); 
+                        Integer codNomina = Integer.parseInt(cadena.substring(0, cadena.indexOf("-")));
+                        Sessions.getCurrent().setAttribute("ssnCodNominaAC",codNomina );  
+                        //
+                        String cadena = slbConcepto.getModel().getElementAt( slbConcepto.getSelectedIndex() ); 
+                        Integer codConcepto = Integer.parseInt(cadena.substring(0, cadena.indexOf("-")));
+                        Sessions.getCurrent().setAttribute("ssnCodConceptoAC",codConcepto );  
+                        //
+                        org.zkoss.zul.Include ssIncPag = ( org.zkoss.zul.Include ) Sessions.getCurrent().getAttribute("ssnIncPag"); 
+                        //ssnIncPag.setSrc("../VISTA_CONCEPTO/pagAjuste_xConcep.zul"); 
+                        //incPag.setSrc("../VISTA_CONCEPTO/pagAjusteAsigCon.zul");
+                        ssnIncPag.setSrc("../VISTA_CONCEPTO/pagAjusteAsigCon.zul"); 
+                    ]]>
+                    </attribute>
+                </image> 
+            </panelchildren>
+        </panel>   //**  CONCEPTO / TRABAJADORES **//
+        -->
+        <space/>
+        <panel height="127px" width="600px" title="TRABAJADOR / CONCEPTOS" border="rounded" collapsible="false" closable="false" maximizable="false" style="margin-bottom:10px" draggable="false" sclass="titleBlue" >
+            <panelchildren>
+                <!--
+                <space/>
+                <hlayout>  
+                    <label id="" value="*" sclass="T1R" />
+                    <label id="" value="Nomina: " style="font-size: 14px; font-weight: bold;" />
+                    <space/>
+                    <selectbox id="slbNomina2" model="${modelo1}" sclass="T1G" onSelect="" disabled="false" tabindex="1" >
+                        <template name="modelo1">
+                            ${each}
+                        </template>     
+                    </selectbox>
+                </hlayout>
+                -->
+                <space/>
+                <hlayout>
+                    <label id="" value="*" sclass="T1R" />
+                    <label id="" value="Trabajador: " style="font-size: 14px; font-weight: bold;" />
+                    <zscript>
+                     <![CDATA[
+                        String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                        java.util.List lista = new bean.controlador.personal.NomTrabajador00DatJpaController().getTrabajadores(ssnRifEmpresa); 
+                        org.zkoss.zul.ListModelList modelo2 = new org.zkoss.zul.ListModelList(lista); 
+                        //
+                        //Integer ssnCodNomina = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina"); 
+                        //Integer ssnNroTrabajador = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnNroTrabajador"); 
+                        //
+                        //String nombreTrabajador = new bean.controlador.personal.NomTrabajador00DatJpaController().getNombreTrabajador(ssnRifEmpresa,ssnCodNomina,ssnNroTrabajador); 
+                        //System.out.println("ssnNroTrabajador="+ssnNroTrabajador+"*****ssnCodNom="+ssnCodNomina+"****rifEmpresa="+ssnRifEmpresa+"****Nombre="+ssnNroTrabajador+"-"+nombreTrabajador);
+                        //modelo2.addToSelection(ssnNroTrabajador+"-"+nombreTrabajador); 
+                    ]]>
+                    </zscript>
+                    <selectbox id="slbTrabajador" model="${modelo2}" width="350px" sclass="T1G" onSelect="" disabled="false" tabindex="2" >
+                        <template name="modelo2">
+                            ${each}
+                        </template>     
+                    </selectbox>
+                </hlayout>
+                <space/>
+                <image id="imgAjusteOpcion2" src="../IMAGENES/target32px.png" tooltiptext="Ejecutar" >
+                    <attribute name="onClick" >
+                    <![CDATA[
+                        if ( slbTrabajador.getSelectedIndex() >= 0 ) {
+                            String cadena = slbTrabajador.getModel().getElementAt( slbTrabajador.getSelectedIndex() );
+                            Integer nroTrabajador = Integer.parseInt(cadena.substring(0, cadena.indexOf("-")));
+                            Sessions.getCurrent().setAttribute("ssnCodNominaAC",-1);  
+                            Sessions.getCurrent().setAttribute("ssnCodConceptoAC",-1 );  
+                            Sessions.getCurrent().setAttribute("ssnNroTrabajadorAC",nroTrabajador );  
+                            //incPag.setSrc("../VISTA_CONCEPTO/pagAjuste_xTrab.zul"); 
+                            //incPag.setSrc("../VISTA_CONCEPTO/pagAjusteAsigCon.zul"); 
+                            ssnIncPag.setSrc("../VISTA_CONCEPTO/pagAjusteAsigCon.zul");
+                        } else {
+                            alert("ATENCION!!: no has seleccionado ningun trabajador :'("); 
+                        }
+                    ]]>
+                    </attribute>
+                </image>
+            </panelchildren>
+        </panel>   <!--**  TRABAJADOR / CONCEPTOS **-->
+        <space/>
+        <space/>
+        <space/>
+        <panel height="90px" width="600px" title="TODOS CONCEPTOS / TODOS TRABAJADORES"  border="rounded" collapsible="false" closable="false" maximizable="false" style="margin-bottom:10px" draggable="false" sclass="titleBlue" >
+            <panelchildren>
+                <!--
+                <image id="imgAjusteOpcion3" src="../IMAGENES/Cursor-Click-icon32px.png" tooltiptext="Ejecutar" >
+                -->
+                <space/>
+                <image id="imgAjusteOpcion3" src="../IMAGENES/target32px.png" tooltiptext="Ejecutar" >
+                    <attribute name="onClick" >
+                    <![CDATA[
+                        //incPag.setSrc("../VISTA_CONCEPTO/pagAjusteConHist.zul"); 
+                        Sessions.getCurrent().setAttribute("ssnCodNominaAC",-1 );  
+                        Sessions.getCurrent().setAttribute("ssnNroTrabajadorAC",-1);
+                        Sessions.getCurrent().setAttribute("ssnCodConceptoAC",-1 );  
+                        //incPag.setSrc("../VISTA_CONCEPTO/pagAjusteAsigCon.zul"); 
+                        ssnIncPag.setSrc("../VISTA_CONCEPTO/pagAjusteAsigCon.zul");
+                    ]]>
+                    </attribute>
+                </image>
+            </panelchildren>
+        </panel>
+    </vbox>
+</zk>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Conceptos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71890a2a-9252-485e-b802-2b0db8860b88">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="p_rif_empresa" class="java.lang.String">
+		<defaultValueExpression><![CDATA[J-41309179-8]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT NomEmpresa_Dat.rif,
+       NomEmpresa_Dat.nombre as nombreEmpresa,
+       NomConcepto_Dat.codNomina,
+       NomTiposNomina_Dat.nombreNomina,
+       NomConcepto_Dat.codConcepto,
+       NomConcepto_Dat.descripcion
+FROM   NomEmpresa_Dat, NomTiposNomina_Dat, NomConcepto_Dat
+WHERE  NomEmpresa_Dat.rif = $P{p_rif_empresa}
+AND    NomTiposNomina_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomConcepto_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomConcepto_Dat.codNomina = NomTiposNomina_Dat.codNomina
+ORDER  BY NomTiposNomina_Dat.codNomina, NomConcepto_Dat.codConcepto]]>
+	</queryString>
+	<field name="rif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreEmpresa" class="java.lang.String"/>
+	<field name="codNomina" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreNomina" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codConcepto" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="codNomina">
+		<groupExpression><![CDATA[$F{codNomina}]]></groupExpression>
+		<groupHeader>
+			<band height="63">
+				<textField>
+					<reportElement uuid="6ef3d096-969f-4214-8774-e23834327442" style="SubTitle" x="98" y="10" width="20" height="24" forecolor="#CC0000"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codNomina}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement uuid="87dd3434-d792-4a03-b5c5-91b76bdf82d4" mode="Transparent" x="0" y="5" width="553" height="37" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+				</rectangle>
+				<textField>
+					<reportElement uuid="3e97a881-5d8f-4512-b72a-53de9d603918" style="SubTitle" x="123" y="10" width="358" height="24"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$F{nombreNomina}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="5f18f1e1-9085-4ba6-a406-e6b484994271" style="Column header" x="49" y="44" width="47" height="15"/>
+					<textElement/>
+					<text><![CDATA[Codigo Concepto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="6e3c2176-4275-4b55-9f2c-5a15fec7cef8" style="Column header" x="102" y="44" width="291" height="15"/>
+					<textElement/>
+					<text><![CDATA[Descripcion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="e6c41178-03d9-4c54-9847-64f9a8131994" style="SubTitle" x="14" y="10" width="82" height="24"/>
+					<textElement/>
+					<text><![CDATA[NOMINA:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="182c7d11-50da-476d-806b-ca100866ded2" style="Title" x="14" y="5" width="263" height="33"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[CONCEPTOS]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="42258766-8e19-41bb-8ac1-689a70f1c5ca" style="SubTitle" x="14" y="38" width="249" height="26"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{rif}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center">
+				<reportElement uuid="bb260d39-460d-4a12-884d-03309b11a0b8" x="365" y="5" width="188" height="64"/>
+				<imageExpression><![CDATA["./IMAGENES/"+$P{p_rif_empresa}+"/logo.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="4" splitType="Stretch">
+			<line>
+				<reportElement uuid="ddc5906b-a19a-4244-a42d-1b09282867db" positionType="FixRelativeToBottom" x="0" y="0" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<line>
+				<reportElement uuid="3f9da27c-adbc-436b-a7aa-66ce2f48028a" positionType="FixRelativeToBottom" x="0" y="-5" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="af4f3242-8ea9-4532-98f3-f222e7af0ee6" style="Detail" x="49" y="4" width="47" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{codConcepto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0d90d0d1-90c5-4e32-b192-0a2fbdad27a8" style="Detail" x="102" y="4" width="291" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="26" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="4ec66ccc-1686-44e4-b7f1-249d00a2d0c6" style="Column header" x="433" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="eef7217f-1931-49e8-9483-56a2ffbac8a7" style="Column header" x="513" y="0" width="40" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="d8872fba-b88b-4158-a953-26682ea2416a" style="Column header" x="0" y="0" width="197" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

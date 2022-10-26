@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RecibosNominaHist" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3b7969e0-8106-4d41-80b4-34674784f6a0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="p_empresa" class="java.lang.String">
+		<defaultValueExpression><![CDATA[J-41309179-8]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_tipo_nomina" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_aux_sueldo" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[10]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_trabajador1" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_trabajador2" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[9999]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_fecha_nomina" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT NomEmpresa_Dat.rif as rifEmpresa,
+       razonSocial,
+       NomTrabajador01_Dat.tipoNomina as codNomina,
+       NomTiposNomina_Dat.nombreNomina as nombreNomina,
+       CASE NomTiposNomina_Dat.baseCalculo
+            WHEN "S" THEN  DATE_ADD( NomTiposNomina_Dat.ultimaRotacion, INTERVAL -6 DAY )
+            WHEN "Q" THEN  DATE_ADD( NomTiposNomina_Dat.ultimaRotacion, INTERVAL -14 DAY )
+       END as ultimaRotacion,
+       NomTiposNomina_Dat.ultimaRotacion as proxRotacion,
+       NomConceptoHist_Dat.nroTrabajador as nroTrabajador,
+       concat_ws(" ",nombre1,nombre2,apellido1,apellido2) as nombreTrab,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "S" THEN NomConcepto_Dat.codConcepto
+       END as codConceptoAsig,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "S" THEN NomConcepto_Dat.descripcion
+       END as descripcionAsig,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "S" THEN NomConceptoHist_Dat.total
+       END as totalAsig,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "N" THEN NomConcepto_Dat.codConcepto
+       END as codConceptoDeduc,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "N" THEN NomConcepto_Dat.descripcion
+       END as descripcionDeduc,
+       CASE NomConcepto_Dat.asignacion
+            WHEN "N" THEN NomConceptoHist_Dat.total
+       END as totalDeduc,
+       ( SELECT monto
+         FROM   NomAsigConcepto_Dat
+         WHERE  codConcepto = $P{p_aux_sueldo}
+         AND    rifEmpresa = NomEmpresa_Dat.rif
+         AND    codNomina  = NomTrabajador01_Dat.tipoNomina
+         AND    nroTrabajador = NomTrabajador00_Dat.nroTrabajador )  as sueldo
+FROM   NomEmpresa_Dat, NomTiposNomina_Dat, NomTrabajador00_Dat, NomTrabajador01_Dat, NomConceptoHist_Dat, NomConcepto_Dat
+WHERE  NomEmpresa_Dat.rif = $P{p_empresa}
+AND    NomTiposNomina_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomTrabajador00_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomTrabajador01_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomConceptoHist_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomConcepto_Dat.rifEmpresa = NomEmpresa_Dat.rif
+AND    NomTrabajador01_Dat.tipoNomina = NomTiposNomina_Dat.codNomina
+AND    NomConceptoHist_Dat.codNomina = NomTrabajador01_Dat.tipoNomina
+AND    NomConcepto_Dat.codNomina = NomTrabajador01_Dat.tipoNomina
+AND    NomTrabajador00_Dat.nroTrabajador BETWEEN $P{p_trabajador1} AND $P{p_trabajador2}
+AND    NomTrabajador00_Dat.nroTrabajador = NomTrabajador01_Dat.nroTrabajador
+AND    NomConceptoHist_Dat.nroTrabajador = NomTrabajador00_Dat.nroTrabajador
+AND    NomConceptoHist_Dat.nroTrabajador = NomTrabajador01_Dat.nroTrabajador
+AND    NomConceptoHist_Dat.codConcepto = NomConcepto_Dat.codConcepto
+AND    NomConceptoHist_Dat.codNomina = $P{p_tipo_nomina}
+AND    NomConceptoHist_Dat.fechaNomina = $P{p_fecha_nomina}
+AND    NomConcepto_Dat.codConcepto >= 100
+AND    NomConceptoHist_Dat.total > 0.00
+ORDER  BY NomTrabajador01_Dat.tipoNomina, NomConceptoHist_Dat.nroTrabajador, NomConceptoHist_Dat.codConcepto, NomConcepto_Dat.asignacion]]>
+	</queryString>
+	<field name="rifEmpresa" class="java.lang.String"/>
+	<field name="razonSocial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codNomina" class="java.lang.Integer"/>
+	<field name="nombreNomina" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nroTrabajador" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreTrab" class="java.lang.String"/>
+	<field name="codConceptoAsig" class="java.lang.Long"/>
+	<field name="descripcionAsig" class="java.lang.String"/>
+	<field name="totalAsig" class="java.lang.Double"/>
+	<field name="codConceptoDeduc" class="java.lang.Long"/>
+	<field name="descripcionDeduc" class="java.lang.String"/>
+	<field name="totalDeduc" class="java.lang.Double"/>
+	<field name="sueldo" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ultimaRotacion" class="java.util.Date"/>
+	<field name="proxRotacion" class="java.util.Date"/>
+	<variable name="sumAsignaciones" class="java.lang.Double" resetType="Group" resetGroup="nroTrabajador" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalAsig}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="sumDeducciones" class="java.lang.Double" resetType="Group" resetGroup="nroTrabajador" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalDeduc}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="neto" class="java.lang.Double" resetType="None">
+		<variableExpression><![CDATA[$V{sumAsignaciones}-$V{sumDeducciones}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalAsignaciones" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalAsig}]]></variableExpression>
+	</variable>
+	<variable name="totalDeducciones" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalDeduc}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="granNeto" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{totalAsignaciones}-$V{totalDeducciones}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="salarioProm" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{sueldo}/30.00]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{sueldo}/30.00]]></initialValueExpression>
+	</variable>
+	<group name="nroTrabajador">
+		<groupExpression><![CDATA[$F{nroTrabajador}]]></groupExpression>
+		<groupHeader>
+			<band height="68">
+				<textField>
+					<reportElement uuid="9285742a-4a33-4e59-bf23-daccfc75add7" style="SubTitle" x="6" y="27" width="49" height="24" forecolor="#CC0000"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nroTrabajador}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="69920ae4-a726-4e53-bf49-e27582967a56" style="Detail" mode="Opaque" x="57" y="27" width="264" height="24" forecolor="#FF0000"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombreTrab}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement uuid="a762e7b8-3952-423a-bd27-d34f9770ebba" x="457" y="27" width="85" height="20" forecolor="#404040"/>
+					<textElement textAlignment="Right">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sueldo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="c7dea1c2-02ed-492a-a3fc-06871599c229" x="383" y="27" width="61" height="20"/>
+					<textElement textAlignment="Left">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sueldo: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="efb8fd0a-2e34-4b6b-bf4a-3062bcfa6ad2" x="321" y="45" width="124" height="20"/>
+					<textElement textAlignment="Left">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Promedio diario: ]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="3ca4104e-44ba-4577-ac07-755ee6b4358f" x="457" y="46" width="85" height="20" forecolor="#404040"/>
+					<textElement textAlignment="Right">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{salarioProm}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="e75c4bf4-54f2-40e6-8016-98222c24e285" x="321" y="7" width="62" height="20"/>
+					<textElement textAlignment="Left">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Periodo:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="9f02bbfb-79d2-47ec-8a2a-f13f9df6296a" x="465" y="7" width="12" height="20"/>
+					<textElement textAlignment="Center">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[-]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="78726130-2939-4a20-9b3e-f184375d15f3" x="395" y="7" width="70" height="20" forecolor="#404040"/>
+					<textElement>
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ultimaRotacion}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="9d218304-88d0-4d8d-8b22-e8113cc4dc47" x="480" y="7" width="78" height="20" forecolor="#404040"/>
+					<textElement>
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{proxRotacion}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="61">
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement uuid="68ee220e-3c08-4ae5-97ba-5c8102deb196" style="SubTitle" mode="Transparent" x="214" y="5" width="73" height="22" forecolor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumAsignaciones}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement uuid="e87965f6-9422-4ff5-912d-562448f5a53d" style="SubTitle" x="485" y="7" width="68" height="20" forecolor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumDeducciones}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="eee76e18-5b91-4652-b4fc-149bd9530926" positionType="FixRelativeToBottom" mode="Transparent" x="6" y="1" width="547" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineColor="#999999"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement uuid="d2e5331d-aea2-4d2e-9952-dfe89f727538" x="381" y="34" width="75" height="20"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[NETO: ]]></text>
+				</staticText>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement uuid="f1b03ebd-0e5c-4cd6-97af-a06268deefb5" mode="Opaque" x="456" y="35" width="97" height="20" backcolor="#C0C0C0"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{neto}]]></textFieldExpression>
+				</textField>
+				<break>
+					<reportElement uuid="95b44777-abb3-427a-aedc-88d25f8db4ba" x="0" y="58" width="100" height="1"/>
+				</break>
+				<line>
+					<reportElement uuid="eaa6314c-826d-4e9f-bba3-0794885fbf67" x="0" y="57" width="554" height="1" forecolor="#808080"/>
+				</line>
+				<line>
+					<reportElement uuid="832d6c4f-3c94-47c6-b4fb-0dfccd55cf3e" x="3" y="31" width="550" height="1" forecolor="#808080"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="codNomina">
+		<groupExpression><![CDATA[$F{codNomina}]]></groupExpression>
+		<groupHeader>
+			<band height="63">
+				<line>
+					<reportElement uuid="ffe131a0-d2ab-4629-b1d5-be90b886cedd" positionType="FixRelativeToBottom" x="6" y="44" width="549" height="1" forecolor="#808080"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineColor="#999999"/>
+					</graphicElement>
+				</line>
+				<textField>
+					<reportElement uuid="3650d6b7-d1cd-446c-9698-f454e8d86c15" style="SubTitle" x="6" y="2" width="49" height="20"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codNomina}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="d2e7b54c-12d2-42ca-bf4f-39dc78673382" style="SubTitle" x="57" y="2" width="264" height="17"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombreNomina}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="74b612ee-eefb-4fd0-b197-2cdcbc1d0dde" style="Column header" x="67" y="46" width="129" height="15"/>
+					<textElement/>
+					<text><![CDATA[Descripcion Asig]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="f26057ff-5920-438f-8023-0cc908ed6561" style="Column header" x="214" y="43" width="73" height="15"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[Asignacion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="9652e251-baa6-403b-96ff-ffe21a7603d9" style="Column header" x="6" y="46" width="61" height="15"/>
+					<textElement/>
+					<text><![CDATA[Codigo Con]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="b4313ec5-4299-463b-b980-bf2c6f342fa9" style="Column header" x="485" y="44" width="68" height="15"/>
+					<textElement textAlignment="Right"/>
+					<text><![CDATA[Deduccion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="0b531208-dc5b-4666-965f-53529df03313" style="Column header" x="301" y="44" width="48" height="15"/>
+					<textElement/>
+					<text><![CDATA[Codigo]]></text>
+				</staticText>
+				<line>
+					<reportElement uuid="16fcc106-ee41-48c3-b3f0-0743ae8faf11" positionType="FixRelativeToBottom" x="3" y="24" width="551" height="1" forecolor="#808080"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineColor="#999999"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement uuid="f66f2b07-0c93-4e84-a82f-bc5ae204a6b1" style="Column header" x="349" y="44" width="116" height="15"/>
+					<textElement/>
+					<text><![CDATA[Descripcion Deduc]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="a83c085c-7ff9-4e49-8117-75dd39482096" style="Column header" x="6" y="29" width="281" height="15" forecolor="#000000"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[                  ** ASIGNACIONES **                           ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="97510a09-09f1-4f57-8eeb-aeed269cd07a" style="Column header" x="306" y="28" width="243" height="15" forecolor="#000000"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[                ** DEDUCCIONES **                    ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="rifEmpresa">
+		<groupExpression><![CDATA[$F{rifEmpresa}]]></groupExpression>
+	</group>
+	<columnHeader>
+		<band height="101" splitType="Stretch">
+			<textField>
+				<reportElement uuid="bf80d7b3-211a-44ce-b633-df8b832e84d9" style="SubTitle" x="0" y="68" width="231" height="29"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{rifEmpresa}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="dd17aa1f-8e4d-4d1d-9756-e5cf3a2930f3" x="6" y="4" width="231" height="64"/>
+				<imageExpression><![CDATA["./IMAGENES/"+$P{p_empresa}+"/logo.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="b953c15d-df7b-437a-85e8-6acd370412de" style="Column header" x="356" y="48" width="197" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5571b9ed-ddd1-4e30-bca1-e0e8ac91c77b" style="Detail" x="6" y="1" width="61" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{codConceptoAsig}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0e5fe0a8-e0df-487a-a406-5f6f5d64e306" style="Detail" x="67" y="1" width="147" height="15"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcionAsig}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="17046573-85d0-4961-bd5f-9279a8873670" style="Detail" x="214" y="1" width="73" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{totalAsig}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="055f2dce-b18d-4e18-9e80-f156a22a8181" style="Detail" x="301" y="1" width="48" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{codConceptoDeduc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5e1d0730-0389-439e-8910-b9ee42b9d6f3" style="Detail" x="349" y="1" width="145" height="15"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcionDeduc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement uuid="f4821bd4-f6a5-49ad-8ba0-393721755c12" style="Detail" x="485" y="1" width="68" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{totalDeduc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

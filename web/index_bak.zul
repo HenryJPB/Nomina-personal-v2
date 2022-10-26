@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+index.zul
+
+{{IS_NOTE
+        Purpose:
+                
+        Description:
+                
+        History:
+                Mon Jun 12 21:23:35     2006, Created by tomyeh
+                Fri May 01 04:36:35     2009, Modified by stera
+}}IS_NOTE
+
+Copyright (C) 2006 Potix Corporation. All Rights Reserved.
+
+{{IS_RIGHT
+}}IS_RIGHT
+-->
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="center" >
+        <window width="40%" >
+            <style src="css/estiloHP.css"/>
+            <label id="" value="ZK 7.00 CE Java Web application EE6" style="font-color: black; font-weigth:bold;font-size:11px;" />
+            <include src="./VISTA_ACCESORIOS/portada_v2.zul" />
+            <!-- <div align="center" width="" height="" style="border:1px outset black;background:white;background-image: url(Imagenes/PlantaDesica.jpg);" >   --> 
+            <div align="center" width="" height="" style="" >  
+                <vlayout>
+                    <include id="incPagAcceso" src="./VISTA_PRINCIPAL/pagAcceso.zul"/>
+                </vlayout>
+            </div>	
+        </window>
+    </div>
+    <!--
+    <window>
+    <zscript><![CDATA[
+    contacts = new String[] {"Monday", "Tuesday", "Wednesday"};
+    ]]>
+    </zscript>
+    <listbox>
+        <listitem label="${each}" forEach="${contacts}"/>
+    </listbox>
+    </window>
+    -->
+</zk>
+

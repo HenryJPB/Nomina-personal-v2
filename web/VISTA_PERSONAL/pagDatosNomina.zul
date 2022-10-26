@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewEditDatosNomina')" >
+        <!--   
+        <button id="btnEdit" height="30px" label="ACTUALIZAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:13px;font-weight:bold;" onClick="@command('btnEditClicked',nomTrabajador01Dat=fx)" />
+        <button id="btnRfr" height="30px" label="REFRESCAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:13px;font-weight:bold;"  />
+        <button id="btnReg" height="30px" label="REGRESAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:13px;font-weight:bold;" />
+        <button id="btnIni" height="30px" label="INICIO" disabled="false" sclass="T2A" style="color:#4682B4;font-size:13px;font-weight:bold;" />
+        --> 
+        <hlayout style="background-color:white;" >
+            <space/>
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/Information32px.png" width=""  height="" tooltiptext="Ayuda / información!" />
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/Undo32px.png" width=""  height="" tooltiptext="Deshacer!" />
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/Redo32px.png" width=""  height="" tooltiptext="Rehacer!" />
+            <separator bar="true" orient="vertical" />
+            <image id="imgAdd" src="../IMAGENES/AddRegistro32px.png" width=""  height="" tooltiptext="Nuevo registro!" onClick="@command('btnAddClicked',nomConceptoHistDat=fx, slbNomina=slbNomina, slbTrabajador=slbTrabajador, slbConcepto=slbConcepto )" />
+            <separator bar="true" orient="vertical" /> 
+            <image id="imgEdit" src="../IMAGENES/Save32px.png" onClick="@command( 'btnEditClicked',slbNomina=slbNomina, slbTrabajador=slbTrabajador, slbConcepto=slbConcepto )" />   
+            <separator bar="true" orient="vertical" /> 
+            <image id="" src="../IMAGENES/Refresh32px.png" width=""  height="" tooltiptext="Refrescar!" />
+            <separator bar="true" orient="vertical" />       
+            <image id="" src="../IMAGENES/Previous-icon32px.png" width=""  height="" tooltiptext="Ventana previa" >
+                <attribute name="onClick">
+                    org.zkoss.zul.Include ssnIncPag = (Include) Sessions.getCurrent().getAttribute("ssnIncPag");
+                    ssnIncPag.setSrc("../VISTA_PERSONAL/pagPersonal.zul");  
+                </attribute> 
+            </image>
+            <separator bar="true" orient="vertical" />
+        </hlayout>
+        <vbox width="100%" height="100%" align="center" apply="bean.controlador.personal.ControladorDatosNomina" >
+            <space/>
+            <vlayout form="@id('fx') @load(vm.nomTrabajador01Dat) @save(vm.nomTrabajador01Dat, before='update')">  
+                <!-- * Display Cedula ID / Ficha y Nombre *-->
+                <hlayout>
+                    <label id="" value="Cedula identidad:" sclass="T1B" />  
+                    <space/>
+                    <label id="lblCI" value="" sclass="T1C" />  
+                </hlayout>
+                <hlayout>
+                    <label id="" value="Nro Trabajador:" sclass="T1B" />  
+                    <space/>
+                    <label id="lblNroTrab" value="@load(vm.nomTrabajador01Dat.nomTrabajador01DatPK.nroTrabajador)" sclass="T1A" />
+                    <!--
+                    <label id="lblNroTrab" sclass="T1A" />
+                    -->
+                    <space/>  
+                    <label id="" value="Nombre:" sclass="T1B" />
+                    <space/> 
+                    <label id="lblNombre" value="" sclass="T1A" />              
+                </hlayout>
+                <!-- * Fecha ingreso: -->  
+                <hlayout>
+                    <label id="" value="Fecha Ingreso:" sclass="T1B" />
+                    <datebox id="dbxFechaIng" tabindex="1" constraint="no empty,no future: Campo requerido" format="dd/MM/yyyy"  sclass="T1" value="@bind(vm.nomTrabajador01Dat.fechaIngreso)"  />
+                </hlayout>
+                <!--* Turno / rotacion *--> 
+                <hlayout>
+                    <label id="" value="Turno:" sclass="T1B" />
+                    <space/>  
+                    <intbox id="intTurno" constraint="no negative" value="@bind(vm.nomTrabajador01Dat.turno)" tabindex="2" sclass="T1" />
+                    <space/>
+                    <label id="" value="Rotacion:" sclass="T1B" />
+                    <intbox id="intRotacion" constraint="no negative" value="@bind(vm.nomTrabajador01Dat.rotacion)" tabindex="3" sclass="T1" />
+                </hlayout>
+                <!-- * RIF personal / nro SSO *-->
+                <hlayout>
+                    <label id="" value="RIF:" sclass="T1B" />
+                    <space/>  
+                    <textbox id="txtRif" value="@bind(vm.nomTrabajador01Dat.rif)" tabindex="4" onChange="self.setValue(self.getValue().toUpperCase())"  sclass="T1" />
+                    <space/> 
+                    <label id="" value="Nro. SSO:" sclass="T1B" />
+                    <space/>  
+                    <textbox id="txtNroSSO" value="@bind(vm.nomTrabajador01Dat.nroSSO)" tabindex="5" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" />  
+                </hlayout>
+                <!-- *Tipo Nomina / contrato * -->
+                <hlayout>
+                    <label id="" value="Tipo nomina / contrato:" sclass="T1B" />  
+                    <combobox id="cbbTipoNomina" value="@bind(vm.nomTrabajador01Dat.tipoNomina)" tabindex="6" width="50px" readonly="true" sclass="T1B" >
+                        <comboitem label="1" sclass="T1" />
+                        <comboitem label="2" sclass="T1" />
+                    </combobox>
+                </hlayout>  
+                <!--* Banco *-->
+                <hlayout>
+                    <label id="" value="Cod Banco:" sclass="T1B" />
+                    <space/>  
+                    <textbox id="txtCodBanco" value="@bind(vm.nomTrabajador01Dat.codBanco)" tabindex="7" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" />  
+                    <space/> 
+                    <label id="lblNombreBanco" value="( NOMBRE DEL BANCO )" sclass="T1C" />
+                </hlayout>
+                <!--* Cuenta Bancaria *-->
+                <hlayout>
+                    <label id="" value="Nro. Cuenta: " sclass="T1B" />
+                    <space/>  
+                    <textbox id="txtCuentaBanco" value="@bind(vm.nomTrabajador01Dat.cuentaBanco)" tabindex="8" onChange="self.setValue(self.getValue().toUpperCase())" sclass="T1" />  
+                </hlayout>
+                <!-- * Status del Trabajador ==> Fecha retiro (si aplicase) *--> 
+                <hlayout>
+                    <label id="" value="Status" sclass="T1B" />
+                    <combobox id="cbbStatus" value="@bind(vm.nomTrabajador01Dat.status)" tabindex="9" width="50px" readonly="true" sclass="T1B" >
+                        <comboitem label="A" sclass="T1" />   <!-- A)ctivo   -->
+                        <comboitem label="R" sclass="T1" />   <!-- R)etirado -->
+                        <attribute name="onChange">
+                            <![CDATA[
+                               // alert("comBoBox change->"+cbbStatus.getText());  
+                               if (cbbStatus.getText().equals("R")) {
+                                   //alert("**Retirado**"); 
+                                   dbxFechaRetiro.setDisabled(Boolean.FALSE);  
+                               } else {
+                                  dbxFechaRetiro.setDisabled(Boolean.TRUE);  
+                               }
+                             ]]>
+                        </attribute>
+                    </combobox>  
+                    <space/>
+                    <space/>
+                    <label id="" value="Fecha retiro:" sclass="T1B" />
+                    <datebox id="dbxFechaRetiro" tabindex="10" format="dd/MM/yyyy"  sclass="T1" constraint="no future" value="@bind(vm.nomTrabajador01Dat.fechaRetiro)" disabled="true" /> 
+                </hlayout> 
+                <!--* Marca tarjeta  *-->  
+                <!-- <checkbox id="chbMarcaTarjeta" checked="false" label="Marca tarjeta:" onCheck="@command('setMarcaTarjeta',valorParametro=self.isCheked())" sclass="T1B" style="font-weight:bold; font-size:16px;" />  -->  
+                <checkbox id="chbMarcaTarjeta" checked="false" label="Marca tarjeta:" onCheck="@command('setMarcaTarjeta',valorParametro=chbMarcaTarjeta.isChecked())" sclass="T1B" style="font-weight:bold; font-size:14px;" />
+                <!-- 
+                 <label id="" value="Cedula identidad:" sclass="T1B" />  
+                 <combobox id="cbbNacionalidad" value="@bind(vm.nomTrabajador00Dat.nacionalidad)" tabindex="2" width="50px" readonly="true" sclass="T1B" >
+                     <comboitem label="V" sclass="T1" />
+                     <comboitem label="E" sclass="T1" />
+                 </combobox>
+                 <textbox id="txtCedula" value="@bind(vm.nomTrabajador00Dat.cedulaID)" tabindex="3" sclass="T1" />
+                -->  
+            </vlayout> 
+            <!--
+            <separator bar="true" style="border: 2px solid green; border-radius: 2px;" />
+            <separator bar="true" style="line-color: green;" />
+            -->
+            <separator bar="true" style="border: solid lightblue; border-radius; 1px;" width="100%" />
+            <vlayout width="400px" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewTiposContrato')" >
+                <hlayout style="background:lightgray;" width="100%" >
+                    <button id="btnAdd" height="14px" label="AGREGAR" disabled="false" sclass="T2A"/>
+                    <button id="btnDel" height="14px" label="ELIMINAR" disabled="false" onClick="@command('btnDel')" sclass="T2A"/>
+                    <button id="btnRfr" height="14px" label="REFRESCAR" disabled="false" onClick="@command('btnRfr')" sclass="T2A"/>
+                </hlayout>
+                <listbox id="lbxTiposContrato" model="@load(vm.tiposContratoViewModel)" height="145px" width="100%" rows="4" checkmark="true" multiple="false" sizedByContent="true" span="true"
+                         emptyMessage="LISTA SIN REGISTROS" selectedItem="@bind(vm.selectedContrato)" apply="" >
+                    <auxhead sclass="category-center">
+                        <auxheader label="CONTRATO(S) DEL TRABAJADOR" colspan="4" style="font-weight:bold; font-size: 14px"/>
+                    </auxhead>
+                    <listhead>
+                        <listheader sort="auto(codNomina)" width="95px" label="Cod Nomina" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                        <listheader hflex="1" sort="auto(nombreNomina)" label="Nombre" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                        <listheader sort="auto(turno)"  width="55px" label="Turno" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                        <listheader sort="auto(rotacion)" width="75px"  label="Rotacion" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    </listhead>
+                    <template name="model" var="NomVar" >
+                        <listitem>  
+                            <!-- <listitem self="@(each='NomVarDat')" value="@(NomVarDat)" >  Ver: pagInv06.zul ERROR !!! -->
+                            <listcell label="@load(NomVar.codNomina)" style="color:black; font-size: 14px;" />
+                            <listcell label="@load(NomVar.nombreNomina)" style="color:black; font-size: 14px;" />
+                            <listcell label="@load(NomVar.turno)" style="color:black; font-size: 14px;" />
+                            <listcell label="@load(NomVar.rotacion)" style="color:black; font-size: 14px;" />
+                        </listitem>
+                    </template>
+                </listbox>
+            </vlayout>
+        </vbox>
+    </div>
+    <!-- //***************************** POP UP WINDOW //********************* -->
+    <window id="winSelectContrato" title="CONTRATOS SERVICIOS" mode="popup" visible="false" width="300px" height="200px"  border="normal" sizable="true" closable="true" position="center" onClose="self.visible=false; event.stopPropagation();" >
+        <caption image="" label="" style="color: white; background:blue; border:2px outset black; font-size:16px; font-weight:bold;" />       
+        <zscript>
+         <![CDATA[
+           String ssnRifEmpresa = (String) Sessions.getCurrent().getAttribute("rifEmpresa");
+           //List<String> l = new bean.controlador.nomina.NomTiposNominaDatJpaController().getTiposNomina(ssnRifEmpresa);  
+           List l = new bean.controlador.nomina.NomTiposNominaDatJpaController().getTiposNomina(ssnRifEmpresa);  
+           //
+           //System.err.println("*TIPOS NOMINA*");
+           //for ( String s : l ) {
+           //    System.err.println(s);
+           //}
+           //
+           String[] aContratos = l.toArray(new String[l.size()]);
+         ]]>
+        </zscript>
+        <!--
+        <listbox id="lbxContratos" height="100%" width="100%" emptyMessage="LISTA SIN REGISTROS" model="@{aContratos}" checkmark="true" multiple="false"  onSelect="itemSeleccionado()" selectedItem="@{selected.value}" style="font-weight:bold; font-size:14px;" >
+        -->
+        <listbox id="lbxContratos" height="100%" width="100%" emptyMessage="LISTA SIN REGISTROS" model="@{aContratos}" checkmark="true" multiple="false" onSelect="itemSeleccionado()" style="font-weight:bold; font-size:14px;" apply="bean.controlador.personal.ControladorContratos">
+            <listhead>
+                <listheader label="NOMINAS" style="font-weight:bold; font-size:14px;"  />
+            </listhead>
+            <listitem label="${each}" forEach="${aContratos}" style="font-weight:bold; font-size:14px;" />
+        </listbox>
+        <zscript>
+            <![CDATA[
+                void itemSeleccionado() {
+                  Integer nroTrabajador = Integer.parseInt( lblNroTrab.getValue() );  
+                  org.zkoss.zul.Listcell listcell = (Listcell) lbxContratos.getSelectedItem().getChildren().get(0);
+                  String c = listcell.getLabel();  
+                  Integer nroContrato = Integer.parseInt( c.substring(0,c.indexOf("-")) );   
+                  //
+                  //alert("lbxContratos::: in itemSeleccionado metodo!!!"+self.getSelectedItem().getValue()+"***Seleccion="+seleccion+"****rif="+ssnRifEmpresa+"****Nro.Trab="+nroTrabajador+"**Contrato="+c+"**Nro="+nroContrato+"****");
+                  //
+                  Boolean poseeContrato = new bean.controlador.personal.NomTrabajador02DatJpaController().existeContrato(ssnRifEmpresa,nroTrabajador,nroContrato); 
+                  if ( !poseeContrato ) {
+                     bean.modelo.entidad.NomTrabajador02DatPK pk = new bean.modelo.entidad.NomTrabajador02DatPK(ssnRifEmpresa,nroTrabajador,nroContrato);  
+                     bean.modelo.entidad.NomTrabajador02Dat nomTrab02dat = new bean.modelo.entidad.NomTrabajador02Dat(pk,0,0); 
+                    try {
+                        new bean.controlador.personal.NomTrabajador02DatJpaController().create(nomTrab02dat);
+                    } catch (Exception ex) {
+                        Logger.getLogger("ERROR:"+ex);
+                    }
+                  } // if poseeContrato,...
+                  winSelectContrato.detach();   
+                }  // itemSeleccionado().
+              ]]>
+        </zscript>  
+    </window>        
+</zk>

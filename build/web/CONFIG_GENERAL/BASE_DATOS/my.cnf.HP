@@ -1,0 +1,78 @@
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=mysql
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+#bind-adress=localhost 
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
+
+#-----------------------------------------------------------------------------
+# Atributos configurados x HJPB. Bqto: 30 septiembre 2020. 
+# https://raiolanetworks.es/blog/optimizar-mysql-configurando-archivo-my-cnf
+#-----------------------------------------------------------------------------
+
+# Ponemos 1 activamos el cache de consultas y si ponemos 2 se activará bajo 
+# petición. Lo recomendable es 1: 
+query_cache_type: 1 
+
+# Parámetro especifica el tamaño máximo de un paquete a la hora de que 
+# el servidor MySQL trabaje. Normalmente lo tenemos que aumentar para 
+# importar bases de datos grandes o mover grandes volúmenes de datos 
+# en una base de datos:  
+#  max_allowed_packet:
+
+# cache de consultas, este cache se guarda en RAM y se suele poner 
+# 64 MB de RAM por cada 1 GB de memoria física usable que tenga el servidor
+query_cache_size: 512M 
+
+# Tamaño del cache de los índices, cuanto más grande sea este cache, más 
+# rápido se ejecutarán los comandos SQL. Normalmente se configuran 32 MB 
+# por cada 1 GB de memoria física usable 
+key_buffer_size: 256M
+
+# máximo de tablas abiertas entre todos los threads o hilos de ejecución 
+# de MySQL. buen valor es 64.  
+table_cache: 64
+
+# Tamaño del cache de búsquedas de MySQL, lo recomendable es configurar 1 MB 
+# por cada 1 GBi RAM física disponible
+sort_buffer_size: 8M
+
+# Tamaño del cache de lecturas de MySQL, lo recomendable es configurar 1 MB 
+# por cada 1 GB de memoria RAM
+read_buffer_size: 8M
+
+# Tamaño del cache de lecturas usado tras una acción de búsqueda u ordenado,
+# lo recomendable es configurar 1 MB por cada 1 GB de memoria RAM física 
+# disponible
+read_rnd_buffer_size: 8M  
+
+# variable especifica el tamaño máximo de una tabla temporal en RAM, cuando
+# se alcanza el tamaño máximo especificado en este parámetro la tabla pasa
+# a ser una tabla temporal en MyISA
+# tmp_table_size:
+
+# Número máximo de conexiones totales que puede aceptar el servidor MySQL 
+# max_connections: 
+
+# Tiempo de espera que tarda MySQL en cerrar una conexión
+# wait_timeout: 
+
+# Número máximo de hijos de ejecución o procesos abiertos de MySQL,
+# lo recomendable es configurar 2 por cada 1 nucleo.   
+thread_concurrency: 2  
+
+
+# Límite de tamaño de consulta a partir del cual no se cachearán, 
+# el valor por defecto es 1
+query_cache_limit: 1  
+
+# Variable que solo afecta a innoDB, pero que mejora bastante el rendimiento 
+# general de las tablas almacenadas en InnoDB. Buen valor de configuración 
+# sería un valor similar al 70 u 80% de la memoria RAM disponible
+# innodb_buffer_pool_size:  
+

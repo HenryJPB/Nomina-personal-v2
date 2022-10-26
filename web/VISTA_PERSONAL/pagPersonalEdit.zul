@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <!--
+    <include id="" src="../ACCESORIOS/encabezado.zul" />
+    <separator bar="true" width="100%" style="color:black;"/>
+    <hlayout style="background:lightgray;" >
+        <space />
+    </hlayout>
+    -->
+    <separator bar="true" width="100%" style="color:black;"/>
+    <hlayout style="background:lightgray;"  >
+        <label id="" value="PERSONAL / EDITAR /" sclass="TBREADCRUMB" />
+    </hlayout>
+    <separator bar="true"/> 
+     <!--
+    <hlayout style="background:lightgray;" >
+        <button id="btnAct" height="40px" label="AGREGAR" disabled="false" sclass="T2A"/>
+        <button id="btnRfr" height="40px" label="REFRESCAR" disabled="false" sclass="T2A"/>
+        <button id="btnReg" height="40px" label="REGRESAR" disabled="false" sclass="T2A"/>
+        <button id="btnIni" height="40px" label="INICIO" disabled="false" sclass="T2A"/>
+        <style dynamic="true">      *NOTA (Bqto: 31/07/2018) no se activan estos atributos en mi hoja de estilo*
+            .tmenu .z-menu-text {   *Por esta razon se escriben como adjunto al widget menu*
+            color: #4682B4;
+            font-size: 20px; 
+            font-weight:bold;
+            }
+            .tmenuitem .z-menuitem-text {
+            color: gray;
+            font-size: 18px;
+            ont-weight:bold; 
+            }
+        </style>
+        <menubar id="mnuInformes" draggable="false" scrollable="false" visible="true" >
+            <menu label="INFORMES" sclass="tmenu" >
+                <menupopup>
+                    <menuitem id="mnnPrintIngreso" label="Comprobante de Ingreso" sclass="tmenuitem" />
+                    <menuitem id="mnnPrintRelacionIng" label="Relacion de Ingresos" sclass="tmenuitem" />
+                    <menuitem id="mnnPrintRelacionIng_forRev" label="Relacion de Ingresos (en formato para Revision)" sclass="tmenuitem" onClick="Executions.sendRedirect(&quot;../VistaReporte/informeRelacionIng_forRev.zul&quot;)" />
+                    <menuitem id="mnnPrintRelacionIng_vExcel" label="Relacion de Ingresos (v.Excel)" sclass="tmenuitem" onClick="Executions.sendRedirect(&quot;../VistaReporte/informeRelacionIng_vExcel.zul&quot;)" />               
+                </menupopup>
+            </menu>
+        </menubar> 
+    </hlayout>
+    --> 
+    <!--
+    <hlayout style="background:lightgray;" >
+        <space />
+    </hlayout>
+    --> 
+    <!-- <separator bar="true" width="100%" style="color:blue;"/>  --> 
+    <div apply="bean.controlador.personal.ControladorPersonalEdit">
+        <vlayout>
+            <!-- <label id="lblMsg" value="NO MSG" sclass="T3W" />  -->  
+            <tabbox id="" mold="" >
+                <tabs>
+                    <tab label="DATOS PERSONALES" sclass="T2B"/>
+                    <tab label="DATOS NOMINA" sclass="T2B"/>
+                    <tab label="TRAYECTORIA LABORAL" sclass="T2B"/>
+                    <tab label="EDUCACION" sclass="T2B" />
+                    <tab label="PARENTESCO" sclass="T2B" />
+                </tabs>
+                <tabpanels>
+                    <tabpanel>   <!-- Tab: DATOS PERSONALES -->
+                        <include src="/VISTA_PERSONAL/pagDatosPersonales.zul"/>
+                    </tabpanel>
+                    <tabpanel>   <!-- Tab: DATOS NOMINA -->
+                        <include src="/VISTA_PERSONAL/pagDatosNomina.zul"/>
+                    </tabpanel>
+                    <tabpanel>   <!-- Tab: TRAYECTORIA LABORAL -->
+                        <!--  <include src="../VistaCtasBancos/pagCtasBancos.zul"/>  -->  
+                    </tabpanel>
+                    <tabpanel>  <!-- Tab: EDUCACION -->
+                    </tabpanel>
+                    <tabpanel>   <!-- Tab: PARENTESCO -->
+                    </tabpanel>  
+                </tabpanels>
+            </tabbox>
+        </vlayout>
+        <space/>
+    </div>
+</zk>

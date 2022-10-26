@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="../css/estiloHP.css"/>
+    <vlayout style="background-color:blue;">
+        <space/>
+        <hbox width="100%" height="65px" >
+            <zscript>
+            <![CDATA[
+                // Ejemplos varios:  
+                String[] nomina={"Jose","Jaime","Tobolda","Oscar de Leon","Harry el Sucio","Mr.Jhon","WY","Vinagre","Caramelito de Sabila","El Mismo","EL Otro","Julian"};
+                String[] lenguajes = {"Ada","Basic","C","C++","CSS","Cobol","Forth","Fortran",
+                                      "Go","Groovy","Haskell","HTML","Java","JavaScript","Lisp","Python","Ruby","Scala","Scheme"};
+               //
+               String razonSocial = (String) Sessions.getCurrent().getAttribute("razonSocial");  
+               java.util.Date fechaHOY = new Date();  
+            ]]>
+            </zscript> 
+            <space/>
+            <space/>
+            <!-- <label id="" value="DERIVADOS SIDERURGICOS,C.A." sclass="subTitulo2" /> -->  
+            <label id="" value="${razonSocial}" sclass="subTitulo3" /> 
+            <!-- <label value="J-08503850-7" sclass="subTitulo3"/> --> 
+            <space spacing="140px" />
+            <!-- <label id="" value="TABULADOR" style="color:white; background:white;font-size:24px;" />  -->
+            <label id="" value="NOMINA Y PERSONAL" sclass="subTitulo3red"/>
+            <space spacing="120px" />
+            <vlayout>
+                <hlayout>
+                    <label id="" value="usuario :" sclass="T1" style="text-decoration:underline;" />
+                    <label id="" value="hPulgar" sclass="T1B"/>
+                </hlayout>
+                <label value="${fechaHOY}"  sclass="T1" visible="true"/>
+            </vlayout>
+            <space spacing="120px" />
+            <button id="btnDesconectar" label=" desconectar " style="border-color:black; border:1px; border-radius:15px; background:green; color: white; text-shadow: 2px 2px red; font-size:18px;text-decoration:underline;">
+                <attribute name="onClick">
+                    Executions.sendRedirect(&quot;../index.zul&quot;); 
+                </attribute>
+                <!--
+                <attribute name="onMouseOver">
+                    btnDesconectar.setWidth("110%");
+                    btnDesconectar.setHeight("90%");  
+                </attribute>
+                <attribute name="onMouseOut">    vuelve a normal state
+                    btnDesconectar.setWidth("100%");
+                    btnDesconectar.setHeight("100%"); 
+                </attribute> 
+                -->  
+            </button>
+        </hbox>
+        <space/>
+    </vlayout>
+</zk>

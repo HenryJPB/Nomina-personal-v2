@@ -1,0 +1,91 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24-may-2017, 10:37:35
+    Author     : henrypb
+    https://netbeans.org/kb/docs/web/mysql-webapp.html
+*/
+
+body {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: smaller;
+    padding: 50px;
+    color: #555;
+    width: 800px;  
+    text-align:center;  
+    margin:0 auto;      
+}
+
+h1 {
+    text-align: left;
+    letter-spacing: 6px;
+    font-size: 1.4em;
+    color: #be7429;
+    font-weight: normal;
+    width: 550px;
+}
+
+table {
+    width: 800px;
+    padding: 10px;
+    background-color: bisque;
+} 
+
+.miTablaModelo1 {   /* Correcto */  
+    width: 800px;  
+    padding: 10px;
+    background-color: #c5e7e0;
+    /* background-color: blue; */  
+}
+
+.miTablaModelo2 {  /* Correcto */
+    width: 800px;
+    padding: 10px;
+    background-color: white;
+}
+
+th {
+    text-align: left;
+    border-bottom: 1px solid;
+}
+
+td {
+    padding: 10px;
+}
+
+a:link {
+    color: #be7429;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+a:link:hover {
+    color: #be7429;
+    font-weight: normal;
+    text-decoration: underline;
+}
+/* Ejemplo recreado y extraido de: http://www.webestilo.com/foros/mensaje.phtml?foro=16&msg=35227  */  
+.myButton{border-width:1px;
+          border-color:#FF00F0;
+          border-style:ridge;
+          text-align:center;
+          font-weight:bold;
+          font-size:21px;
+          font-family:arial;
+          background-color:#ABCDEF;
+          color:#123456;
+}
+
+/* Ejemplo recreado y extraido de: https://desarrolloweb.com/articulos/882.php */  
+.miBoton{ font-size:10px;
+          font-family:Verdana,Helvetica;
+          font-weight:bold;
+          color:white;
+          background:#638cb5;
+          border:0px;
+          width:245px;
+          height:25px;
+}

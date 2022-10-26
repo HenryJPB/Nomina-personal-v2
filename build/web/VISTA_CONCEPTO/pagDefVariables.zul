@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <hlayout style="background:lightgray;"  >
+        <button id="btnAdd" height="20px" label="AGREGAR" disabled="false" sclass="T2A"/>
+        <button id="btnEdit" height="20px" label="EDITAR" disabled="false" sclass="T2A"/>
+        <button id="btnDel" height="20px" label="ELIMINAR" disabled="false" sclass="T2A"/>
+        <button id="btnRegresar" height="20px" label="REGRESAR" sclass="T2A" >
+            <attribute name="onClick"> 
+                grdFormulacion.setVisible(true);
+                incPagFormulaConcepto.setSrc("");
+                lblFormulaBreadcrumb.setValue("FORMULACION CONCEPTO"); 
+            </attribute>
+        </button>
+        <button id="btnRfr" height="20px" label="REFRESCAR" disabled="false" onClick="@command('btnRfr')" sclass="T2A"/>
+        <button id="btnIni" height="20px" label="INICIO" disabled="false" sclass="T2A"/>
+    </hlayout>
+    <!-- Listbox binding a popUp window -->  
+    <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewDefVariables')" >
+        <listbox id="lbxDefVariables" model="@load(vm.variablesViewModel)" height="100%" width="100%" rows="12" checkmark="true" multiple="false" 
+                 emptyMessage="LISTA SIN REGISTROS" selectedItem="@bind(vm.selectedVariable)" apply="bean.controlador.concepto.ControladorDefVariables" >
+            <auxhead sclass="category-center">
+                <auxheader label="LISTA DE VARIABLES" colspan="4" style="font-weight:bold; font-size: 16px"/>
+            </auxhead>
+            <auxhead sclass="category-center" >
+                <auxheader colspan="1" >
+                    <image src="../IMAGENES/embudo-filtrante.png" />
+                    <textbox id="txtCodVarFilter" instant="true" value="@bind(vm.variableViewFilter.codVar)" onChange="@command('changeFilter')" sclass="T1" />
+                </auxheader>
+                <auxheader colspan="1" >
+                    <image src="../IMAGENES/embudo-filtrante.png" />
+                    <textbox id="txtNombreVarFilter" instant="true" value="@bind(vm.variableViewFilter.nombreVar)" onChange="@command('changeFilter')" sclass="T1" />
+                </auxheader>
+                <auxheader colspan="1" >
+                    <image src="../IMAGENES/embudo-filtrante.png" />
+                    <textbox id="txtValorFilter" instant="true" value="@bind(vm.variableViewFilter.valor)" onChange="@command('changeFilter')" sclass="T1" />
+                </auxheader>
+                <auxheader colspan="1" >
+                    <!-- <image src="../IMAGENES/broom-icon.png" />  -->  
+                    <image src="../IMAGENES/reload24px.png" />
+                    <!-- <button id="btnLimpiarKeys" label="Limpiar claves" onClick="@command('changeFilter')" sclass="T1">   @command('changeFilter') ??? -> no funciona ??? --> 
+                    <button id="btnLimpiarKeys" label="Refrescar" onClick="@command('refrescarListbox')" sclass="T1">   <!-- @command('') ??? -> funciona ??? -->                        
+                        <attribute name="onClick">
+                            txtCodVarFilter.setValue(null);  
+                            txtNombreVarFilter.setValue(null);  
+                            txtValorFilter.setValue(null);  
+                            //@command('changeFilter');         // No funciono ???  
+                            //lbxDefVariables.renderAll();      // No funciono ???
+                            //new bean.modelo.vista.ModelViewDefVariables().changeFilter();   // No funciono ???  
+                        </attribute>
+                    </button>
+                </auxheader>
+                <auxheader colspan="1" >
+                    <image src="../IMAGENES/reload16px1.png" />
+                    <button id="btnReload" label="Refrescar" onClick="" sclass="T1" />
+                </auxheader>
+            </auxhead>
+            <listhead>
+                <listheader hflex="1" sort="auto(codVar)" label="Cod. Variable" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                <listheader hflex="1" sort="auto(nombreVar)" label="Nombre" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                <listheader hflex="1" sort="auto(valor)" label="Valor" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                <listheader hflex="1" label="Conforme" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+            </listhead>
+            <template name="model" var="NomVarDat" >
+                <listitem>  
+                    <!-- <listitem self="@(each='NomVarDat')" value="@(NomVarDat)" >  Ver: pagInv06.zul ERROR !!! -->
+                    <listcell label="@load(NomVarDat.codVar)" style="color:black; font-size: 15px;" />
+                    <listcell label="@load(NomVarDat.nombreVar)" style="color:black; font-size: 15px;" />
+                    <!-- <listcell label="@load(NomVarDat.valor)" style="color:black; font-size: 16px;" />  -->  
+                    <listcell> 
+                        <decimalbox id="" readonly="true" value="@load(NomVarDat.valor)" format="#,##0.00" style="color:black; font-size: 15px;" />
+                    </listcell>
+                    <listcell>
+                        <checkbox id="" label="" checked="@load(NomVarDat.conforme)" disabled="true" />
+                        <!-- <button  label="ELIMINAR" onClick="@command('btnEliminar',selectedVariable=vm.selectedVariable)" /> /funcionó correctamente, bqto, 24-01-2019/-->                
+                    </listcell>   
+                </listitem>
+            </template>
+        </listbox>
+        <!--
+           **  
+           ** Probar registro seleccionado: ( Ver Ejemplo:  file:///home/henrypb/NetBeansProjects73/ZK/gestionBancos/web/VistaActualizarCtasBanco/pagActualizarAnnotateDataBinder.zul
+           ** status: ( Bqto 19 Dic 2018 12:20 ) Funcionó corretamente.  
+        <hlayout> 
+            <label id="" value="Seleccion=" />
+            <label id="" value="@bind(vm.selectedVariable.codVar)"/> 
+        </hlayout>
+        -->      
+    </div>
+</zk>

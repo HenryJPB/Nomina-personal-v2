@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="../css/estiloHP.css"/>
+    <hbox width="100%" height="80%" style="background: blue;border-style: groove; border-width: 2px" align="center" pack="center" >
+        <vbox align="center" >
+            <space/>
+            <space/>
+            <zscript>
+                <![CDATA[
+                   // 
+                   java.util.Date fechaHOY = new Date();  
+                ]]>
+            </zscript>  
+            <label id="" value="NOMINA Y PERSONAL" sclass="titulo1"/>
+            <label value="${fechaHOY}"  sclass="subTitulo1"/>  <!--  style="color: white;font-size: 14px ;font-weight: bold;"/>  -->  
+            <datebox id="db4" cols="12" format="long+medium" onCreate="self.value = new Date()" width="" visible="false" />
+        </vbox>
+    </hbox>
+    <separator bar="true" style="color: black;" />
+    <hbox width="100%" height="20%" pack="center" align="center" style="background: lightblue; border-style: groove; border-width: 1px; border-color: lightgrey;">
+        <vbox align="center" >
+            <space/>
+            <!-- <image id="" src="IMAGENES/logoDesica2x.jpg" width="50%" height="50%"/>  -->  
+            <!-- <image id="" src="../src/java/bean/utilitario/imagenes/logoDesica2x.jpg" width="100%" height="100%"/>  -->  
+            <label id="" value="BIENVENIDO" sclass="titulo1" />
+            <!-- <label value="J-08503850-7" sclass="subTitulo1"/>    -->   
+            <space/>
+        </vbox>
+    </hbox>
+    <separator bar="true" style="color: black;" />
+</zk>

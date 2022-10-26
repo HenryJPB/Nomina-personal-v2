@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <!-- ****************************(ENCABEZADO.Begin)*************************** -->
+    <hlayout style="background:lightgray;" >
+    </hlayout>
+    <hlayout style="background:lightgray;" >
+        <label id="" value=" EMPRESA / EDITAR " sclass="TBREADCRUMB" />
+    </hlayout>
+    <!-- <label id="" value="+....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!...!METRICA!...!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!.+" sclass="subTitulo3" />  -->  
+    <hlayout style="background:lightgray;"  >
+        <button id="btnAdd" height="40px" label="AGREGAR" disabled="false" sclass="T2A"/>
+        <button id="btnEdit" height="40px" label="ACTUALIZAR" disabled="false" sclass="T2A"/>
+        <button id="btnDel" height="40px" label="ELIMINAR" disabled="false" sclass="T2A"/>
+        <button id="btnRfr" height="40px" label="REFRESCAR" disabled="false" sclass="T2A"/>
+        <button id="btnIni" height="40px" label="INICIO" disabled="false" sclass="T2A"/>
+        <style dynamic="true">      <!-- NOTA (Bqto: 31/07/2018) no se activan estos atributos en mi hoja de estilo -->
+            .tmenu .z-menu-text {   <!-- Por esta razon se escriben como adjunto al widget menu -->  
+            color: #4682B4;
+            font-size: 20px; 
+            font-weight:bold;
+            }
+            .tmenuitem .z-menuitem-text {
+            color: gray;
+            font-size: 18px;
+            ont-weight:bold; 
+            }
+        </style>
+        <menubar id="mnuInformes" draggable="false" scrollable="false" visible="true" >
+            <menu label="INFORMES" sclass="tmenu"  >
+                <menupopup>
+                    <menuitem id="mnnPrintIngreso" label="Comprobante de Ingreso" sclass="tmenuitem" />
+                    <menuitem id="mnnPrintRelacionIng" label="Relacion de Ingresos" sclass="tmenuitem" />
+                    <menuitem id="mnnPrintRelacionIng_forRev" label="Relacion de Ingresos (en formato para Revision)" sclass="tmenuitem" onClick="Executions.sendRedirect(&quot;../VistaReporte/informeRelacionIng_forRev.zul&quot;)" />
+                    <menuitem id="mnnPrintRelacionIng_vExcel" label="Relacion de Ingresos (v.Excel)" sclass="tmenuitem" onClick="Executions.sendRedirect(&quot;../VistaReporte/informeRelacionIng_vExcel.zul&quot;)" />               
+                </menupopup>
+            </menu>
+        </menubar> 
+    </hlayout>
+    <hlayout style="background:lightgray;" >
+        <space />
+    </hlayout>
+    <separator bar="true" style="background:lightgray;" />
+    <!--
+    <toolbar>
+        <toolbarbutton id="tbbNuevo" label="Nuevo"/>
+        <toolbarbutton id="tbbEditar" label="Editar" style="border:1px outset black;font-style: normal; font-weight:bold; font-size: 12px; text-decoration: normal;" />
+        <toolbarbutton id="tbbEliminar" label="Eliminar" style="border:1px outset black;font-style: normal; font-weight:bold; font-size: 12px; text-decoration: normal;" />
+    </toolbar>
+    -->
+    <separator bar="true"/>
+    <vlayout>
+        <space/>
+        <space/>
+        <space/>
+    </vlayout>
+    <hlayout apply="bean.controlador.empresa.ControladorEmpresaEdit" >
+        <panel>
+            <panelchildren>
+                <hlayout>
+                    <space/>
+                    <space/>
+                    <space/>
+                    <div>
+                        <hlayout>
+                            <label value="*" sclass="T1B" style="color:red;" />
+                            <label id="" value="NOMBRE EMPRESA:" sclass="T1B" />  
+                            <space/>
+                            <textbox id="txtNombreEmpresa" tabindex="1"  value="@{controller.entidad.nombre, acces='both',save-when='none'}" width="300px" height="30px" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />
+                        </hlayout>	
+                        <space/>
+                        <hlayout>
+                            <label value="*" sclass="T1B" style="color:red;" />
+                            <label id="" value="RAZON SOCIAL:" sclass="T1B" />  
+                            <space/>
+                            <textbox id="txtRazonSocial" tabindex="2" value="@{controller.entidad.razonSocial,acces='both',save-when='none'}" width="400px" height="30px" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />
+                        </hlayout>
+                        <space/>
+                        <hlayout>
+                            <label id="" value="RAMO:" sclass="T1B" />  
+                            <space/>
+                            <textbox id="txtRamo" tabindex="3" value="@{controller.entidad.ramo,acces='both',save-when='none'}" width="300px" height="30px" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />
+                        </hlayout>
+                        <space/>
+                        <hlayout>
+                            <label value="*" sclass="T1B" style="color:red;" />  
+                            <label id="" value="RIF:" sclass="T1B" />  
+                            <space/>
+                            <textbox id="txtRif" tabindex="4" value="@{controller.entidad.rif,acces='both',save-when='none'}" width="200px" height="30px" sclass="T1" readonly="false" onChange="self.setValue(self.getValue().toUpperCase())" />
+                        </hlayout>
+                        <space/>	
+                        <hlayout>
+                            <zscript>
+                            <![CDATA[
+                                //java.util.List<String> estados = new bean.servicio.ServicioAdmonGeopolitica().getEstados();     //  Error en la declaracion List<String> ? por que? ??
+                                List estados = new bean.servicio.ServicioAdmonGeopolitica().getEstados(); 
+                                Collections.sort(estados, String.CASE_INSENSITIVE_ORDER); 
+                                //java.util.List<String> paises = ( new bean.servicio.ServicioAdmonGeopolitica() ).getPaises();   //  Error en la declaracion List<String> ? por que? ??               
+                                List paises = new bean.servicio.ServicioAdmonGeopolitica().getPaises();                        
+                                // Ordenar:
+                                // 
+                                //Collections.sort(paises, new Comparator<String>() {      
+                                //     public int compare(String o1, String o2) {
+                                //         return o1.getC6Tipo().compareTo(o2.getC6Tipo());  
+                                //     }
+                                //} );
+                                //
+                                // A common way to do it is to use comparator:  https://stackoverflow.com/questions/11176227/simple-way-to-sort-strings-in-the-case-sensitive-alphabetical-order
+                                Collections.sort(paises, String.CASE_INSENSITIVE_ORDER); 
+                            ]]>
+                            </zscript>
+                            <label id="" value="PAIS:" sclass="T1B" />  
+                            <space/>
+                            <!-- <textbox id="txtPais" value="@{controller.entidad.pais,acces='both',save-when='none'}" width="200px" height="30px" tabindex="5" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />  -->   
+                            <!-- <listbox height="250px" width="300px" mold="paging" autopaging="true"                            onSelect="bd.value=self.selectedItem.label; bd.close();">  --> 
+                            <bandbox id="bbxPais" tabindex="5" mold="" width="300px" autodrop="true" style="font-weight:bold; font-size:14px;" readonly="true" value="@{controller.entidad.pais,acces='both',save-when='none'}" >
+                                <bandpopup>
+                                    <listbox height="250px" width="300px" onSelect="bbxPais.value=self.selectedItem.label; bbxPais.close()" style="font-weight:bold; font-size:14px;"  >                        
+                                        <listhead>
+                                            <listheader label="PAIS" style="font-weight:bold; font-size:14px;"  />
+                                        </listhead>
+                                        <listitem label="${each}" forEach="${paises}" style="font-weight:bold; font-size:14px;"  />
+                                    </listbox>
+                                </bandpopup>
+                            </bandbox>
+                        </hlayout>
+                        <space/>
+                        <hlayout>
+                            <label id="" value="ESTADO:" sclass="T1B" />  
+                            <space/>
+                            <!-- <textbox id="txtEstado" value="@{controller.entidad.estado,acces='both',save-when='none'}" width="200px" height="30px" tabindex="6" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />  -->
+                            <label id="" value="Estado:" sclass="T1B" />
+                            <!-- <textbox id="txtEstadoHab" tabindex="25" sclass="T1" /> -->
+                            <bandbox id="bbxEstado" tabindex="6" mold="" width="300px" autodrop="true" style="font-weight:bold; font-size:14px;" readonly="true" value="@{controller.entidad.estado,acces='both',save-when='none'}" >
+                                <bandpopup>
+                                    <listbox height="250px" width="300px" onSelect="bbxEstado.value=self.selectedItem.label; bbxEstado.close()" style="font-weight:bold; font-size:14px;"  >                        
+                                        <listhead>
+                                            <listheader label="ESTADO" style="font-weight:bold; font-size:14px;"  />
+                                        </listhead>
+                                        <listitem label="${each}" forEach="${estados}" style="font-weight:bold; font-size:14px;"  />
+                                    </listbox>
+                                </bandpopup>
+                            </bandbox>
+                        </hlayout>
+                    </div>
+                </hlayout>
+            </panelchildren>
+        </panel>
+        <panel>
+            <panelchildren>
+                <hlayout>
+                    <label id="" value="CIUDAD:" sclass="T1B" />  
+                    <space/>
+                    <textbox id="txtCiudad" tabindex="7" value="@{controller.entidad.ciudad,acces='both',save-when='none'}" width="200px" height="30px" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />
+                </hlayout>
+                <space/>
+                <hlayout>
+                    <label id="" value="DIRECCION:" sclass="T1B" />  
+                    <space/>
+                    <vlayout>
+                        <textbox id="txtDireccion1" tabindex="8" value="@{controller.entidad.direccion1,acces='both',save-when='none'}" width="500px" height="30px" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />
+                        <textbox id="txtDireccion2" tabindex="9" value="@{controller.entidad.direccion2,acces='both',save-when='none'}" width="500px" height="30px" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />
+                        <textbox id="txtDireccion3" tabindex="10" value="@{controller.entidad.direccion3,acces='both',save-when='none'}" width="500px" height="30px" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />
+                    </vlayout>
+                </hlayout>
+                <space/>
+                <hlayout>
+                    <label id="" value="e-mail:" sclass="T1B" />  
+                    <space/>
+                    <textbox id="txtEmail" tabindex="11" value="@{controller.entidad.email,acces='both',save-when='none'}" width="300px" height="30px" sclass="T1"/>
+                </hlayout>
+                <space/>
+                <hlayout>
+                    <label id="" value="MISION:" sclass="T1B" />  
+                    <space/>
+                    <textbox id="txtMision" tabindex="12" value="@{controller.entidad.mision,acces='both',save-when='none'}" width="550px" height="30px" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />
+                </hlayout>
+                <space/>
+                <hlayout>
+                    <label id="" value="VISION:" sclass="T1B" />  
+                    <space/>
+                    <textbox id="txtVision" tabindex="13" value="@{controller.entidad.vision,acces='both',save-when='none'}" width="550px" height="30px" sclass="T1" onChange="self.setValue(self.getValue().toUpperCase())" />
+                </hlayout>
+            </panelchildren>
+        </panel>
+    </hlayout>    
+</zk>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <hlayout style="background:lightgray;"  >
+        <button id="btnAdd" height="40px" label="AGREGAR" disabled="false" sclass="T2A"/>
+        <button id="btnEdit" height="40px" label="EDITAR" disabled="false" sclass="T2A"/>
+        <button id="btnDel" height="40px" label="ELIMINAR" disabled="true" sclass="T2A"/>
+        <button id="btnRegresar" height="40px" label="REGRESAR" sclass="T2A" >
+            <attribute name="onClick"> 
+                grdFormulacion.setVisible(true);
+                incPagFormulaConcepto.setSrc("");
+                lblFormulaBreadcrumb.setValue("FORMULACION CONCEPTO"); 
+            </attribute>
+        </button>
+        <button id="btnRfr" height="40px" label="REFRESCAR" disabled="false" sclass="T2A"/>
+        <button id="btnIni" height="40px" label="INICIO" disabled="false" sclass="T2A"/>
+    </hlayout>
+    <!-- Listbox binding a popUp window -->  
+    <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewDefPromedios')" >
+        <listbox id="lbxDefPromedios" model="@load(vm.promediosViewModel)" height="100%" width="100%" rows="12" checkmark="true" multiple="false" 
+                 emptyMessage="LISTA SIN REGISTROS" selectedItem="@bind(vm.selectedPromedio)" >
+            <auxhead sclass="category-center">
+                <auxheader label="LISTA DE PROMEDIOS" colspan="3" style="font-weight:bold; font-size: 16px"/>
+            </auxhead>
+            <auxhead sclass="category-center" >
+                <auxheader colspan="1" >
+                    <image src="../IMAGENES/embudo-filtrante.png" /> 
+                    <textbox value="@bind(vm.promedioViewFilter.codProm)" sclass="T1" />
+                </auxheader>
+                <auxheader colspan="1" >
+                    <image src="../IMAGENES/embudo-filtrante.png" /> 
+                    <textbox value="@bind(vm.promedioViewFilter.nombreProm)" sclass="T1" />
+                </auxheader>
+            </auxhead>
+            <listhead>
+                <listheader hflex="1" sort="auto(codProm)" label="Cod. Promedio" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:20px;" />
+                <listheader hflex="1" sort="auto(nombreProm)" label="Nombre" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:20px;" />
+                <listheader hflex="1" sort="auto(observacion)" label="Observacion" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:20px;" />
+                <listheader hflex="1" label="Conforme" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:20px;" />
+            </listhead>
+            <template name="model" var="NomPromDat" >
+                <!-- <listitem self="@(each='NomPromDat')" value="@(NomPromDat)" >  Ver: pagInv06.zul -->
+                <listitem>  
+                    <listcell label="@load(NomPromDat.codProm)" style="color:black; font-size: 16px;" />
+                    <listcell label="@load(NomPromDat.nombreProm)" style="color:black; font-size: 16px;" />
+                    <listcell label="@load(NomPromDat.observacion)" style="color:black; font-size: 16px;" />
+                    <listcell>
+                        <checkbox id="" label="" checked="@load(NomPromDat.conforme)" />
+                    </listcell>
+                </listitem>
+            </template>
+        </listbox> 
+    </div>
+</zk>

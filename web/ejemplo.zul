@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <grid>
+        <columns sizable="true">
+            <column label="Brand" sort="auto" />
+            <column label="Processor Type" width="150px" sort="auto" />
+            <column label="Memory (RAM)" width="120px" sort="auto" />
+            <column label="Price"  width="100px" sort="auto" />
+            <column label="Hard Drive Capacity" width="150px" sort="auto" />
+        </columns>
+        <rows>
+            <group label="Dell" />
+            <row>
+                <label value="Dell E4500 2.2GHz" style="padding-left:15px"/>
+                <label value="Intel Core 2 Duo" />
+                <label value="4GB RAM" />
+                <label value="$261.00" style="color:green" />
+                <label value="500GB" />
+            </row>
+            <row>
+                <label value="XP-Pro Slim Dell-Inspiron-530-s" style="padding-left:15px" />
+                <label value="Intel Core 2 Duo" />
+                <label value="4GB RAM" />
+                <label value="$498.93" style="color:green" />
+                <label value="500GB" />               
+            </row>
+            <row>
+                <label value="Dell P4 3.2 GHz" style="padding-left:15px" />
+                <label value="Intel Pentium 4" />
+                <label value="8GB RAM" />
+                <label value="$377.99" style="color:green" />
+                <label value="500GB" />               
+            </row>
+            <group label="Compaq" />
+            <row>
+                <label value="Compaq SR5113WM" style="padding-left:15px" />
+                <label value="Intel Core Duo" />
+                <label value="2GB RAM" />
+                <label value="$279.00" style="color:green" />
+                <label value="160GB" />               
+            </row>
+            <row>
+                <label value="Compaq HP XW4200" style="padding-left:15px" />
+                <label value="Intel Pentium 4" />
+                <label value="8GB RAM" />
+                <label value="$980.00" style="color:green" />
+                <label value="500GB" />               
+            </row>
+            <groupfoot spans="5">
+                <label value="This a summary about Compaq Desktop PCs" />
+            </groupfoot>
+        </rows>
+    </grid>
+    <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('demo.listbox.list_group.ListGroupViewModel')">
+    <listbox model="@load(vm.groupModel)" height="400px" checkmark="true"
+        onSelect="@command('selectGroup', data=event.reference.value)" multiple="true"
+        itemRenderer="demo.listbox.list_group.FoodListGroupRenderer">
+        <!-- Make Grouping item selectable-->
+        <custom-attributes org.zkoss.zul.listbox.groupSelect="true" />
+        <listhead>        
+            <listheader width="160px" sort="auto(Category)" label="Category" />
+            <listheader width="140px" sort="auto(Name)" label="Name" />
+            <listheader hflex="1" sort="auto(TopNutrients)" label="Top Nutrients" />
+            <listheader hflex="1" align="center" sort="auto(DailyPercent)" label="% of Daily" />
+            <listheader hflex="1" align="center" sort="auto(Calories)" label="Calories" />
+            <listheader width="140px" sort="auto(Quantity)" label="Quantity" />        
+        </listhead>       
+    </listbox>
+</div>
+</zk>

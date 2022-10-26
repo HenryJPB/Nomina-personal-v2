@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <!-- *******************************(ENCABEZADO.Begin)********************* -->
+    <separator bar="true" width="100%" style="color:black;"/>
+    <hlayout style="background:lightgray;">
+        <label id="" value=" AJUSTES / CONCEPTOS x TRABAJADOR / " sclass="TBREADCRUMB" />
+    </hlayout>
+    <hlayout style="background:lightgray;" >
+        <button id="btnAdd" height="40px" label="AGREGAR" disabled="false" sclass="T2A" />    <!-- style="border-color:black; border:1px; border-radius:15px; background:#4682B4;"/>  -->
+        <button id="btnEdit" height="40px" label="EDITAR" disabled="false" sclass="T2A"/>
+        <button id="btnDel" height="40px" label="ELIMINAR" disabled="false" sclass="T2A"/>
+        <button id="btnRfr" height="40px" label="REFRESCAR" disabled="false" sclass="T2A"/>
+        <button id="btnIni" height="40px" label="INICIO" disabled="false" sclass="T2A"/>
+    </hlayout>
+    <separator bar="true" width="100%" style="color:black;"/>
+    <!-- *******************************(ENCABEZADO.End)********************* -->
+    <label id="" value="AJUSTE X CONCEPTO" sclass="T1A" />
+</zk>

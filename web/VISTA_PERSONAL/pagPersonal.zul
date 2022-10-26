@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <!-- *******************************(ENCABEZADO.Begin)********************* -->
+    <style src="/css/estiloHP.css"/>
+    <separator bar="true" width="100%" style="color:black;"/>
+    <hlayout>
+        <hlayout style="background:lightgray;">
+            <label id="" value=" PERSONAL /" sclass="TBREADCRUMB" />
+        </hlayout>
+        <space/>
+        <hlayout style="background:white;" >
+            <button id="btnAdd" height="20px" label="AGREGAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />    <!-- style="border-color:black; border:1px; border-radius:15px; background:#4682B4;"/>  -->
+            <button id="btnEdit" height="20px" label="EDITAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />
+            <button id="btnDel" height="20px" label="ELIMINAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />
+            <button id="btnRfr" height="20px" label="REFRESCAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />
+            <button id="btnIni" height="20px" label="INICIO" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />
+        </hlayout>
+    </hlayout>
+    <separator bar="true" width="100%" style="color:black;"/>
+    <!-- *******************************(ENCABEZADO.End)********************* -->
+    <zscript>
+        <![CDATA[
+            //String[] nomina={"Jose","Jaime","Tobolda","Oscar de Leon","Harry el Sucio","Mr.Jhon","WY","Vinagre","Caramelito de Sabila","El Mismo","EL Otro","Julian"};
+            String ruta = "../IMAGENES/PERSONAL/";  
+            String formatoImg = ".jpg";         
+        ]]>
+    </zscript>
+    <include src="/VISTA_PERSONAL/catalogoPersonalV2.zul" />
+</zk>

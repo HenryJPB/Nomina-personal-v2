@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <!-- ****************************(ENCABEZADO.Begin)*************************** -->
+    <separator bar="true" width="100%" style="color:black;"/>
+    <hlayout style="background:lightgray;" >
+        <label id="" value=" CONFIGURACION GENERAL /" sclass="TBREADCRUMB" />
+    </hlayout>
+    <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewConfigGeneral')" >
+        <vlayout apply="bean.controlador.configGeneral.ControladorConfigGeneral" >      
+            <separator bar="true" width="100%" style="color:black;"/>
+            <!-- <label id="" value="+....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!...!METRICA!...!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!....!.+" sclass="subTitulo3" />  -->  
+            <!-- <hlayout style="background:lightgray;"> -->
+            <hlayout style="background:white;">
+                <button id="btnEdit" height="20px" label="ACTUALIZAR" disabled="false" sclass="T2A" onClick="@command('btnEditClicked',nomConfigDat = fx)"/>
+                <button id="btnRfr" height="20px" label="REFRESCAR" disabled="false" sclass="T2A"/>
+                <button id="btnIni" height="20px" label="INICIO" disabled="false" sclass="T2A"/>
+                <style dynamic="true">      <!-- NOTA (Bqto: 31/07/2018) no se activan estos atributos en mi hoja de estilo -->
+                    .tmenu .z-menu-text {   <!-- Por esta razon se escriben como adjunto al widget menu -->  
+                    color: #4682B4;
+                    font-size: 15px;
+                    font-weight:bold;
+                    }
+                    .tmenuitem .z-menuitem-text {
+                    color: gray;
+                    font-size: 14px;
+                    font-weight:bold; 
+                    }
+                </style>
+                <menubar id="mnuInformes" draggable="false" scrollable="false" visible="true" >
+                    <menu label="INFORMES" height="18px" sclass="tmenu" >
+                        <menupopup>
+                            <menuitem id="mnnPrint1" label="Print 1" sclass="tmenuitem" />
+                            <menuitem id="mnnPrint2" label="Print 2" sclass="tmenuitem" />
+                        </menupopup>
+                    </menu>
+                </menubar> 
+            </hlayout>
+            <separator bar="true" width="100%" style="color:black;"/>
+            <!--
+            <toolbar>
+                <toolbarbutton id="tbbNuevo" label="Nuevo"/>
+                <toolbarbutton id="tbbEditar" label="Editar" style="border:1px outset black;font-style: normal; font-weight:bold; font-size: 12px; text-decoration: normal;" />
+                <toolbarbutton id="tbbEliminar" label="Eliminar" style="border:1px outset black;font-style: normal; font-weight:bold; font-size: 12px; text-decoration: normal;" />
+            </toolbar>
+            -->
+            <!-- **********************************(ENCABEZADO.End)*********************** -->
+            <!-- https://www.zkoss.org/wiki/ZK_Developer%27s_Reference/MVVM/Data_Binding   -->
+            <!-- ************************************************************************* -->
+            <vbox align="center" pack="center" height="100%" width="100%" >
+                <space/>
+                <space/>
+                <space/>
+                <!--  ** Funcionó correctamente para widget tipo Form ***
+                         ============================================
+                 <hlayout form="@id('fx') @load(vm.nomConfigViewModel) @save(vm.nomConfigViewModel, before='save')" > 
+                    <label id="" value="Ruta de imagenes :" sclass="T1B" />  
+                    <space/>
+                    <textbox id="txtRutaImagenes" value="@bind(fx.rutaAbsFoto)" width="400px" height="30px" tabindex="1" sclass="T1" /> 
+                </hlayout>	
+                -->
+                <!-- <hlayout form="@id('fx') @load(vm.nomConfigViewModel) @save(vm.nomConfigViewModel, before='save')" >  funcionó -->
+                <vbox form="@id('fx') @load(vm.nomConfigDat) @save(vm.nomConfigDat, before='btnEditClicked')" width="110%" align="left" style="border: 1px solid lightgrey;" > 
+                    <space/>
+                    <hlayout>
+                        <space/>
+                        <label id="" value="Ruta de imagenes:" sclass="T1B"/>  
+                        <!-- <textbox id="txtRutaImagenes" value="@bind(fx.rutaAbsFoto)" width="400px" height="30px" tabindex="1" sclass="T1" />  -->  
+                        <textbox value="@bind(vm.nomConfigDat.ruta1)" width="400px" height="30px" tabindex="1" sclass="T1" />            
+                        <!-- <button label="Cambiar Valor" onClick="@command('btnEditClickedPRUEBA', nomConfigDat=fx)" visible="true" />  solo para efecto de prueba visible="true" --> 
+                        <button id="btnInformar1" sclass="T2A" label="!" height="30px">
+                            <attribute name="onClick">
+                            <![CDATA[
+                                //alert("ATENCION: La ruta de IMAGENES aplica al ambito del Sistema de Archivos del lado del Servidor");
+                                Messagebox.show("La ruta de IMAGENES aplica al ambito del Sistema de Archivos ( dirección absoluta ) del lado del Servidor.", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
+                            ]]> 
+                            </attribute>
+                        </button>  
+                    </hlayout>
+                    <space/>
+                    <hlayout>
+                        <space/>
+                        <label id="" value="Ruta de descargas:" sclass="T1B"/>  
+                        <!-- <textbox id="txtRutaImagenes" value="@bind(fx.rutaAbsFoto)" width="400px" height="30px" tabindex="1" sclass="T1" />  -->  
+                        <textbox value="@bind(vm.nomConfigDat.ruta2)" width="400px" height="30px" tabindex="2" sclass="T1" />            
+                        <!-- <button label="Cambiar Valor" onClick="@command('btnEditClickedPRUEBA', nomConfigDat=fx)" visible="true" />  solo para efecto de prueba visible="true" --> 
+                        <button id="btnInformar2" sclass="T2A" label="!" height="30px">
+                            <attribute name="onClick">
+                            <![CDATA[
+                             //alert("ATENCION: La ruta de DESCARGAS aplica al ambito del Sistema de Archivos del lado del Servidor");
+                             Messagebox.show("La ruta de DESCARGAS aplica al ambito del Sistema de Archivos ( dirección absoluta ) del lado del Servidor.", "ATENCION", Messagebox.OK, Messagebox.INFORMATION);
+                             ]]> 
+                            </attribute>
+                        </button>  
+                    </hlayout>
+                    <space/>
+                    <hlayout>
+                        <space/>
+                        <label id="" value="Correo institucional 1:" sclass="T1B"/>  
+                        <textbox value="@bind(vm.nomConfigDat.correo1)" constraint="/.+@.+\.[a-z]+/: Introduzca una dirección de correo correcta" width="400px" height="30px" tabindex="3" sclass="T1" />            
+                    </hlayout>
+                    <space/>
+                    <hlayout>
+                        <space/>
+                        <label id="" value="Correo institucional 2:" sclass="T1B"/>  
+                        <textbox value="@bind(vm.nomConfigDat.correo2)" constraint="/.+@.+\.[a-z]+/: Introduzca una dirección de correo correcta" width="400px" height="30px" tabindex="4" sclass="T1" />            
+                    </hlayout>
+                    <!-- /////////////////////////////////////////////////// -->  
+                    <!-- EJEMPLO PRACTICOS (set visible=true/false)" />  -->  
+                    <button label="Cambiar Valor" visible="false" onClick="@command('btnEditClickedPRUEBA', nomConfigDat=vm.nomConfigDat)" /> 
+                    <!-- <radiogroup id="rdgSexo" onCheck="selSexo.value = self.selectedItem.label" > -->  
+                    <radiogroup id="rdgSexo" visible="false" onCheck="@command('setSelSexo',valorParametro=self.selectedItem.label,content=rdgSexo.selectedItem)" >
+                        <radio id="rd1" label="F"/>
+                        <radio id="rd2" label="M"/>
+                    </radiogroup>
+                    <space/>
+                </vbox>
+            </vbox>
+        </vlayout>
+    </div>
+</zk>

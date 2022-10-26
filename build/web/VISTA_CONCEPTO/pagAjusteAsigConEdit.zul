@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vmEdit') @init('bean.modelo.vista.ModelViewAsigConceptoEdit')" >
+        <!-- // Encabezado - Init ////////////////////////////////////// -->
+        <separator bar="true" width="100%"/>
+        <hlayout>       
+            <hlayout style="background-color:lightgray;" >
+                <label id="" value="/ AJUSTES / CONCEPTO /" sclass="TBREADCRUMB" height="50px" />
+            </hlayout> 
+            <space/>
+            <hlayout style="background-color:white;" >
+                <space/>
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/Information32px.png" width=""  height="" tooltiptext="Ayuda / información!" />
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/Undo32px.png" width=""  height="" tooltiptext="Deshacer!" />
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/Redo32px.png" width=""  height="" tooltiptext="Rehacer!" />
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/PrevRec32px.png" width=""  height="" tooltiptext="Registro previo" />
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/NextRec32pxpx.png" width=""  height="" tooltiptext="Proximo registro" />
+                <separator bar="true" orient="vertical" />
+                <!-- 
+                <image id="imgAdd" src="../IMAGENES/AddRegistro32px.png" width=""  height="" tooltiptext="Nuevo registro!" onClick="@command('btnAddClicked',nomConceptoHistDat=fx, slbNomina=slbNomina, slbTrabajador=slbTrabajador, slbConcepto=slbConcepto )" />
+                <separator bar="true" orient="vertical" /> 
+                -->
+                <!-- 
+                <image id="imgEdit" src="../IMAGENES/Save32px.png" onClick="@command( 'btnEditClicked',slbNomina=slbNomina, slbTrabajador=slbTrabajador, slbConcepto=slbConcepto )" />   
+                -->
+                <image id="imgEdit" src="../IMAGENES/Save32px.png" onClick="@command( 'btnEditClicked',codNomina=codNomina, nroTrabajador=nroTrabajador, codConcepto=codConcepto )" />   
+                <separator bar="true" orient="vertical" /> 
+                <image id="imgRefresh" src="../IMAGENES/Refresh32px.png" onClick="@command('btnRefrescar',codNomina=codNomina, nroTrabajador=nroTrabajador, codConcepto=codConcepto, chbCalcular=chbCalcular, chbInicializable=chbInicializable, chbActivo=chbActivo )"  width=""  height="" tooltiptext="Refrescar!" />
+                <separator bar="true" orient="vertical" />       
+                <image id="" src="../IMAGENES/Previous-icon32px.png" width=""  height="" tooltiptext="Ventana previa" >
+                    <attribute name="onClick">
+                        //alert("*** Let go ***"); 
+                        //Executions.sendRedirect(&quot;../VISTA_PRINCIPAL/pagPrincipal.zul&quot;); 
+                        org.zkoss.zul.Include ssnIncPag = (Include) Sessions.getCurrent().getAttribute("ssnIncPag");
+                        ssnIncPag.setSrc("../VISTA_CONCEPTO/pagAjusteAsigCon.zul");  
+                    </attribute> 
+                </image>
+                <separator bar="true" orient="vertical" />
+            </hlayout>
+        </hlayout>
+        <separator bar="true" width="100%"/>
+        <!-- // Encabezado - End ////////////////////////////////////// -->
+        <div align="center" apply="bean.controlador.concepto.ControladorAsigConceptoEdit" >
+            <space/>
+            <!-- ///////////////////// atributo:  Tipo de Nomina-descripcion ////////////-->
+            <hlayout>
+                <zscript>
+                <![CDATA[
+                    String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                    java.util.List lista = new bean.controlador.nomina.NomTiposNominaDatJpaController().getTiposNomina(ssnRifEmpresa); 
+                    //String[] modeloA = new String[lista.size()]; 
+                    //modeloA = lista.toArray(modeloA);
+                    //alert("QUE PASA****lista.size()*="+lista.size()); 
+                    //for ( String s : lista ) {
+                    //    alert(s); 
+                    //}
+                    //org.zkoss.zul.ListModelList modelo = new org.zkoss.zul.ListModelList(modeloA);   // funcionó correctamente. 
+                    org.zkoss.zul.ListModelList modelo1 = new org.zkoss.zul.ListModelList(lista); 
+                    Integer ssnCodNomina = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina"); 
+                    String nombreNomina = new bean.controlador.nomina.NomTiposNominaDatJpaController().getNombreNomina(ssnRifEmpresa,ssnCodNomina); 
+                    modelo1.addToSelection(ssnCodNomina+"-"+nombreNomina); 
+                 ]]>
+                </zscript>
+                <label id="" value="*" sclass="T1R" />
+                <label id="" value="Cod Nomina:" sclass="T1B" />
+                <selectbox id="slbNomina" model="${modelo1}" sclass="T1G" disabled="false" tabindex="1" onSelect="@command('btnRefrescar',codNomina=codNomina, nroTrabajador=nroTrabajador, codConcepto=codConcepto, chbCalcular=chbCalcular, chbInicializable=chbInicializable, chbActivo=chbActivo )" >
+                    <template name="modelo1">
+                        ${each}
+                    </template> 
+                    <attribute name="onCreate">
+                        <![CDATA[
+                          String cadena = self.getModel().getElementAt( self.getSelectedIndex() ); 
+                          Integer codNomina = Integer.parseInt(cadena.substring(0, cadena.indexOf("-")));
+                          //alert("Nomina creada="+codNomina+"**");
+                        ]]>
+                    </attribute>  
+                    <attribute name="onSelect">
+                        <![CDATA[
+                          String cadena = self.getModel().getElementAt( self.getSelectedIndex() ); 
+                          Integer codNomina = Integer.parseInt(cadena.substring(0, cadena.indexOf("-")));
+                          //alert("Nomina seleccionada="+codNomina+"**");
+                          //@command("btnRefrescar")  // Aqui NO funciona ??????
+                        ]]>
+                    </attribute>  
+                </selectbox>
+            </hlayout>
+            <space/>
+            <!--    
+            <hlayout>
+                <label id="" value="Cod Item:" sclass="T1B" /> 
+                <space/> 
+                <textbox id="lblCodItem" value="@load(vm.sup05View.getCoditem())" readonly="true" style="color: black; font-size: 14px; font-weight:bold; background-color: lightgreen;" sclass="T1G" /> 
+            </hlayout>
+            -->
+            <!-- ///////////// atributo: nroTrabajdor-nombre /////////////////-->
+            <hlayout>
+                <zscript>
+                <![CDATA[
+                    String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                    java.util.List lista = new bean.controlador.personal.NomTrabajador00DatJpaController().getTrabajadores(ssnRifEmpresa); 
+                    org.zkoss.zul.ListModelList modelo2 = new org.zkoss.zul.ListModelList(lista); 
+                    Integer ssnCodNomina = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina"); 
+                    Integer ssnNroTrabajador = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnNroTrabajador"); 
+                    String nombreTrabajador = new bean.controlador.personal.NomTrabajador00DatJpaController().getNombreTrabajador(ssnRifEmpresa,ssnCodNomina,ssnNroTrabajador); 
+                    //System.out.println("ssnNroTrabajador="+ssnNroTrabajador+"*****ssnCodNom="+ssnCodNomina+"****rifEmpresa="+ssnRifEmpresa+"****Nombre="+ssnNroTrabajador+"-"+nombreTrabajador);
+                    modelo2.addToSelection(ssnNroTrabajador+"-"+nombreTrabajador); 
+                 ]]>
+                </zscript>
+                <label id="" value="*" sclass="T1R" />
+                <label id="" value="Trabajador:" sclass="T1B" />
+                <selectbox id="slbTrabajador" model="${modelo2}" sclass="T1G" disabled="false" tabindex="2" onSelect="@command('btnRefrescar',codNomina=codNomina, nroTrabajador=nroTrabajador, codConcepto=codConcepto, chbCalcular=chbCalcular, chbInicializable=chbInicializable, chbActivo=chbActivo )" >
+                    <template name="modelo2">
+                        ${each}
+                    </template>    
+                    <attribute name="onCreate">
+                        <![CDATA[
+                          String cadena = self.getModel().getElementAt( self.getSelectedIndex() ); 
+                          Integer nroTrabajador = Integer.parseInt(cadena.substring(0, cadena.indexOf("-")));
+                          //alert("**Trabajador Creado y Seleccionado!!**");
+                        ]]>
+                    </attribute>  
+                    <attribute name="onSelect">
+                        <![CDATA[
+                          String cadena = self.getModel().getElementAt( self.getSelectedIndex() ); 
+                          Integer nroTrabajador = Integer.parseInt(cadena.substring(0, cadena.indexOf("-")));
+                          //alert("**Trabajador Seleccionado!!**");
+                        ]]>
+                    </attribute>    
+                </selectbox>
+            </hlayout>
+            <space/>
+            <!-- /////////////// atributo: cod concepto - descripcion  /////////////////-->
+            <hlayout>
+                <zscript>
+                <![CDATA[
+                    //String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                    //Integer ssnCodNomina = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina"); 
+                    //System.out.println("ssnCodNomina = " + ssnCodNomina+" rifEmpresa="+rifEmpresa+"***");
+                    //
+                    java.util.List lista = new bean.controlador.concepto.NomConceptoDatJpaController().getConceptos(ssnRifEmpresa); 
+                    org.zkoss.zul.ListModelList modelo3 = new org.zkoss.zul.ListModelList(lista); 
+                    //
+                    Integer ssnCodConcepto = (Integer) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodConcepto"); 
+                    String descripConcepto = new bean.controlador.concepto.NomConceptoDatJpaController().getDescripConcepto(ssnRifEmpresa,ssnCodNomina,ssnCodConcepto); 
+                    //System.out.println("Concepto="+ssnCodConcepto+"-"+descripConcepto);
+                    modelo3.addToSelection(ssnCodConcepto+"-"+descripConcepto); 
+                 ]]>
+                </zscript>
+                <label id="" value="*" sclass="T1R" />
+                <label id="" value="Cod Concepto:" sclass="T1B" />
+                <selectbox id="slbConcepto" model="${modelo3}" sclass="T1G" disabled="false" tabindex="3" onSelect="@command('btnRefrescar',codNomina=codNomina, nroTrabajador=nroTrabajador, codConcepto=codConcepto, chbCalcular=chbCalcular, chbInicializable=chbInicializable, chbActivo=chbActivo )" >
+                    <template name="modelo3">
+                        ${each}
+                    </template>  
+                    <attribute name="onCreate">
+                        <![CDATA[
+                          String cadena = self.getModel().getElementAt( self.getSelectedIndex() ); 
+                          Integer codConcepto = Integer.parseInt(cadena.substring(0, cadena.indexOf("-")));
+                        ]]>
+                    </attribute>  
+                    <attribute name="onSelect">
+                        <![CDATA[
+                          //
+                          String cadena = self.getModel().getElementAt( self.getSelectedIndex() ); 
+                          Integer codConcepto = Integer.parseInt(cadena.substring(0, cadena.indexOf("-")));
+                          //alert("Nomina seleccionada="+codNomina+"**");
+                          //
+                          if ( codConcepto < 100 && ssnCodConcepto > 0 ) {
+                            lblTipoConcepto.setVisible(Boolean.TRUE);
+                          } else { 
+                            lblTipoConcepto.setVisible(Boolean.FALSE); 
+                          }
+                          /*
+                            System.err.println("txtCalcula="+txtCalcular.getText()+" **txtInic="+txtInicializable.getText()+" **txtActivo="+txtActivo.getText()+" ***");
+                            chbCalcular.setChecked( txtCalcular.getText().equals("S") ? Boolean.TRUE : Boolean.FALSE );  
+                            chbInicializable.setChecked( txtInicializable.getText().equals("S") ? Boolean.TRUE : Boolean.FALSE );  
+                            chbActivo.setChecked( txtActivo.getText().equals("S") ? Boolean.TRUE : Boolean.FALSE );   
+                          */ 
+                        ]]>
+                    </attribute>    
+                </selectbox>
+                <space/>
+                <label id="lblTipoConcepto" value="CONCEPTO AUXILIAR" sclass="T1A" visible="false" >
+                    <attribute name="onCreate">
+                        <![CDATA[
+                        if ( ssnCodConcepto < 100 && ssnCodConcepto > 0 ) {
+                            self.setVisible(Boolean.TRUE);
+                        } else { 
+                            self.setVisible(Boolean.FALSE); 
+                        }
+                        ]]>
+                    </attribute>
+                </label> 
+            </hlayout>
+            <space/>
+            <vbox width="90%" height="" style="border: 1px solid lightgrey;" form="@id('fx') @load(vmEdit.nomAsigConceptoDat) @save(vmEdit.nomAsigConceptoDat,before='update')" >
+                <!-- ///////// -->
+                <style dynamic="true">
+                    input[type="checkbox"]:focus::before,  <!-- https://zkfiddle.org/sample/15qbf7n/1-CSS-style-label-checkbox, https://zkfiddle.org/sample/114ju54/4-Focus-styling-on-checkbox-and-radio -->
+                    input[type="radio"]:focus::before{ 
+                    content: "";
+                    /* border: 1px solid black; */ 
+                    top: -2px;
+                    left: -2px;
+                    height: 18px;
+                    width: 18px;
+                    display: block;
+                    position: relative;    
+                    }
+                    .customlabel .z-checkbox-content {
+                    font-family: "Lucida Console", Monaco, monospace;
+                    font-size: 16px;
+                    }
+                    /* https://forum.zkoss.org/question/72717/fancy-checkbox */
+                    .fancy-checkbox {
+                    display: inline-block;
+                    height: 16px;
+                    width: 16px;
+                    /* background-color: blue; */
+                    }
+                </style>
+                <!-- 
+                <hlayout>
+                    <space/>
+                    <label id="" value="*" sclass="T1R" />
+                    <label id="" value="Fecha................:" sclass="T1B"/>
+                    <space/>
+                    <datebox id="dtbFecha" value="@bind( vmEdit.nomConceptoHistDat.nomConceptoHistDatPK.fechaNomina )" format="dd/MM/yyyy" constraint="no empty: Campo requerido" tabindex="4" readonly="true" sclass="T1G" style="color:black; font-weight:bold;" />
+                </hlayout>
+                -->
+                <space/>
+                <hlayout>
+                    <space/>
+                    <label id="" value="Cantidad.............:" sclass="T1B"/>
+                    <space/>
+                    <decimalbox id="dcbCantidad" value="@bind( vmEdit.nomAsigConceptoDat.cantidad )" format="#,##0.00" constraint="" tabindex="4" sclass="T1B" />
+                </hlayout>
+                <!-- ///////// -->
+                <space/>
+                <hlayout>
+                    <space/>
+                    <label id="" value="Monto..................:" sclass="T1B"/>
+                    <space/>
+                    <decimalbox id="dcbMonto" value="@bind( vmEdit.nomAsigConceptoDat.monto )" format="#,##0.00" constraint="" tabindex="5" sclass="T1B" />
+                </hlayout>
+                <!-- ///////// -->   
+                <space/>   
+                <hlayout>
+                    <space/>
+                    <label id="" value="Porcentaje (%).....:" sclass="T1B"/>
+                    <space/>
+                    <decimalbox id="dcbPorcentaje" value="@bind( vmEdit.nomAsigConceptoDat.porcentaje )" format="#,##0.00" constraint="" tabindex="6" sclass="T1B" />
+                </hlayout>
+                <!-- ///////// -->  
+                <space/>  
+                <hlayout>
+                    <space/>
+                    <label id="" value="Frecuencia de calculo:" sclass="T1B"/>
+                    <space/>
+                    <textbox id="txtFrecCalculo" value="@bind( vmEdit.nomAsigConceptoDat.frecuenciaCalculo )" width="23px" tabindex="7" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" />
+                    <!-- ///////// --> 
+                    <space/>  
+                    <label id="" value="Frecuencia de pago:" sclass="T1B"/>
+                    <space/>
+                    <textbox id="txtFrecPago" value="@bind( vmEdit.nomAsigConceptoDat.frecuenciaPago )" width="23px" tabindex="8" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" />
+                </hlayout>
+                <!-- ///////// --> 
+                <space/>  
+                <hlayout>
+                    <space/> 
+                    <!-- Calcular concepto -->
+                    <label id="" value="Calcular concepto:" sclass="T1B"/>
+                    <checkbox id="chbCalcular" label="" onCheck="@command('refreshChbCalcular',chbCalcular=chbCalcular)" sclass="fancy-checkbox" style="transform:scale(1.3,1.3);" >  <!-- https://forum.zkoss.org/question/98288/how-to-change-checkbox-font-size/ -->
+                        <attribute name="onCreate">
+                        <![CDATA[
+                          //System.err.println("txtCalcular="+txtCalcular.getText()+" ***");
+                          self.setChecked( txtCalcular.getText().equals("S") ? true : false );  
+                        ]]>
+                        </attribute>
+                    </checkbox>
+                    <space/>
+                    <textbox id="txtCalcular" value="@bind( vmEdit.nomAsigConceptoDat.calcular )" width="23px" tabindex="9" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" disabled="true" >
+                        <attribute name="onChange">
+                        <![CDATA[
+                            chbCalcular.setChecked( txtCalcular.getText().equals("S") ? true : false );  
+                        ]]>
+                        </attribute>  
+                    </textbox> 
+                    <!-- Cod de la formula -->
+                    <space/> 
+                    <label id="" value="Formula (codigo):" sclass="T1B"/>
+                    <space/>
+                    <intbox id="intFormula" value="@bind( vmEdit.nomAsigConceptoDat.codFormula )" format="##0" constraint="no negative: no negativo" tabindex="10" sclass="T1B" />
+                </hlayout> 
+                <space/>
+                <hlayout>
+                    <!-- inicializble -->
+                    <space/>
+                    <label id="" value="Inicializable:" sclass="T1B"/>
+                    <checkbox id="chbInicializable" label="" onCheck="@command('refreshChbInicializable',chbInicializable=chbInicializable)" sclass="fancy-checkbox" style="transform:scale(1.3,1.3);"> 
+                        <attribute name="onCreate">
+                        <![CDATA[
+                            self.setChecked( txtInicializable.getText().equals("S") ? true : false );  
+                        ]]>
+                        </attribute>
+                    </checkbox>
+                    <space/>
+                    <textbox id="txtInicializable" value="@bind( vmEdit.nomAsigConceptoDat.inicializable )" width="23px" tabindex="11" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" disabled="true" >
+                        <attribute name="onChange">
+                        <![CDATA[
+                            chbInicializable.setChecked( txtInicializable.getText().equals("S") ? true : false );  
+                        ]]>
+                        </attribute>  
+                    </textbox>
+                    <!-- activo? -->
+                    <space/>
+                    <label id="" value="Activo:" sclass="T1B"/>
+                    <checkbox id="chbActivo" label="" onCheck="@command('refreshChbActivo',chbActivo=chbActivo)" sclass="fancy-checkbox" style="transform:scale(1.3,1.3);"> 
+                        <attribute name="onCreate">
+                        <![CDATA[
+                            self.setChecked( txtActivo.getText().equals("S") ? true : false );  
+                        ]]>
+                        </attribute>
+                    </checkbox>
+                    <space/>
+                    <textbox id="txtActivo" value="@bind( vmEdit.nomAsigConceptoDat.activo )" width="23px" tabindex="12" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" disabled="true" >
+                        <attribute name="onChange">
+                        <![CDATA[
+                            chbActivo.setChecked( txtActivo.getText().equals("S") ? true : false );  
+                        ]]>
+                        </attribute>                  
+                    </textbox>
+                </hlayout>
+                <!-- ///////// -->             
+                <space/>  
+                <hlayout>
+                    <space/>
+                    <label id="" value="Observacion1:" sclass="T1B"/>
+                    <space/>
+                    <textbox id="txtObservacion1" value="@bind( vmEdit.nomAsigConceptoDat.observacion1 )" width="500px" tabindex="13" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" />
+                </hlayout>
+                <!-- ///////// -->             
+                <hlayout>
+                    <space/>
+                    <label id="" value="Observacion2:" sclass="T1B"/>
+                    <space/>
+                    <textbox id="txtObservacion2" value="@bind( vmEdit.nomAsigConceptoDat.observacion2 )" width="500px" tabindex="14" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" />
+                </hlayout>
+                <space/>
+            </vbox>
+        </div>
+    </div>
+</zk>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winDefVarEdit" title="EDITAR VARIABLE" border="normal" height="70%" width="35%" closable="true" apply="bean.controlador.concepto.ControladorDefVariableEdit" >
+        <!-- <style src="/css/estiloHP.css"/>  -->  
+        <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewEditDefVariable')" >
+            <hlayout style="background:lightgray;" >
+                <button id="btnEdit" height="20px" label="ACTUALIZAR" disabled="false" sclass="T2A" onClick="@command('btnEditClicked')" />
+                <button id="btnExit" height="20px" label="SALIR" disabled="false" onClick="winDefVarEdit.detach();" sclass="T2A"/>    
+            </hlayout>
+            <space/>
+            <space/>
+            <hlayout>
+                <space/>  
+                <div  align="" form="@id('fx') @load(vm.nomVariableDat) @save(vm.nomVariableDat,before='update')" >
+                    <hlayout>
+                        <label id="" value="Cod Variable:" sclass="T1B" /> 
+                        <space/> 
+                        <label id="lblCodVar" value="@load(vm.nomVariableDat.getNomVariableDatPK().getCodVar())" sclass="T1A" /> 
+                        <!-- <textbox id="" value="@bind(vm.nomVariableDat.getNomVariableDatPK().getCodVar())" sclass="T1B" /> --> 
+                    </hlayout>
+                    <space/>
+                    <hlayout>
+                        <label id="" value="Nombre:" sclass="T1B" /> 
+                        <space/>  
+                        <textbox id="txtNombreVar" value="@bind(vm.nomVariableDat.nombreVar)" onChange="self.setValue(self.getValue().toUpperCase())" width="450px" sclass="T1" tabindex="1" /> 
+                    </hlayout>
+                    <space/>
+                    <hlayout>
+                        <label id="" value="Valor:" sclass="T1B"/>
+                        <space/>
+                        <decimalbox id="dcbValor" value="@bind(vm.nomVariableDat.valor)" format="#,##0.00" sclass="T1" tabindex="2" />
+                        <space/>
+                        <!-- <image id="imgValidado" src="../IMAGENES/check.ico" /> -->  
+                        <image id="imgValidado" src="" />
+                        <space/>  
+                        <!-- <button id="btnValidar" label="VALIDAR" image="../IMAGENES/check.ico" /> /*Correcto*/-->  
+                        <button id="btnValidar" label="VALIDAR" sclass="T1B" />
+                    </hlayout>
+                </div>   
+            </hlayout> 
+            <space/>
+        </div>
+        <button id="btnRecuerdame" label="RECUERDAME" width="100%" sclass="T2A" /> 
+        <!-- Listbox historicos de variables --> 
+        <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vmVarHist') @init('bean.modelo.vista.ModelViewVariableHist')"> 
+            <listbox id="lbxVariableHist" model="@load(vmVarHist.variableHistViewModel)" height="60%" width="100%" rows="6" checkmark="true" multiple="false" 
+                         emptyMessage="LISTA SIN REGISTROS" selectedItem="@bind(vmVarHist.selectedVariableHist)" >
+                <auxhead sclass="category-center">
+                    <auxheader label="HISTORICO DE VARIABLES " colspan="3" style="font-weight:bold; font-size: 16px"/>
+                </auxhead>
+                <listhead>
+                    <listheader hflex="1" label="Valor" sort="auto(valor)" style="color:#555; font-style: normal; font-weight:bold; font-size:16px;" />
+                    <listheader hflex="1" label="Fecha vigencia" sort="auto(fechaVigencia)" style="color:#555; font-style: normal; font-weight:bold; font-size:16px;" />
+                    <listheader hflex="1" label="Eliminar" style="color:#555; font-style: normal; font-weight:bold; font-size:16px;" />
+                </listhead>
+                <template name="model" var="NomVarDatHist" >
+                    <listitem>  
+                        <!-- <listitem self="@(each='NomVarDat')" value="@(NomVarDat)" >  Ver: pagInv06.zul ERROR !!! -->
+                        <listcell label="@load(NomVarDatHist.valor)" style="color:black; font-size: 16px;" />
+                        <!-- <listcell label="@load(NomVarDatHist.fechaVigencia)" style="color:black; font-size: 16px;" /> -->  
+                        <listcell>
+                            <datebox format="dd/MM/yyyy" value="@load(NomVarDatHist.fechaVigencia)" buttonVisible="false" readonly="true" style="color:black; font-size: 16px;" />
+                        </listcell>
+                        <listcell>
+                            <!-- <checkbox id="" label="" checked="@load(NomVarDat.conforme)" disabled="true" />  -->  
+                            <button  label="" image="../IMAGENES/delete16px.png" onClick="@command('btnEliminar',selectedVariableHist=vmVarHist.selectedVariableHist)" style="" /> <!-- /funcionó correctamente, bqto, 29-01-2019/-->                
+                        </listcell>   
+                    </listitem>
+                </template>
+            </listbox>
+        </div>
+    </window>
+</zk>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div align="center" >
+        <vbox apply="bean.controlador.reportes.ControladorInfExistencia" >
+            <separator bar="true"/>
+            <jasperreport id="infExistencia" height="700px" width="655px" style="border: 1px solid black;" />
+            <separator bar="true"/>
+        </vbox>
+    </div>
+</zk>

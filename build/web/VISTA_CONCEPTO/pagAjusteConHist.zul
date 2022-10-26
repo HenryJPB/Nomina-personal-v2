@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--   NOTA *IMPORTANTE* 
+   Este modulo fue activado solo para una carga temporal de datos 
+   Autor: Henry Jose Pulgar Blanco
+   Fecha: 28 agosto 2020. 
+   Funcionó correctamente ✔✔
+-->
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewConceptoHist')" >
+        <!-- // Encabezado - Init //////////////////////////////////////77 -->
+        <separator bar="true" width="100%"/>
+        <hlayout>       
+            <hlayout style="background-color:lightgray;" >
+                <label id="" value="/ AJUSTES / CONCEPTO /" sclass="TBREADCRUMB" height="50px" />
+            </hlayout> 
+            <space/>
+            <hlayout style="background:white;" >
+                <button id="btnAdd" height="20px" label="AGREGAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />    <!-- style="border-color:black; border:1px; border-radius:15px; background:#4682B4;"/>  -->
+                <button id="btnEdit" height="20px" label="EDITAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />
+                <button id="btnDel" height="20px" label="ELIMINAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />
+                <button id="btnRfr" height="20px" label="REFRESCAR" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />
+                <button id="btnIni" height="20px" label="INICIO" disabled="false" sclass="T2A" style="color:#4682B4;font-size:14px;font-weight:bold;" />
+            </hlayout>
+            <!--
+            <hlayout style="background-color:white;" >
+                <space/>
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/Information32px.png" width=""  height="" tooltiptext="Ayuda / información!" />
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/Undo32px.png" width=""  height="" tooltiptext="Deshacer!" />
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/Redo32px.png" width=""  height="" tooltiptext="Rehacer!" />
+                <separator bar="true" orient="vertical" />
+                <image id="" src="../IMAGENES/EditRegistro32px.png" width=""  height="" tooltiptext="Editar registro!" />
+                <separator bar="true" orient="vertical" />   
+                <image id="" src="../IMAGENES/Save32px.png" onClick="@command( 'btnEditClicked',formatoCuenta=txtFormatoCuenta.getText())" />   
+                <separator bar="true" orient="vertical" /> 
+                <image id="" src="../IMAGENES/Refresh32px.png" width=""  height="" tooltiptext="Refrescar!" />
+                <separator bar="true" orient="vertical" />       
+                <image id="" src="../IMAGENES/CloseWindow32px.png" width=""  height="" tooltiptext="Cerrar ventana" >
+                    <attribute name="onClick">
+                        //alert("*** Let go ***"); 
+                        Executions.sendRedirect(&quot;../VISTA_PRINCIPAL/pagPrincipal.zul&quot;); 
+                    </attribute> 
+                </image>
+                <separator bar="true" orient="vertical" />
+            </hlayout>
+            -->
+        </hlayout>
+        <separator bar="true" width="100%"/>
+        <!-- // Encabezado - End ////////////////////////////////////// -->
+        <vlayout apply="bean.controlador.concepto.ControladorAsigConcepto" >
+            <!-- ================================================================================================================
+                 /////El siguiente listBox fue ensanyo para llegar los atributos claves de una BD ✔✔ funcionó correctamente
+                  ================================================================================================================
+            <listbox id="lbxAsigConceptos" model="@load(vm.nomAsigConceptoDatViewModel)" height="100%" width="100%" rows="5"  checkmark="true" multiple="false" 
+                     emptyMessage="LISTA SIN REGISTROS" selectedItem="@bind(vm.selectedAsigConcepto)" apply=""  >   selectedItem hace referencia al metodo getter >
+                <auxhead sclass="category-center">   
+                    <auxheader label="CONCEPTOS ASIGNADOS" colspan="1" style="font-weight:bold; font-size: 16px"/>
+                    <auxheader colspan="1">
+                        <image src="../IMAGENES/embudo-filtrante.png" />
+                        <
+                        <textbox instant="true" width="" value="@bind(vm.viewTrabajadorViewFilter.tipoNomina)" onChange="@command('changeFilter')"  sclass="T1" />
+                        >
+                        <textbox instant="true" width="" sclass="T1" />
+                    </auxheader>
+                    <auxheader colspan="1">
+                        <image src="../IMAGENES/embudo-filtrante.png" />
+                        <textbox instant="true" width="" sclass="T1" />
+                    </auxheader>
+                    <auxheader colspan="1">
+                        <image src="../IMAGENES/embudo-filtrante.png" />
+                        <textbox instant="true" width="" />
+                    </auxheader>
+                </auxhead>
+                <listhead>      
+                    <listheader hflex="1" sort="auto( nomAsigConceptoDatPK.codNomina() )" label="Nomina" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader hflex="1" sort="auto( nomAsigConceptoDatPK.nroTrabajador())" label="Trabajador" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader hflex="1" sort="auto( nomAsigConceptoDatPK.codConcepto())" label="Concepto" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell label="@load( each.nomAsigConceptoDatPK.codNomina )" style="color:black; font-size: 15px;" /> 
+                        <listcell label="@load( each.nomAsigConceptoDatPK.nroTrabajador )" style="color:black; font-size: 15px;" /> 
+                        <listcell label="@load( each.nomAsigConceptoDatPK.codConcepto )" style="color:black; font-size: 15px;" />
+                    </listitem>
+                </template>
+            </listbox>
+            -->
+            <!-- ================================================================================================================ -->
+            <listbox id="lbxAsigConceptos" model="@load(vm.conceptoHistViewModel)" height="100%" width="100%" rows="7"  checkmark="true" multiple="false" 
+                     emptyMessage="LISTA SIN REGISTROS" selectedItem="@bind(vm.selectedAsigConcepto)" apply="bean.controlador.concepto.ControladorConceptoHist" >   <!-- selectedItem hace referencia al metodo getter -->
+                <auxhead>
+                    <auxheader label="CONCEPTOS ASIGNADOS" colspan="4" style="font-weight:bold; font-size: 16px"/> 
+                </auxhead>
+                <auxhead sclass="category-center">   
+                    <auxheader colspan="1">
+                        <image src="../IMAGENES/embudo-filtrante.png" />
+                        <textbox instant="true" width="" value="@bind(vm.conceptoHistViewFilter.codNominaS)" onChange="@command('changeFilter')"  sclass="T1" />
+                    </auxheader>
+                    <auxheader colspan="1">
+                        <image src="../IMAGENES/embudo-filtrante.png" />
+                        <textbox instant="true" width="" value="@bind(vm.conceptoHistViewFilter.nroTrabajadorS)" onChange="@command('changeFilter')"  sclass="T1" />
+                    </auxheader>
+                    <auxheader colspan="1">
+                        <image src="../IMAGENES/embudo-filtrante.png" />
+                        <textbox instant="true" width="" value="@bind(vm.conceptoHistViewFilter.nombre)" onChange="@command('changeFilter')"  sclass="T1" />
+                    </auxheader>
+                    <auxheader colspan="1">
+                        <image src="../IMAGENES/embudo-filtrante.png" />
+                        <textbox instant="true" width="" value="@bind(vm.conceptoHistViewFilter.codConceptoS)" onChange="@command('changeFilter')"  sclass="T1" />
+                    </auxheader>
+                    <auxheader colspan="1">
+                        <image src="../IMAGENES/embudo-filtrante.png" />
+                        <textbox instant="true" width="" value="@bind(vm.conceptoHistViewFilter.descripcion)" onChange="@command('changeFilter')"  sclass="T1" />
+                    </auxheader>
+                    <auxheader colspan="1">
+                        <image src="../IMAGENES/embudo-filtrante.png" />
+                        <textbox instant="true" width="" value="@bind(vm.conceptoHistViewFilter.fechaNominaS)" onChange="@command('changeFilter')"  sclass="T1" />
+                    </auxheader>
+                </auxhead>
+                <listhead>      
+                    <listheader width="90px" sort="auto( codNomina )" label="Nomina" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader width="90px" sort="auto( nroTrabajador )" label="Trabajador" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader hflex="1" sort="auto( nombre )" label="Nombre" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader width="90px" sort="auto( codConcepto )" label="Concepto" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader hflex="1" sort="auto( descripcion )" label="Descripcion" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader width="90px" sort="auto( fechaNominaS )" label="Fecha" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell label="@load( each.codNomina )" style="color:black; font-size: 15px;" /> 
+                        <listcell label="@load( each.nroTrabajador )" style="color:black; font-size: 15px;" /> 
+                        <listcell label="@load( each.nombre )" style="color:black; font-size: 15px;" /> 
+                        <listcell label="@load( each.codConcepto )" style="color:black; font-size: 15px;" />
+                        <listcell label="@load( each.descripcion )" style="color:black; font-size: 15px;" />
+                        <listcell label="@load( each.fechaNominaS )" style="color:black; font-size: 15px;" />
+                    </listitem>
+                </template>
+                <attribute name="onCreate" >
+                    org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnCodNomina",null);  
+                    org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnNroTrabajador",null);
+                    org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnCodConcepto",null);
+                    org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnFechaNomina",null);
+                </attribute>
+                <!--
+                <attribute name="onSelect" >
+                    // =============================
+                    // *Listitem de campos claves: *
+                    // =============================
+                    // ERROR ??????????????? Revisar !!!!!
+                    org.zkoss.zul.Listitem listItem = lbxAsigConceptos.getSelectedItem();
+                    java.util.List celdas = listItem.getChildren();
+                    org.zkoss.zul.Listcell listCell = ( org.zkoss.zul.Listcell ) celdas.get(0);
+                    // *codNomina*
+                    String codNominaS = listCell.getLabel();
+                    if (codNominaS != null && !codNominaS.isEmpty()) {
+                    Integer ssnCodNomina = Integer.parseInt(codNominaS);
+                    }
+                    // *nroTrabajador*
+                    listCell = ( org.zkoss.zul.Listcell ) celdas.get(1);
+                    String nroTrabajadorS = listCell.getLabel();
+                    if (nroTrabajadorS != null && !nroTrabajadorS.isEmpty()) {
+                    Integer ssnNroTrabajador = Integer.parseInt(nroTrabajadorS);
+                    }
+                    // *codConcepto*
+                    listCell = ( org.zkoss.zul.Listcell ) celdas.get(3);
+                    String codConceptoS = listCell.getLabel();
+                    if (codConceptoS != null && !codConceptoS.isEmpty()) {
+                    Integer ssnCodConcepto = Integer.parseInt(codConceptoS);
+                    }
+                    // *fechaNomina*
+                    listCell = ( org.zkoss.zul.Listcell ) celdas.get(5);
+                    String fechaNominaS = listCell.getLabel();
+                    if (fechaNominaS != null && !fechaNominaS.isEmpty()) {
+                    try {
+                    java.util.Date ssnFechaNomina = new java.text.SimpleDateFormat("dd/MM/yyyy").parse("fechaNominaS");
+                    } catch (ParseException ex) {
+                    Logger.getLogger(ControladorConceptoHist.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    }
+                    alert("**codNom="+ssnCodNomina+"**nroTrab="+ssnNroTrabajador+"**codConcepto="+ssnCodConcepto+"**fechaNomina="+ssnFechaNomina+"**"); 
+                </attribute>
+                -->
+            </listbox>
+        </vlayout>
+    </div>
+</zk>

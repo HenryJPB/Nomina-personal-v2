@@ -1,0 +1,131 @@
+<?page 
+    id="pagPrueba" title="Inicio" cacheable="false"
+    language="xul/html" zscriptLanguage="Java" contentType="text/html;charset=UTF-8" title="Gestion de Bancos"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <window title="PAGINA DE PRUEBA" sizable="true"  >
+        <image id="i" src="../imagenes/headerDesica.gif" width="100%" height="100%"/>
+        <caption image="" label="" style="color: white; background:#700020; border:2px outset black; font-weight:bold; " />
+        Decimalbox con formato:
+        <decimalbox id="dbox1" format="#,##0.##" constraint="no negative, no empty, no zero" style="text-align: right" />
+ 
+        Doublespinner:
+        <doublespinner step="5" value="10" constraint="no negative, no zero, min 10 max 50"/>
+
+        Intbox:
+        <intbox id="int1" format="#,##0" constraint="no negative, no zero"/>
+
+        Combobox
+        <combobox id="cbbPrueba" width="40px" readonly="false" disabled="false" constraint="/[A-C]/, no empty: Solo valores 'no nulo','A' o 'C'" >
+            <comboitem label="A" description="Ahorro" />
+            <comboitem label="C" description="Corriente"/>
+        </combobox>
+        <datebox id="" format="dd/MM/yyyy" constraint="no empty,after 20100101,before 20100131:Valores nulos NO permitidos; revisar tope de fecha" />
+    </window>
+    <separator bar="true" />
+    <!-- *************************************************************** --> 
+    <!--  
+    <window id="htmlEdit" title="edit your description" width="600px" visible="false">
+        <fckeditor id="fck" height="400px"/>
+        <button label="close">
+            <attribute name="onClick">
+                htmlEdit.setVisible(false);
+            </attribute>
+        </button>
+        <button label="save changes">
+            <attribute name="onClick">
+                descriptionFrame.setContent(fck.value);
+                htmlEdit.setVisible(false);
+            </attribute>
+        </button>
+        <button label="discard changes">
+            <attribute name="onClick">
+                 fck.value = descriptionFrame.getContent();
+                 htmlEdit.setVisible(false);
+            </attribute>
+        </button>
+    </window>
+    -->
+    <button label="html edit">
+        <attribute name="onClick">
+            htmlEdit.doOverlapped();
+        </attribute>
+    </button>
+    <vbox>
+        <html id="descriptionFrame" width="100%"/>
+        <!-- Error: El siguiente widget se debe descargar o comprar. ????
+       <spreadsheet id="bsheet"
+          src="/WEB-INF/excel/bean/bsheet.xls"
+          maxrows="200"
+          maxcolumns="40"
+          vflex="1"
+          width="100%">
+       </spreadsheet>
+        -->
+        <zscript>
+        <![CDATA[
+        String[] nomina={"Jose","Jaime","Tobolda","Oscar de Leon","Harry el Sucio","Mr.Jhon","WY","Vinagre","Caramelito de Sabila","El Mismo","EL Otro","Julian"};
+        String[] lenguajes = {"Ada","Basic","C","C++","CSS","Cobol","Forth","Fortran",
+            "Go","Groovy","Haskell","HTML","Java","JavaScript","Lisp","Python","Ruby",
+            "Scala","Scheme"};
+        ]]>
+        </zscript>   <!-- Funcionó correctamente el 29/03/2012 a las 15:52 para ambas variables: lenguajes/nomina-->
+        <bandbox id="bd" mold="" autodrop="true">
+            <bandpopup>
+                <listbox height="250px" width="300px" mold="paging" autopaging="true"
+                         onSelect="bd.value=self.selectedItem.label; bd.close();">
+                    <listhead>
+                        <listheader label="Nomina" />
+                    </listhead>
+                    <listitem label="${each}" forEach="${nomina}" />
+                </listbox>
+            </bandpopup>
+        </bandbox>
+    </vbox>
+    <style dynamic="true">
+        .z-toolbar a, .z-toolbar a:visited, .z-toolbar a:hover {
+        background-color:transparent;
+        border:0 none;
+        }
+        .vista {
+        background:#808080 repeat-x 0 0;
+        color:white;
+        padding-top:7px;
+        }
+        .p-vista .z-panel-children {
+        background-color: #008BB6;
+        border-bottom: 0 none;
+        }
+        tr.seld,td.seld,tr.z-listitem-seld {
+        background: #B8BFDC none repeat scroll 0 0;
+        }
+    </style>
+    <grid width="220px" sclass="vista" style="" >
+        <columns>
+            <column label="Col 1"/>
+            <column label="Col 2"/>
+        </columns>
+        <rows>
+            <row>
+                <label id="" value="Valor Col 1.1" style="color:blue;background:#700020;" />
+                <label id="" value="Valor Col 2.1" />
+            </row>
+            <row>
+                <label id="" value="Valor Col 1.2" />
+                <label id="" value="Valor Col 2.2" />
+            </row>
+        </rows>
+    </grid>
+    <window>
+        <zscript><![CDATA[
+          contacts = new String[] {"Monday", "Tuesday", "Wednesday"};
+         ]]>
+        </zscript>
+        <listbox>
+            <listitem label="${each}" forEach="${contacts}"/>
+        </listbox>
+    </window>
+</zk>
+

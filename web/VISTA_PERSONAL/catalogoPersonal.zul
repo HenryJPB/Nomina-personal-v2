@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div apply="org.zkoss.bind.BindComposer" align="center" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewTrabajadores')" > 
+        <!-- IMPORTANTE: vm = View Model && trabajdorViewModel guarda estrecha relacion con el metodo getTrabajadorViewModel de la clase ModeloViewTrabajadores -->  
+        <listbox id="lbxTrabajadores" model="@load(vm.trabajadorViewModel)" height="100%" width="100%" rows="8"  checkmark="true" multiple="false" 
+                 emptyMessage="LISTA SIN REGISTROS" selectedItem="@bind(vm.selectedTrabajador)" apply="bean.controlador.personal.ControladorPersonal"  >  <!-- selectedItem hace referencia al metodo -->
+            <auxhead sclass="category-center">                                                                                                            <!--'getSeletedTrabajador()' de la Clase 'ModeloViewTrabajador' --> 
+                <auxheader colspan="1">
+                    <!-- <image src="../Imagenes/embudo-filtrante.png" />  -->  
+                    <label id="" value="*Aplicar filtros:" sclass="T1" />
+                </auxheader>
+                <auxheader colspan="1">
+                    <!-- <image src="../Imagenes/embudo-filtrante.png" />  -->  
+                    <textbox instant="true" width="" value="@bind(vm.trabajadorFilter.nroTrabajador)" onChange="@command('changeFilter')"  sclass="T1" />
+                </auxheader>
+                <auxheader colspan="1">
+                    <!-- <image src="../Imagenes/embudo-filtrante.png" />  -->  
+                    <textbox instant="true" width="" value="@bind(vm.trabajadorFilter.cedulaID)" onChange="@command('changeFilter')"  sclass="T1" />
+                </auxheader>
+                <auxheader colspan="1">
+                    <!-- <image src="../Imagenes/embudo-filtrante.png" />  -->  
+                    <textbox instant="true" width="" value="@bind(vm.trabajadorFilter.nombre)" onChange="@command('changeFilter')"  sclass="T1" />
+                </auxheader>
+                <auxheader colspan="1">
+                    <!-- <image src="../Imagenes/embudo-filtrante.png" />  -->  
+                    <textbox instant="true" width="" value="@bind(vm.trabajadorFilter.apellido)" onChange="@command('changeFilter')"  sclass="T1" />
+                </auxheader>
+            </auxhead>
+            <listhead>      
+                <listheader width="" label="Mi Foto" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:14px;"  />  
+                <listheader width="" sort="auto(nroEmpleado)" label="Nro Trabajador" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:14px;" />
+                <listheader hflex="1" sort="auto(cedulaID)" label="Cedula ID" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:14px;" />
+                <listheader hflex="1" sort="auto(nombre)" label="Nombre" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:14px;" />
+                <listheader hflex="1" sort="auto(apellido)" label="Apellido" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:14px;" />
+            </listhead>
+            <template name="model">
+                <listitem>
+                    <listcell>
+                        <!-- <image id="" src="${ruta}@load(each.nroTrabajador)${formatoImg}" width="60px" height="60px"/> -->  <!-- No funcionó -->  
+                        <!-- <image id="" src="../IMAGENES/PERSONAL/100.jpg" width="60px" height="60px"/>   -->  
+                        <!-- <image id="" src="@load(each.foto)" width="60px" height="60px"/>  -->
+                        <image id="" content="@load(each.fotoImage)" width="60px" height="60px"/>
+                    </listcell>
+                    <listcell label="@load(each.nroTrabajador)" style="color:black; font-size: 16px;" /> 
+                    <listcell label="@load(each.cedulaID)" style="color:black; font-size: 16px;" />
+                    <listcell label="@load(each.nombre)" style="color:black; font-size: 16px;" />  
+                    <listcell label="@load(each.apellido)" style="color:black; font-size: 16px;" />
+                </listitem>
+            </template>
+        </listbox>
+    </div> 
+</zk>

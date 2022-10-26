@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <!-- <iframe src="http://www.google.com" width="95%" style="border: 1px solid gray"/>  --> 
+    <window id="w" title="Canvas Demo" style="width:480px" border="normal" apply="bean.controlador.concepto.ControladorFormulaConcepto" >
+        <canvas id="myCanvas" width="450px" height="300px"/>   
+        <zscript>
+            // NO FUNCIONA :  errores ...!!  
+            import org.zkoss.canvas.Canvas;
+            //function paintCanvas() {
+            void paintCanvas() {  
+                //console.log( "Painting canvas!" );
+                var ctx = myCanvas.getContext("2d");
+                ctx.strokeStyle="rgb(0,255,0)";   // Bright green
+                ctx.lineWidth=1;
+                ctx.beginPath();
+                ctx.moveTo(5,5);
+                ctx.lineTo(40,40);
+                ctx.stroke();
+            }
+        </zscript>
+        <button label="Paint Canvas" onClick="paintCanvas()" />
+        <button label="Draw Rectangle">
+            <attribute name="onClick">
+            <![CDATA[
+                org.zkoss.zul.Image img1 = new org.zkoss.zul.Image();
+                img1.setSrc("/home/henrypb/Imagenes/calculadora.png");
+                myCanvas.add(img1, 0, 0);
+                // ****          
+                //Set filled-in color
+                //mycanvas.setFillStyleRGBA(0, 0, 200, 1);
+                //Draw rectangle 1
+                //mycanvas.fillRect(110,100,60,50);
+                // ****
+                //Set another filled-in color
+                //mycanvas.setFillStyleRGBA(210, 0, 0, 0.5);
+                //Draw rectangle 2
+                //mycanvas.fillRect(130, 130, 60, 50);
+            ]]>                   
+            </attribute>
+        </button>
+        <button label="Clear">
+            <attribute name = "onClick">
+                //clean the contents of this canvas
+                myCanvas.clear();
+            </attribute>
+        </button>
+    </window> 
+</zk>

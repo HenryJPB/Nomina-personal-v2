@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style src="/css/estiloHP.css"/>
+    <div apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('bean.modelo.vista.ModelViewFormula')" >
+        <separator bar="true" width="100%"/>
+        <space/>
+        <hlayout style="background-color:white;" >
+            <space/>
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/Information32px.png" width=""  height="" tooltiptext="Ayuda / información!" />
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/Undo32px.png" width=""  height="" tooltiptext="Deshacer!" />
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/Redo32px.png" width=""  height="" tooltiptext="Rehacer!" />
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/PrevRec32px.png" width=""  height="" tooltiptext="Registro previo" />
+            <separator bar="true" orient="vertical" />
+            <image id="" src="../IMAGENES/NextRec32px.png" width=""  height="" tooltiptext="Proximo registro" />
+            <separator bar="true" orient="vertical" />
+            <image id="imgEdit" src="../IMAGENES/EditRecord32px.png" width=""  height="" tooltiptext="Nuevo registro!" onClick="@command('btnAddClicked',nomConceptoHistDat=fx, slbNomina=slbNomina, slbTrabajador=slbTrabajador, slbConcepto=slbConcepto )" />
+            <separator bar="true" orient="vertical" /> 
+            <image id="imgSave" src="../IMAGENES/Save32px.png" onClick="@command( 'btnEditClicked',codNomina=codNomina, nroTrabajador=nroTrabajador, codConcepto=codConcepto )" />   
+            <separator bar="true" orient="vertical" /> 
+            <!-- -->
+            <image id="imgRefresh" src="../IMAGENES/Refresh32px.png" onClick="@command( 'btnRefresh' )" width=""  height="" tooltiptext="Refrescar!" />
+            <!--
+                <attribute name="onClick">
+                    alert("Click to Test!!");
+                </attribute>
+            </image>
+            -->
+            <!-- -->
+            <separator bar="true" orient="vertical" />       
+            <image id="" src="../IMAGENES/DobleLeftIcon32px.png" width=""  height="" tooltiptext="Ventana previa" >
+                <attribute name="onClick"> 
+                    grdFormulacion.setVisible(true);
+                    incPagFormulaConcepto.setSrc("");
+                    lblFormulaBreadcrumb.setValue("FORMULACION CONCEPTO"); 
+                </attribute>
+            </image>
+            <separator bar="true" orient="vertical" />
+        </hlayout>
+        <space/>
+        <separator bar="true" width="100%"/>
+        <vbox id="vbxDefFormula" apply="bean.controlador.concepto.ControladorDefFormula" align="center" width="100%" >  
+            <space/>
+            <hlayout>
+                <selectbox id="slbTipoNomina" width="300px" sclass="T1B" onSelect="actualizarCodFormula()" >
+                    <attribute name="onCreate">
+                        String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                        //alert("*** Let go ***"); 
+                        //Executions.sendRedirect(&quot;../VISTA_PRINCIPAL/pagPrincipal.zul&quot;); 
+                        //org.zkoss.zul.Include ssnIncPag = (Include) Sessions.getCurrent().getAttribute("ssnIncPag");
+                        //ssnIncPag.setSrc("../VISTA_CONCEPTO/pagAjusteAsigCon.zul");  
+                        //
+                        java.util.List lista = new bean.controlador.nomina.NomTiposNominaDatJpaController().getTiposNomina(ssnRifEmpresa);
+                        org.zkoss.zul.ListModelList modelo1 = new org.zkoss.zul.ListModelList(lista);
+                        self.setModel(modelo1);
+                        modelo1.addToSelection(modelo1.getElementAt(0)); 
+                        //
+                        //txtCodFormula.setText("FM-NOM"); 
+                    </attribute> 
+                </selectbox>
+                <space spacing="30px" />
+                <selectbox id="slbCodConcepto" width="370px" sclass="T1B" onSelect="actualizarCodFormula()">
+                    <attribute name="onCreate">
+                        //alert("*** Let go ***"); 
+                        //Executions.sendRedirect(&quot;../VISTA_PRINCIPAL/pagPrincipal.zul&quot;); 
+                        //org.zkoss.zul.Include ssnIncPag = (Include) Sessions.getCurrent().getAttribute("ssnIncPag");
+                        //ssnIncPag.setSrc("../VISTA_CONCEPTO/pagAjusteAsigCon.zul");  
+                        //
+                        java.util.List lista = new bean.controlador.concepto.NomConceptoDatJpaController().getConceptos(ssnRifEmpresa); 
+                        ListModelList modelo2 = new ListModelList(lista);
+                        self.setModel(modelo2);
+                        modelo2.addToSelection(modelo2.getElementAt(0)); 
+                        //
+                        String cadena1 = slbTipoNomina.getModel().getElementAt(0);  
+                        cadena1 = cadena1.substring(0, cadena1.indexOf("-"));  
+                        String cadena2 = self.getModel().getElementAt(0);   
+                        cadena2 = cadena2.substring(0, cadena2.indexOf("-"));  
+                        String codigo = "FM"+cadena1+cadena2;  
+                        txtCodFormula.setText(codigo); 
+                        // ** set Variables de session:
+                        org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnCodNomina",Integer.parseInt(cadena1));  
+                        org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnCodConcepto",Integer.parseInt(cadena2));
+                        org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnCodFormula",codigo);               
+                    </attribute> 
+                </selectbox>
+                <zscript>
+                    <![CDATA[
+                        //----------------------------------------------------------
+                        // Autor  : Henry Jose Pulgar Blanco
+                        // Creado : Diciembre 02, 2020 16:33. 
+                        // Status : funcionó correctamente ✔✔ 
+                        //----------------------------------------------------------
+                        void actualizarCodFormula() {
+                            int i = slbTipoNomina.getSelectedIndex();
+                            String cadena1 = slbTipoNomina.getModel().getElementAt(i);  
+                            cadena1 = cadena1.substring(0, cadena1.indexOf("-"));  
+                            i = slbCodConcepto.getSelectedIndex();
+                            String cadena2 = slbCodConcepto.getModel().getElementAt(i);   
+                            cadena2 = cadena2.substring(0, cadena2.indexOf("-"));  
+                            String codigo = "FM"+cadena1+cadena2;  
+                            txtCodFormula.setText(codigo);  
+                            // *Actualizar variables de sesion: *
+                            org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnCodNomina",Integer.parseInt(cadena1));  
+                            org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnCodConcepto",Integer.parseInt(cadena2));
+                            org.zkoss.zk.ui.Sessions.getCurrent().setAttribute("ssnCodFormula",codigo);
+                        }  // actualizarCodFormula()
+                    ]]>
+                </zscript>
+            </hlayout>
+            <space/> 
+            <!-- // --> 
+            <hlayout>
+                <space/> 
+                <label id="" value="Codigo formula: " sclass="T1B"/>
+                <space/>
+                <!--
+              <textbox id="txtCodFormula" value="@bind( vmEdit.nomAsigConceptoDat.codFormula )" width="100px" tabindex="10" sclass="T1G" onChange="self.setValue(self.getValue().toUpperCase())" readonly="true" />     
+                --> 
+                <textbox id="txtCodFormula" value="" width="100px" tabindex="10" sclass="T1G" onChange="self.setValue(self.getValue().toUpperCase())" readonly="true" tooltiptext="Ejecutar boton [Refrescar] para actulizar tus datos :-))" > 
+                    <attribute name="onChange">  <!-- Remind: solo funciona por evento IO .. teclado,..etc.. NO por programacion!!! -->
+                        //alert("AQUICA"); 
+                    </attribute>
+                </textbox>
+            </hlayout> 
+            <!-- // --> 
+            <!-- Listbox binding a popUp window // (OJO: get's de ModelViewFormula)-->
+            <!-- //
+            <button id="btnAdd" height="14px" label="AGREGAR" disabled="false" sclass="T2A"/>
+            --> 
+            <button label="IMPORTANTE" onClick="" style="font-size: 14px; color: black; background: yellow; font-weight: bold;" >
+                <attribute name="tooltiptext">
+                    ------------------------------------------------------------
+                    **ATENCION USUARIO *
+                    ------------------------------------------------------------
+                    (1).-
+                    Condicion Necesaria:  tu  Proceso  de  Calculo  debe poseer
+                    una accion de 'T')otalizacion. Inclusive sin esta accion se 
+                    pueden generar Salidas Indeseables.
+                    (2).-
+                    Puedes utilizar el Formato Numérico AMERICANO ( #,##9.99 ). 
+                    el  punto '.' separador decimal. Y la coma ',' separador de
+                    mil.  
+                    (3).-
+                    Para reflejar Cantidad, Frecuencia o Turno, en tu Plan de 
+                    de Calculo se debe definir una accion C)antidad.
+                    ------------------------------------------------------------
+                </attribute>
+            </button>
+            <hlayout id="hlyFormulacion" style="" width="100%"  >
+                <button id="btnAdd" height="14px" label="AGREGAR" disabled="fasle" sclass="T2A"/>   <!-- Metodo: onClick$btnAdd() { agregar() } de la Clase: ControladorDefFormula.   -->
+                <button id="btnEdit" height="14px" label="EDITAR" disabled="fasle" sclass="T2A" onClick="@command('btnEdit')" />
+                <button id="btnDel" height="14px" label="ELIMINAR" disabled="fasle" sclass="T2A" onClick="@command('btnDel')"  />
+                <button id="btnRfr" height="14px" label="REFRESCAR" disabled="false" sclass="T2A" onClick="@command('btnRefresh')"  />
+                <button id="btnPrueba" height="14px" label="PRUEBA" disabled="false" sclass="T2A" onClick="" visible="Boolean.FALSE"  />
+            </hlayout>
+            <!--
+               Didnt't work  ( ... "@{ atributoControlador.selectedFormula }" ... )  
+            <listbox id="lbxFormula" width="800px" model="@load(vm.formulaViewModel)" selectedItem="@{ atributoControlador.selectedFormula }" checkmark="true" multiple="false" sizedByContent="true" span="true" emptyMessage="LISTA SIN REGISTROS" >
+            -->
+            <listbox id="lbxFormula" width="900px" model="@load(vm.formulaViewModel)" selectedItem="@bind(vm.selectedFormula)" checkmark="true" multiple="false" sizedByContent="true" span="true" rows="7" emptyMessage="LISTA SIN REGISTROS"  >
+                <auxhead>
+                    <auxheader label="FORMULACION DE CONCEPTOS" colspan="4" style="font-weight:bold; font-size: 16px"/> 
+                </auxhead>
+                <listhead>      
+                    <listheader hflex="1" width="70px" sort="" label="Accion" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader hflex="1" width="90px" sort="" label="Consecutivo" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader hflex="1" width="300px" sort="" label="Formula/Ecuacion" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                    <listheader hflex="1" width="300px" sort="" label="Observacion" style="color:#4682B4; font-style: normal; font-weight:bold; font-size:15px;" />
+                </listhead>
+                <template name="model">
+                    <listitem>
+                        <listcell label="@load( each.nomFormulaDatPK.accion )" style="color:black; font-size: 15px; font-weight: bold;" /> 
+                        <listcell label="@load( each.nomFormulaDatPK.correlativo )" style="color:black; font-size: 15px; font-weight: bold;" /> 
+                        <listcell label="@load( each.formula )" style="color:black; font-size: 15px; font-weight: bold;" /> 
+                        <listcell label="@load( each.observacion )" style="color:black; font-size: 15px; font-weight: bold;" />
+                    </listitem>
+                </template>
+                <attribute name="onCreate" >
+                    //String ssnRifEmpresa = (String) org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("rifEmpresa");  
+                    Integer ssnCodNomina = org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodNomina");  
+                    Integer ssnCodConcepto = org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodConcepto");  
+                    String ssnCodFormula = org.zkoss.zk.ui.Sessions.getCurrent().getAttribute("ssnCodFormula");  
+                    //alert("***ssnCodNomina="+ssnCodNomina+"***ssnCodConcep="+ssnCodConcepto+"****ssnCodFor="+ssnCodFormula+"***"); 
+                </attribute>
+            </listbox>
+        </vbox>
+    </div>
+</zk>

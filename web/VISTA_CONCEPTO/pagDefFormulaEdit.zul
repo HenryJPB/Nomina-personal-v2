@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window id="winDefFormulaEdit" title="" border="normal" height="67%" width="57%" closable="true" mode="modal" apply="bean.controlador.concepto.ControladorDefFormulaEdit" > 
+        <caption  style="color: black; background: smoke; font-weight:bold; font-size: 18px;" />
+        <style src="/css/estiloHP.css"/>
+        <hlayout style="background:lightgray;" >
+            <button id="btnEdit" height="16px" label="ACTUALIZAR" disabled="false" sclass="T2A" onClick="" />
+            <button id="btnExit" height="16px" label="SALIR" disabled="false" onClick="winDefFormulaEdit.detach();" sclass="T2A"/>    
+        </hlayout>
+        <space/>
+        <space/>
+        <space/>
+        <hlayout>
+            <space/>
+            <label id="" value="*" sclass="T1R"/>
+            <label id="" value="Cod. Formula . :" sclass="T1B"/>
+            <space/>
+            <textbox id="txtCodFormula" value="@{ atributoControlador.nomFormulaDat.nomFormulaDatPK.codFormula }" width="75px" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" readonly="true" style="background: lightcyan;" />     
+        </hlayout>
+        <space/>
+        <hlayout>
+            <space/>
+            <label id="" value="*" sclass="T1R"/>
+            <label id="" value="Cod. Nomina .. :" sclass="T1B"/>
+            <space/>
+            <intbox id="inbCodNomina" value="@{ atributoControlador.nomFormulaDat.nomFormulaDatPK.codNomina }"  format="###0" constraint="" sclass="T1B" readonly="true" style="background: lightcyan;" />
+        </hlayout>
+        <space/>
+        <hlayout>
+            <space/>
+            <label id="" value="*" sclass="T1R"/>
+            <label id="" value="Cod. Concepto :" sclass="T1B"/>
+            <space/>
+            <intbox id="inbCodConcepto" value="@{ atributoControlador.nomFormulaDat.nomFormulaDatPK.codConcepto }"  format="###0" constraint="" sclass="T1B" readonly="true" style="background: lightcyan;" />
+        </hlayout> 
+        <space/>
+        <div align="center" >
+            <style dynamic="true">      <!--  -->
+                .tmenu .z-menu-text {   
+                color: grey;        /* #4682B4;  */
+                font-size: 12px; 
+                color: black; 
+                font-weight: bold;
+                /* height: 14px; */     
+                }
+                .tmenuitem .z-menuitem-text {
+                color: black;
+                font-size: 12px;
+                font-weight:bold;
+                height: 12px;   
+                }
+                .tmenuitem2 .z-menuitem-text {
+                color: black;
+                font-size: 15px;
+                font-weight:bold; 
+                background: lightgoldenrodyellow; 
+                }
+                .titleBlue .z-panel-header {
+                color: blue;
+                font-size: 18px;  
+                font-weight:bold;
+                }
+            </style>
+            <vbox width="90%" height="" style="border: 1px solid lightgrey;" >
+                <space/>
+                <hlayout>
+                    <space/>
+                    <label id="" value="*" sclass="T1R"/>
+                    <label id="" value="Accion (R/C/T) :" sclass="T1B"/>
+                    <space/>
+                    <!-- Aplicar aqui componente de menitem para seleccionar una accion -->
+                    <textbox id="txtAccion" value="@{ atributoControlador.nomFormulaDat.nomFormulaDatPK.accion }" width="30px" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" readonly="true" tabindex="1" />     
+                    <menubar id="mnuAccion" draggable="false" scrollable="false" visible="true" height="24px" sclass="" >
+                        <menu label="AGREGAR" height="20px" sclass="tmenu" >
+                            <menupopup>
+                                <menuitem id="mnnAccionOpcion1" label="RESULTADO PARCIAL ( R )" sclass="tmenuitem" onClick=""/>
+                                <menuitem id="mnnAccionOpcion2" label="CANTIDAD ( C )" sclass="tmenuitem" onClick="" tooltiptext="Restringida a C[1..9]" />
+                                <menuitem id="mnnAccionOpcion3" label="TOTAL ( T )" sclass="tmenuitem" onClick="" />
+                            </menupopup>
+                        </menu>
+                    </menubar>
+                </hlayout>
+                <space/>
+                <hlayout>
+                    <space/>
+                    <label id="" value="*" sclass="T1R"/>
+                    <label id="" value="Correlativo :" sclass="T1B"/>
+                    <space/>
+                    <intbox id="inbCorrelativo" width="30px" value="@{ atributoControlador.nomFormulaDat.nomFormulaDatPK.correlativo }" format="###0" constraint="no empty, no negative" sclass="T1B" readonly="true" tabindex="2" >
+                        <attribute name="onChange">
+                        <![CDATA[
+                          //lblAcumulador.setValue( txtAccion.getText()+inbCorrelativo.getValue() );  
+                          //System.out.println("");
+                        ]]>
+                        </attribute>
+                        <attribute name="onCreate">
+                        <![CDATA[
+                          // Esto NO esta funcionado???????'
+                          //lblAcumulador.setValue( txtAccion.getText()+inbCorrelativo.getValue() );  
+                          //System.out.println( "Aquica="+txtAccion.getText()+inbCorrelativo.getValue()+"****" );
+                        ]]>
+                        </attribute>
+                    </intbox>
+                    <space/>
+                    <label id="" value="Acumulador :" sclass="T1B"/>
+                    <space/>
+                    <label id="lblAcumulador" value="" visible="" sclass="T1A"  >
+                        <attribute name="onCreate">
+                        <![CDATA[
+                        if ( !txtAccion.equals("T") ) {
+                           self.setVisible( Boolean.TRUE );
+                        } else {
+                           self.setVisible( Boolean.FALSE );
+                        }
+                        ]]>
+                        </attribute>
+                    </label>
+                </hlayout>
+                <space/>
+                <hlayout>
+                    <zscript>
+                        <!-- Ejemplo extraido de (GNU/Linux/Mis documentos ) ZK_509_Component_Reference.pdf. Pag. No. 14 -->
+                         <![CDATA[  
+                         //----------Crear--------------------------------------
+                         class MyConstraint implements Constraint, CustomConstraint {
+                            
+                            //----------------------------------------------------------------------
+                            public void validate(Component comp, Object value) {
+                              // alert("***on validate MyConstraint***"); 
+                              if ( value==null || value.toString().isEmpty()  ) { 
+                                 throw new WrongValueException(comp, "Valor de la *formula/ecuación* NO puede ser Nulo / Vacio.");
+                              } else {
+                                 bean.controlador.concepto.ControladorDefFormula ctldrFormula = new bean.controlador.concepto.ControladorDefFormula(); 
+                                 String formula = txtFormula.getValue().trim();  // (e1) ?? Target exception: Typed variable declaration : Method Invocation txtFormula.getValue : at Line: 107 : in file:,.... 
+                                 if ( formula!=null && !formula.isEmpty() ) {
+                                        formula =  "["+formula+"]";   // formatear ecuacion...!
+                                        bean.utilitario.libreria.ClassArregloTokens.ClassArregloTokens tokens =  ctldrFormula.dividirTokens(formula);  
+                                        tokens = ctldrFormula.validarEcuacion(tokens);  
+                                        if ( tokens != null) {
+                                            //System.err.println("ATENCION: ERROR DE SINTAXIS EN LA DEFINCION DE LA FORMULA!!!!!!!");
+                                            throw new WrongValueException(comp, "ATENCION: ERROR DE SINTAXIS.");
+                                         }  // if ( tokens != null)
+                                  }  // if ( formula!=null && !formula.isEmpty()
+                              }  // if-else. 
+                            }  // validate().   
+                            
+                            //----------------------------------------------------------------------
+                            public void showCustomError( Component comp,WrongValueException ex ) {
+                               msgError.setValue(ex != null ? ex.getMessage(): "" );
+                            }  // showCustomError(). 
+                            
+                         } // class MyConstraint. 
+                         
+                         //----------Implantancion------------------------------
+                         // Bqto ( 08/12/2020 14:09 ). Funcionó correctamente excepto 
+                         // x el error : 'String formula = txtFormula.getValue().trim();  // (e1) ?? Target exception: Typed variable declaration : Method Invocation txtFormula.getValue : at Line: 107 : in file:,....'
+                         // Puede que este ERROR lo genere este campo porque este atributo este 'Bindered' travez un
+                         // modelo ModelView ????.   
+                         //-----------------------------------------------------
+                         Constraint validarFormula = new MyConstraint();  
+                         ]]>
+                    </zscript>
+                    <space/>
+                    <label id="" value="Formula/Ecuacion  :" sclass="T1B"/>
+                    <space/>
+                    <vlayout>
+                        <!--
+                        <textbox id="txtFormula" value="@{ atributoControlador.nomFormulaDat.formula }" width="550px" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" constraint="${validarFormula}" readonly="false" tabindex="3" />     
+                        -->
+                        <textbox id="txtFormula" value="@{ atributoControlador.nomFormulaDat.formula }" width="550px" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" constraint="no empty" readonly="false" tabindex="3" />     
+                        <!-- Ver ejemplo (GNU/Linux/Mis documentos ) ZK_509_Component_Reference.pdf. Pag. No. 14 -->
+                        <!-- check 'constraint' de pag pagSup05Edit.zul del Sistema de Almacen -->
+                        <!-- <decimalbox id="dbUnidades" value="@bind( vmEdit.sup05Dat.c5Unidades )" format="#,##0.00"  sclass="T1B" constraint="${validarExistencia}" tabindex="6" />  -->
+                        <label id="msgError" style="font-weight: bold; color: red;"/>
+                    </vlayout>
+                </hlayout>
+                <space/>
+                <hlayout>
+                    <space/>
+                    <label id="" value="Observacion ........ :" sclass="T1B"/>
+                    <space/>
+                    <!-- ...value="@{ atributoControlador.nomFormulaDat.observacion, acces='both',save-when='none' }"... : Genera salida indeseable (SUJETO A REVISION) -->
+                    <textbox id="txtObservacion" width="550px" value="@{ atributoControlador.nomFormulaDat.observacion }" sclass="T1B" onChange="self.setValue(self.getValue().toUpperCase())" readonly="false" tabindex="4" />     
+                </hlayout>
+                <space/>
+            </vbox>
+            <space/>
+        </div>
+    </window>
+</zk>
